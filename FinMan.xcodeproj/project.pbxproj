@@ -98,6 +98,10 @@
 		77AB8381261CC1F500F44999 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				77AB83C9261CC68C00F44999 /* Helper */,
+				77AB83CA261CC68C00F44999 /* Model */,
+				77AB83C7261CC68C00F44999 /* View */,
+				77AB83C8261CC68C00F44999 /* ViewModel */,
 				77AB8382261CC1F500F44999 /* FinManApp.swift */,
 				77AB8383261CC1F500F44999 /* ContentView.swift */,
 				77AB8384261CC1F600F44999 /* Assets.xcassets */,
@@ -119,6 +123,10 @@
 		77AB838B261CC1F600F44999 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				77AB83CD261CC6A000F44999 /* Helper */,
+				77AB83CC261CC6A000F44999 /* Model */,
+				77AB83CE261CC6A000F44999 /* View */,
+				77AB83CB261CC6A000F44999 /* ViewModel */,
 				77AB838C261CC1F600F44999 /* Info.plist */,
 			);
 			path = iOS;
@@ -127,6 +135,10 @@
 		77AB8392261CC1F600F44999 /* macOS */ = {
 			isa = PBXGroup;
 			children = (
+				77AB83D1261CC6B200F44999 /* Helper */,
+				77AB83D2261CC6B200F44999 /* Model */,
+				77AB83CF261CC6B200F44999 /* View */,
+				77AB83D0261CC6B200F44999 /* ViewModel */,
 				77AB8393261CC1F600F44999 /* Info.plist */,
 				77AB8394261CC1F600F44999 /* macOS.entitlements */,
 			);
@@ -149,6 +161,90 @@
 				77AB83AA261CC1F600F44999 /* Info.plist */,
 			);
 			path = "Tests macOS";
+			sourceTree = "<group>";
+		};
+		77AB83C7261CC68C00F44999 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		77AB83C8261CC68C00F44999 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		77AB83C9261CC68C00F44999 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		77AB83CA261CC68C00F44999 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		77AB83CB261CC6A000F44999 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		77AB83CC261CC6A000F44999 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		77AB83CD261CC6A000F44999 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		77AB83CE261CC6A000F44999 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		77AB83CF261CC6B200F44999 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		77AB83D0261CC6B200F44999 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		77AB83D1261CC6B200F44999 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		77AB83D2261CC6B200F44999 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
