@@ -11,7 +11,7 @@ import SwiftUI
 struct FinManApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            FMTabView()
         }
     }
 }

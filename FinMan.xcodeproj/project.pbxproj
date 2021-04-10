@@ -7,12 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		77A22F272621A8C900AE2F4F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F232621A8C900AE2F4F /* ContentView.swift */; };
+		77A22F282621A8C900AE2F4F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F232621A8C900AE2F4F /* ContentView.swift */; };
+		77A22F292621A8C900AE2F4F /* FMIncomeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F252621A8C900AE2F4F /* FMIncomeListView.swift */; };
+		77A22F2A2621A8C900AE2F4F /* FMIncomeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F252621A8C900AE2F4F /* FMIncomeListView.swift */; };
+		77A22F2B2621A8C900AE2F4F /* FMIncomeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F262621A8C900AE2F4F /* FMIncomeRow.swift */; };
+		77A22F2C2621A8C900AE2F4F /* FMIncomeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F262621A8C900AE2F4F /* FMIncomeRow.swift */; };
+		77A22F322621A8E400AE2F4F /* FMTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F312621A8E400AE2F4F /* FMTabView.swift */; };
+		77A22F332621A8E400AE2F4F /* FMTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F312621A8E400AE2F4F /* FMTabView.swift */; };
+		77A22F3A2621A8F200AE2F4F /* FMIncome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F392621A8F200AE2F4F /* FMIncome.swift */; };
+		77A22F3B2621A8F200AE2F4F /* FMIncome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F392621A8F200AE2F4F /* FMIncome.swift */; };
+		77A22F492621A92000AE2F4F /* FMIncomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F482621A92000AE2F4F /* FMIncomeViewModel.swift */; };
+		77A22F4A2621A92000AE2F4F /* FMIncomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F482621A92000AE2F4F /* FMIncomeViewModel.swift */; };
 		77AB839E261CC1F600F44999 /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77AB839D261CC1F600F44999 /* Tests_iOS.swift */; };
 		77AB83A9261CC1F600F44999 /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77AB83A8261CC1F600F44999 /* Tests_macOS.swift */; };
 		77AB83AB261CC1F600F44999 /* FinManApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77AB8382261CC1F500F44999 /* FinManApp.swift */; };
 		77AB83AC261CC1F600F44999 /* FinManApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77AB8382261CC1F500F44999 /* FinManApp.swift */; };
-		77AB83AD261CC1F600F44999 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77AB8383261CC1F500F44999 /* ContentView.swift */; };
-		77AB83AE261CC1F600F44999 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77AB8383261CC1F500F44999 /* ContentView.swift */; };
 		77AB83AF261CC1F600F44999 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 77AB8384261CC1F600F44999 /* Assets.xcassets */; };
 		77AB83B0261CC1F600F44999 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 77AB8384261CC1F600F44999 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -35,8 +45,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		77A22F232621A8C900AE2F4F /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		77A22F252621A8C900AE2F4F /* FMIncomeListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMIncomeListView.swift; sourceTree = "<group>"; };
+		77A22F262621A8C900AE2F4F /* FMIncomeRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMIncomeRow.swift; sourceTree = "<group>"; };
+		77A22F312621A8E400AE2F4F /* FMTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMTabView.swift; sourceTree = "<group>"; };
+		77A22F392621A8F200AE2F4F /* FMIncome.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMIncome.swift; sourceTree = "<group>"; };
+		77A22F482621A92000AE2F4F /* FMIncomeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMIncomeViewModel.swift; sourceTree = "<group>"; };
 		77AB8382261CC1F500F44999 /* FinManApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinManApp.swift; sourceTree = "<group>"; };
-		77AB8383261CC1F500F44999 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		77AB8384261CC1F600F44999 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		77AB8389261CC1F600F44999 /* FinMan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinMan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		77AB838C261CC1F600F44999 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -83,6 +98,61 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		77A22F222621A8C900AE2F4F /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				77A22F312621A8E400AE2F4F /* FMTabView.swift */,
+				77A22F232621A8C900AE2F4F /* ContentView.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		77A22F242621A8C900AE2F4F /* Income */ = {
+			isa = PBXGroup;
+			children = (
+				77A22F252621A8C900AE2F4F /* FMIncomeListView.swift */,
+				77A22F262621A8C900AE2F4F /* FMIncomeRow.swift */,
+			);
+			path = Income;
+			sourceTree = "<group>";
+		};
+		77A22F382621A8F200AE2F4F /* Income */ = {
+			isa = PBXGroup;
+			children = (
+				77A22F392621A8F200AE2F4F /* FMIncome.swift */,
+			);
+			path = Income;
+			sourceTree = "<group>";
+		};
+		77A22F472621A92000AE2F4F /* Income */ = {
+			isa = PBXGroup;
+			children = (
+				77A22F482621A92000AE2F4F /* FMIncomeViewModel.swift */,
+			);
+			path = Income;
+			sourceTree = "<group>";
+		};
+		77A22F4F2621AB3400AE2F4F /* Expense */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Expense;
+			sourceTree = "<group>";
+		};
+		77A22F542621AC9300AE2F4F /* Expense */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Expense;
+			sourceTree = "<group>";
+		};
+		77A22F552621AC9A00AE2F4F /* Expense */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Expense;
+			sourceTree = "<group>";
+		};
 		77AB837C261CC1F500F44999 = {
 			isa = PBXGroup;
 			children = (
@@ -103,7 +173,6 @@
 				77AB83C7261CC68C00F44999 /* View */,
 				77AB83C8261CC68C00F44999 /* ViewModel */,
 				77AB8382261CC1F500F44999 /* FinManApp.swift */,
-				77AB8383261CC1F500F44999 /* ContentView.swift */,
 				77AB8384261CC1F600F44999 /* Assets.xcassets */,
 			);
 			path = Shared;
@@ -166,6 +235,9 @@
 		77AB83C7261CC68C00F44999 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				77A22F542621AC9300AE2F4F /* Expense */,
+				77A22F222621A8C900AE2F4F /* Common */,
+				77A22F242621A8C900AE2F4F /* Income */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -173,6 +245,8 @@
 		77AB83C8261CC68C00F44999 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				77A22F552621AC9A00AE2F4F /* Expense */,
+				77A22F472621A92000AE2F4F /* Income */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -187,6 +261,8 @@
 		77AB83CA261CC68C00F44999 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				77A22F4F2621AB3400AE2F4F /* Expense */,
+				77A22F382621A8F200AE2F4F /* Income */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -326,6 +402,7 @@
 		77AB837D261CC1F500F44999 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = FM;
 				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
@@ -404,7 +481,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				77AB83AD261CC1F600F44999 /* ContentView.swift in Sources */,
+				77A22F3A2621A8F200AE2F4F /* FMIncome.swift in Sources */,
+				77A22F272621A8C900AE2F4F /* ContentView.swift in Sources */,
+				77A22F292621A8C900AE2F4F /* FMIncomeListView.swift in Sources */,
+				77A22F492621A92000AE2F4F /* FMIncomeViewModel.swift in Sources */,
+				77A22F2B2621A8C900AE2F4F /* FMIncomeRow.swift in Sources */,
+				77A22F322621A8E400AE2F4F /* FMTabView.swift in Sources */,
 				77AB83AB261CC1F600F44999 /* FinManApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -413,7 +495,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				77AB83AE261CC1F600F44999 /* ContentView.swift in Sources */,
+				77A22F3B2621A8F200AE2F4F /* FMIncome.swift in Sources */,
+				77A22F282621A8C900AE2F4F /* ContentView.swift in Sources */,
+				77A22F2A2621A8C900AE2F4F /* FMIncomeListView.swift in Sources */,
+				77A22F4A2621A92000AE2F4F /* FMIncomeViewModel.swift in Sources */,
+				77A22F332621A8E400AE2F4F /* FMTabView.swift in Sources */,
+				77A22F2C2621A8C900AE2F4F /* FMIncomeRow.swift in Sources */,
 				77AB83AC261CC1F600F44999 /* FinManApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
