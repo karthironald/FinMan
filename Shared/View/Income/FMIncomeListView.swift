@@ -11,6 +11,7 @@ import SwiftUI
 struct FMIncomeListView: View {
     
     @StateObject var viewModel = FMIncomeViewModel()
+    @State var shouldPresentAddIncomeView: Bool = false
     
     var body: some View {
         NavigationView {
@@ -22,11 +23,14 @@ struct FMIncomeListView: View {
             .toolbar(content: {
                 ToolbarItem {
                     Button(action: {
-                        viewModel.addNew(income: FMIncome(id: UUID(), value: 100, frequency: .yearly))
+                        shouldPresentAddIncomeView.toggle()
                     }, label: {
                         Label("Add Income", systemImage: "plus")
                     })
                 }
+            })
+            .sheet(isPresented: $shouldPresentAddIncomeView, content: {
+                FMAddIncomeview(shouldPresentAddIncomeView: $shouldPresentAddIncomeView)
             })
         }
     }

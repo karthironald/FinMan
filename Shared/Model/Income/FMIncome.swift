@@ -10,11 +10,12 @@ struct FMIncome: Identifiable {
     let id: UUID
     let value: Double
     let frequency: Frequency
+    let comments: String? = nil
 }
 
 extension FMIncome {
     
-    enum Frequency: String {
+    enum Frequency: String, CaseIterable {
         case onetime, weekly, monthly, quatarly, halfEarly, yearly
     }
     

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7759FB152622083900F8520B /* FMAddIncomeview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7759FB142622083900F8520B /* FMAddIncomeview.swift */; };
+		7759FB162622083900F8520B /* FMAddIncomeview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7759FB142622083900F8520B /* FMAddIncomeview.swift */; };
 		77A22F272621A8C900AE2F4F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F232621A8C900AE2F4F /* ContentView.swift */; };
 		77A22F282621A8C900AE2F4F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F232621A8C900AE2F4F /* ContentView.swift */; };
 		77A22F292621A8C900AE2F4F /* FMIncomeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F252621A8C900AE2F4F /* FMIncomeListView.swift */; };
@@ -45,6 +47,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7759FB142622083900F8520B /* FMAddIncomeview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMAddIncomeview.swift; sourceTree = "<group>"; };
 		77A22F232621A8C900AE2F4F /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		77A22F252621A8C900AE2F4F /* FMIncomeListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMIncomeListView.swift; sourceTree = "<group>"; };
 		77A22F262621A8C900AE2F4F /* FMIncomeRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMIncomeRow.swift; sourceTree = "<group>"; };
@@ -112,6 +115,7 @@
 			children = (
 				77A22F252621A8C900AE2F4F /* FMIncomeListView.swift */,
 				77A22F262621A8C900AE2F4F /* FMIncomeRow.swift */,
+				7759FB142622083900F8520B /* FMAddIncomeview.swift */,
 			);
 			path = Income;
 			sourceTree = "<group>";
@@ -387,6 +391,7 @@
 			files = (
 				77A22F3A2621A8F200AE2F4F /* FMIncome.swift in Sources */,
 				77A22F272621A8C900AE2F4F /* ContentView.swift in Sources */,
+				7759FB152622083900F8520B /* FMAddIncomeview.swift in Sources */,
 				77A22F292621A8C900AE2F4F /* FMIncomeListView.swift in Sources */,
 				77A22F492621A92000AE2F4F /* FMIncomeViewModel.swift in Sources */,
 				77A22F2B2621A8C900AE2F4F /* FMIncomeRow.swift in Sources */,
@@ -401,6 +406,7 @@
 			files = (
 				77A22F3B2621A8F200AE2F4F /* FMIncome.swift in Sources */,
 				77A22F282621A8C900AE2F4F /* ContentView.swift in Sources */,
+				7759FB162622083900F8520B /* FMAddIncomeview.swift in Sources */,
 				77A22F2A2621A8C900AE2F4F /* FMIncomeListView.swift in Sources */,
 				77A22F4A2621A92000AE2F4F /* FMIncomeViewModel.swift in Sources */,
 				77A22F332621A8E400AE2F4F /* FMTabView.swift in Sources */,
