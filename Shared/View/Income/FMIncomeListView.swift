@@ -15,8 +15,22 @@ struct FMIncomeListView: View {
     
     var body: some View {
         NavigationView {
-            List(viewModel.incomes) { income in
-                FMIncomeRow(income: income)
+            List {
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.clear)
+                    .frame(height: 100, alignment: .center)
+                    .overlay(
+                        VStack {
+                            Text("Total Income")
+                                .foregroundColor(.secondary)
+                            Text("\(viewModel.totalIncome(), specifier: "%0.2f")")
+                                .font(.largeTitle)
+                                .foregroundColor(.primary)
+                        }
+                    )
+                ForEach(viewModel.incomes) { income in
+                    FMIncomeRow(income: income)
+                }
             }
             .frame(minWidth: 250)
             .navigationTitle("Income")

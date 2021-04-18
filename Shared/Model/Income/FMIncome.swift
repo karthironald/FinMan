@@ -36,10 +36,10 @@ extension FMIncome {
 extension FMIncome {
     
     static var sampleData = [
-        FMIncome(id: UUID(), value: 150000, frequency: .onetime),
-        FMIncome(id: UUID(), value: 1000, frequency: .weekly),
-        FMIncome(id: UUID(), value: 40000, frequency: .monthly),
-        FMIncome(id: UUID(), value: 700000, frequency: .yearly),
+        FMIncome(id: UUID(), value: 1000, frequency: .onetime),
+        FMIncome(id: UUID(), value: 2000, frequency: .weekly),
+        FMIncome(id: UUID(), value: 3000, frequency: .monthly),
+        FMIncome(id: UUID(), value: 4000, frequency: .yearly),
     ]
     
 }

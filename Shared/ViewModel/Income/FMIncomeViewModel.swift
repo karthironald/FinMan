@@ -15,4 +15,7 @@ class FMIncomeViewModel: ObservableObject {
         incomes.append(income)
     }
     
+    func totalIncome() -> Double {
+        incomes.map{ $0.value }.reduce(0.0, +)
+    }
 }
