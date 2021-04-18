@@ -17,7 +17,19 @@ extension FMIncome {
     
     enum Frequency: String, CaseIterable {
         case onetime, weekly, monthly, quatarly, halfEarly, yearly
+        
+        var title: String {
+            switch self {
+            case .onetime: return "One time"
+            case .weekly: return "Weekly"
+            case .monthly: return "Monthly"
+            case .quatarly: return "Quatarly"
+            case .halfEarly: return "Halfearly"
+            case .yearly: return "Yearly"
+            }
+        }
     }
+    
     
 }
 

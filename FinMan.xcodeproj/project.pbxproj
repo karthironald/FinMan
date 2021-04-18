@@ -151,6 +151,7 @@
 		77AB8381261CC1F500F44999 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				77BE7198262C2A6C0017CDCE /* Helper */,
 				77AB83CA261CC68C00F44999 /* Model */,
 				77AB83C7261CC68C00F44999 /* View */,
 				77AB83C8261CC68C00F44999 /* ViewModel */,
@@ -229,6 +230,13 @@
 				77A22F382621A8F200AE2F4F /* Income */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		77BE7198262C2A6C0017CDCE /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

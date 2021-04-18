@@ -20,6 +20,7 @@ struct FMIncomeListView: View {
             }
             .frame(minWidth: 250)
             .navigationTitle("Income")
+            .listStyle(InsetGroupedListStyle())
             .toolbar(content: {
                 ToolbarItem {
                     Button(action: {
@@ -30,7 +31,7 @@ struct FMIncomeListView: View {
                 }
             })
             .sheet(isPresented: $shouldPresentAddIncomeView, content: {
-                FMAddIncomeview(shouldPresentAddIncomeView: $shouldPresentAddIncomeView)
+                FMAddIncomeview(viewModel: viewModel, shouldPresentAddIncomeView: $shouldPresentAddIncomeView)
             })
         }
     }

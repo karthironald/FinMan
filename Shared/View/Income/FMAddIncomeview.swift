@@ -9,33 +9,46 @@ import SwiftUI
 
 struct FMAddIncomeview: View {
     @State var value: String = ""
-    @State var frequency: String = ""
+    @State var frequencyIndex: Int = 0
     @State var comments: String = " "
     
+    @ObservedObject var viewModel: FMIncomeViewModel
     @Binding var shouldPresentAddIncomeView: Bool
     
     var body: some View {
-        Form {
-            Section {
-                TextField("value", text: $value)
-            }
-            Section {
-                Picker("Frequency", selection: $frequency) {
-                    ForEach(0..<FMIncome.Frequency.allCases.count, id: \.self) { freq in
-                        Text("\(FMIncome.Frequency.allCases[freq].rawValue)")
-                    }
+        NavigationView {
+            Form {
+                Section(header: Text("Value")) {
+                    TextField("value", text: $value)
+                        .keyboardType(.numbersAndPunctuation)
                 }
-                .pickerStyle(MenuPickerStyle())
+                Section(header: Text("Frequency")) {
+                    Picker("Frequency", selection: $frequencyIndex) {
+                        ForEach(0..<FMIncome.Frequency.allCases.count, id: \.self) { freq in
+                            Text("\(FMIncome.Frequency.allCases[freq].title)")
+                        }
+                    }
+                    .pickerStyle(DefaultPickerStyle())
+                }
+                Section(header: Text("Additional comments")) {
+                    TextEditor(text: $comments)
+                        .frame(height: 100, alignment: .center)
+                }
             }
-            Section {
-                TextEditor(text: $comments)
-            }
+            .navigationBarTitle(Text("Add Income"), displayMode: .inline)
+            .navigationBarItems(trailing:
+                                    Button("Save") {
+                                        let newIncome = FMIncome(id: UUID(), value: Double(value) ?? 0.0, frequency: FMIncome.Frequency.allCases[frequencyIndex])
+                                        viewModel.addNew(income: newIncome)
+                                        shouldPresentAddIncomeView.toggle()
+                                    }
+            )
         }
     }
 }
 
 struct FMAddIncomeview_Previews: PreviewProvider {
     static var previews: some View {
-        FMAddIncomeview(value: "16000", frequency: FMIncome.Frequency.onetime.rawValue, comments: "Sample", shouldPresentAddIncomeView: .constant(false))
+        FMAddIncomeview(value: "16000", frequencyIndex: 0, comments: " ", viewModel: FMIncomeViewModel(), shouldPresentAddIncomeView: .constant(false))
     }
 }

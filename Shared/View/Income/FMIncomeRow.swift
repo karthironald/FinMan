@@ -12,14 +12,14 @@ struct FMIncomeRow: View {
     let income: FMIncome
     
     var body: some View {
-        VStack(alignment: .leading) {
+        HStack(alignment: .center) {
             Text("\(income.value, specifier: "%0.2f")")
                 .font(.body)
                 .bold()
-            Text("\(income.frequency.rawValue)")
+            Spacer()
+            Text("\(income.frequency.title)")
                 .font(.footnote)
                 .foregroundColor(.secondary)
-            Spacer()
         }
     }
 }
