@@ -8,9 +8,9 @@ import Foundation
 
 struct FMIncome: Identifiable {
     let id: UUID
-    let value: Double
-    let frequency: Frequency
-    let comments: String? = nil
+    var value: Double
+    var frequency: Frequency
+    var comments: String? = nil
 }
 
 extension FMIncome {

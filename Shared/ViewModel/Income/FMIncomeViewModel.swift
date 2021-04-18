@@ -11,6 +11,9 @@ class FMIncomeViewModel: ObservableObject {
     
     @Published var incomes: [FMIncome] = FMIncome.sampleData
 
+    
+    // MARK: - Custom methods
+    
     func addNew(income: FMIncome) {
         incomes.append(income)
     }
@@ -18,4 +21,5 @@ class FMIncomeViewModel: ObservableObject {
     func totalIncome() -> Double {
         incomes.map{ $0.value }.reduce(0.0, +)
     }
+    
 }

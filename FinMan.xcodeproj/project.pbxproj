@@ -27,6 +27,8 @@
 		77AB83AC261CC1F600F44999 /* FinManApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77AB8382261CC1F500F44999 /* FinManApp.swift */; };
 		77AB83AF261CC1F600F44999 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 77AB8384261CC1F600F44999 /* Assets.xcassets */; };
 		77AB83B0261CC1F600F44999 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 77AB8384261CC1F600F44999 /* Assets.xcassets */; };
+		77C6AF57262C315900321F04 /* FMIncomeDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C6AF56262C315900321F04 /* FMIncomeDetail.swift */; };
+		77C6AF58262C315900321F04 /* FMIncomeDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C6AF56262C315900321F04 /* FMIncomeDetail.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +69,7 @@
 		77AB83A4261CC1F600F44999 /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		77AB83A8261CC1F600F44999 /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		77AB83AA261CC1F600F44999 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		77C6AF56262C315900321F04 /* FMIncomeDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMIncomeDetail.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +119,7 @@
 				77A22F252621A8C900AE2F4F /* FMIncomeListView.swift */,
 				77A22F262621A8C900AE2F4F /* FMIncomeRow.swift */,
 				7759FB142622083900F8520B /* FMAddIncomeview.swift */,
+				77C6AF56262C315900321F04 /* FMIncomeDetail.swift */,
 			);
 			path = Income;
 			sourceTree = "<group>";
@@ -397,6 +401,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77C6AF57262C315900321F04 /* FMIncomeDetail.swift in Sources */,
 				77A22F3A2621A8F200AE2F4F /* FMIncome.swift in Sources */,
 				77A22F272621A8C900AE2F4F /* ContentView.swift in Sources */,
 				7759FB152622083900F8520B /* FMAddIncomeview.swift in Sources */,
@@ -412,6 +417,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77C6AF58262C315900321F04 /* FMIncomeDetail.swift in Sources */,
 				77A22F3B2621A8F200AE2F4F /* FMIncome.swift in Sources */,
 				77A22F282621A8C900AE2F4F /* ContentView.swift in Sources */,
 				7759FB162622083900F8520B /* FMAddIncomeview.swift in Sources */,

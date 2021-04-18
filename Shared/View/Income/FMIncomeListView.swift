@@ -29,7 +29,10 @@ struct FMIncomeListView: View {
                         }
                     )
                 ForEach(viewModel.incomes) { income in
-                    FMIncomeRow(income: income)
+                    NavigationLink(
+                        destination: FMIncomeDetail(income: income, viewModel: viewModel),
+                        label: { FMIncomeRow(income: income) }
+                    )
                 }
             }
             .frame(minWidth: 250)
@@ -45,7 +48,7 @@ struct FMIncomeListView: View {
                 }
             })
             .sheet(isPresented: $shouldPresentAddIncomeView, content: {
-                FMAddIncomeview(viewModel: viewModel, shouldPresentAddIncomeView: $shouldPresentAddIncomeView)
+                FMAddIncomeview(shouldPresentAddIncomeView: $shouldPresentAddIncomeView).environmentObject(viewModel)
             })
         }
     }
