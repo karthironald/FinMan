@@ -12,7 +12,7 @@ struct FMAddIncomeview: View {
     @State var frequencyIndex: Int = 0
     @State var comments: String = " "
     
-    @EnvironmentObject var viewModel: FMIncomeViewModel
+    @EnvironmentObject var viewModel: FMIncomeListViewModel
     @Binding var shouldPresentAddIncomeView: Bool
     
     var body: some View {
@@ -49,6 +49,6 @@ struct FMAddIncomeview: View {
 
 struct FMAddIncomeview_Previews: PreviewProvider {
     static var previews: some View {
-        FMAddIncomeview(value: "16000", frequencyIndex: 0, comments: " ", shouldPresentAddIncomeView: .constant(false)).environmentObject(FMIncomeViewModel())
+        FMAddIncomeview(value: "16000", frequencyIndex: 0, comments: " ", shouldPresentAddIncomeView: .constant(false)).environmentObject(FMIncomeListViewModel())
     }
 }

@@ -5,12 +5,14 @@
 //  Created by Karthick Selvaraj on 09/04/21.
 //
 import Foundation
+import FirebaseFirestoreSwift
 
-struct FMIncome: Identifiable {
-    let id: UUID
+struct FMIncome: Identifiable, Codable {
+    @DocumenID let id: String?
     var value: Double
     var frequency: Frequency
     var comments: String? = nil
+    var userId: String?
 }
 
 extension FMIncome {

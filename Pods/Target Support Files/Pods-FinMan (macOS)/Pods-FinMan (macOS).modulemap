@@ -1,0 +1,6 @@
+framework module Pods_FinMan__macOS_ {
+  umbrella header "Pods-FinMan (macOS)-umbrella.h"
+
+  export *
+  module * { export * }
+}

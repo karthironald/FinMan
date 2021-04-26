@@ -10,7 +10,7 @@ import SwiftUI
 struct FMIncomeDetail: View {
     
     var income: FMIncome
-    @ObservedObject var viewModel: FMIncomeViewModel
+    @ObservedObject var viewModel: FMIncomeListViewModel
     @State var shouldPresentEditScreen = false
     
     var body: some View {
@@ -48,7 +48,7 @@ struct FMIncomeDetail: View {
 struct FMIncomeDetail_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            FMIncomeDetail(income: FMIncome.sampleData.first!, viewModel: FMIncomeViewModel())
+            FMIncomeDetail(income: FMIncome.sampleData.first!, viewModel: FMIncomeListViewModel())
         }
     }
 }

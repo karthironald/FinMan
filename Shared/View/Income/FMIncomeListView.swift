@@ -10,7 +10,7 @@ import SwiftUI
 
 struct FMIncomeListView: View {
     
-    @StateObject var viewModel = FMIncomeViewModel()
+    @StateObject var viewModel = FMIncomeListViewModel()
     @State var shouldPresentAddIncomeView: Bool = false
     
     var body: some View {
