@@ -28,7 +28,7 @@ struct FMIncomeListView: View {
                                 .foregroundColor(.primary)
                         }
                     )
-                ForEach(viewModel.incomes) { income in
+                ForEach(viewModel.incomeRepository.incomes) { income in
                     NavigationLink(
                         destination: FMIncomeDetail(income: income, viewModel: viewModel),
                         label: { FMIncomeRow(income: income) }

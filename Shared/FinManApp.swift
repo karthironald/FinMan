@@ -13,6 +13,7 @@ struct FinManApp: App {
     
     init() {
         FirebaseApp.configure()
+        FMAuthenticationService().signIn()
     }
     
     var body: some Scene {

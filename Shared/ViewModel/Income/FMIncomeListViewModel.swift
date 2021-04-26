@@ -9,17 +9,16 @@ import Foundation
 
 class FMIncomeListViewModel: ObservableObject {
     
-    @Published var incomes: [FMIncome] = FMIncome.sampleData
-
+    var incomeRepository = FMIncomeRepository()
     
     // MARK: - Custom methods
     
     func addNew(income: FMIncome) {
-        incomes.append(income)
+        incomeRepository.add(income)
     }
     
     func totalIncome() -> Double {
-        incomes.map{ $0.value }.reduce(0.0, +)
+        incomeRepository.incomes.map{ $0.value }.reduce(0.0, +)
     }
     
 }

@@ -8,16 +8,16 @@ import Foundation
 import FirebaseFirestoreSwift
 
 struct FMIncome: Identifiable, Codable {
-    @DocumenID let id: String?
+    @DocumentID var id: String?
     var value: Double
-    var frequency: Frequency
+    var frequency: Int = 0
     var comments: String? = nil
     var userId: String?
 }
 
 extension FMIncome {
     
-    enum Frequency: String, CaseIterable {
+    enum Frequency: Int, CaseIterable {
         case onetime, weekly, monthly, quatarly, halfEarly, yearly
         
         var title: String {
@@ -38,10 +38,10 @@ extension FMIncome {
 extension FMIncome {
     
     static var sampleData = [
-        FMIncome(id: UUID(), value: 1000, frequency: .onetime),
-        FMIncome(id: UUID(), value: 2000, frequency: .weekly),
-        FMIncome(id: UUID(), value: 3000, frequency: .monthly),
-        FMIncome(id: UUID(), value: 4000, frequency: .yearly),
+        FMIncome(id: UUID().uuidString, value: 1000, frequency: 0, comments: nil, userId: nil),
+        FMIncome(id: UUID().uuidString, value: 1000, frequency: 1, comments: nil, userId: nil),
+        FMIncome(id: UUID().uuidString, value: 1000, frequency: 2, comments: nil, userId: nil),
+        FMIncome(id: UUID().uuidString, value: 1000, frequency: 3, comments: nil, userId: nil),
     ]
     
 }

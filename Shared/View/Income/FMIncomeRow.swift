@@ -17,7 +17,7 @@ struct FMIncomeRow: View {
                 .font(.body)
                 .bold()
             Spacer()
-            Text("\(income.frequency.title)")
+            Text("\(FMIncome.Frequency(rawValue: income.frequency)?.title ?? "")")
                 .font(.footnote)
                 .foregroundColor(.secondary)
         }
@@ -26,6 +26,6 @@ struct FMIncomeRow: View {
 
 struct FMIncomeRow_Previews: PreviewProvider {
     static var previews: some View {
-        FMIncomeRow(income: FMIncome.sampleData.first ?? FMIncome(id: UUID(), value: 100, frequency: .halfEarly))
+        FMIncomeRow(income: FMIncome.sampleData.first ?? FMIncome(id: UUID().uuidString, value: 100, frequency: 0))
     }
 }

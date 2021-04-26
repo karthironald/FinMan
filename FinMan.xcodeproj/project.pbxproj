@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -34,6 +34,9 @@
 		77AB83B0261CC1F600F44999 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 77AB8384261CC1F600F44999 /* Assets.xcassets */; };
 		77C6AF57262C315900321F04 /* FMIncomeDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C6AF56262C315900321F04 /* FMIncomeDetail.swift */; };
 		77C6AF58262C315900321F04 /* FMIncomeDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C6AF56262C315900321F04 /* FMIncomeDetail.swift */; };
+		77E5C7B62637329B00F64A73 /* FMAuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E5C7B52637329B00F64A73 /* FMAuthenticationService.swift */; };
+		77E5C7B72637329B00F64A73 /* FMAuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E5C7B52637329B00F64A73 /* FMAuthenticationService.swift */; };
+		77E5C80B2637363800F64A73 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 77E5C80A2637363800F64A73 /* GoogleService-Info.plist */; };
 		CE1AF24C6D6266D03CD8C5D8 /* Pods_FinMan__iOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C87E7DE35C041FE296F56E19 /* Pods_FinMan__iOS_.framework */; };
 /* End PBXBuildFile section */
 
@@ -80,6 +83,8 @@
 		77AB83A8261CC1F600F44999 /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		77AB83AA261CC1F600F44999 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		77C6AF56262C315900321F04 /* FMIncomeDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMIncomeDetail.swift; sourceTree = "<group>"; };
+		77E5C7B52637329B00F64A73 /* FMAuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMAuthenticationService.swift; sourceTree = "<group>"; };
+		77E5C80A2637363800F64A73 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9E0256DFA6C71A756F2C6C2A /* Pods_FinMan__macOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FinMan__macOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C87E7DE35C041FE296F56E19 /* Pods_FinMan__iOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FinMan__iOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCF5B48F956346ECF3822AED /* Pods-FinMan (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FinMan (iOS).release.xcconfig"; path = "Target Support Files/Pods-FinMan (iOS)/Pods-FinMan (iOS).release.xcconfig"; sourceTree = "<group>"; };
@@ -168,6 +173,7 @@
 		77AB837C261CC1F500F44999 = {
 			isa = PBXGroup;
 			children = (
+				77E5C80A2637363800F64A73 /* GoogleService-Info.plist */,
 				77AB8381261CC1F500F44999 /* Shared */,
 				77AB838B261CC1F600F44999 /* iOS */,
 				77AB8392261CC1F600F44999 /* macOS */,
@@ -184,6 +190,7 @@
 			children = (
 				776155A126372479000382B4 /* Repository */,
 				77BE7198262C2A6C0017CDCE /* Helper */,
+				77E5C7B52637329B00F64A73 /* FMAuthenticationService.swift */,
 				77AB83CA261CC68C00F44999 /* Model */,
 				77AB83C7261CC68C00F44999 /* View */,
 				77AB83C8261CC68C00F44999 /* ViewModel */,
@@ -279,7 +286,6 @@
 				F3F5A8FC264C2D9C324863A5 /* Pods-FinMan (macOS).debug.xcconfig */,
 				0722921A7EFE7562C77A1452 /* Pods-FinMan (macOS).release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -421,6 +427,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				77AB83AF261CC1F600F44999 /* Assets.xcassets in Resources */,
+				77E5C80B2637363800F64A73 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -523,6 +530,7 @@
 				77A22F272621A8C900AE2F4F /* ContentView.swift in Sources */,
 				7759FB152622083900F8520B /* FMAddIncomeview.swift in Sources */,
 				77A22F292621A8C900AE2F4F /* FMIncomeListView.swift in Sources */,
+				77E5C7B62637329B00F64A73 /* FMAuthenticationService.swift in Sources */,
 				77A22F492621A92000AE2F4F /* FMIncomeListViewModel.swift in Sources */,
 				776155B226372500000382B4 /* FMIncomeRepository.swift in Sources */,
 				77A22F2B2621A8C900AE2F4F /* FMIncomeRow.swift in Sources */,
@@ -541,6 +549,7 @@
 				77A22F282621A8C900AE2F4F /* ContentView.swift in Sources */,
 				7759FB162622083900F8520B /* FMAddIncomeview.swift in Sources */,
 				77A22F2A2621A8C900AE2F4F /* FMIncomeListView.swift in Sources */,
+				77E5C7B72637329B00F64A73 /* FMAuthenticationService.swift in Sources */,
 				77A22F4A2621A92000AE2F4F /* FMIncomeListViewModel.swift in Sources */,
 				776155B326372500000382B4 /* FMIncomeRepository.swift in Sources */,
 				77A22F332621A8E400AE2F4F /* FMTabView.swift in Sources */,

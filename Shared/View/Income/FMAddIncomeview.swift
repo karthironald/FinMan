@@ -38,8 +38,8 @@ struct FMAddIncomeview: View {
             .navigationBarTitle(Text("Add Income"), displayMode: .inline)
             .navigationBarItems(trailing:
                                     Button("Save") {
-                                        let newIncome = FMIncome(id: UUID(), value: Double(value) ?? 0.0, frequency: FMIncome.Frequency.allCases[frequencyIndex])
-                                        viewModel.addNew(income: newIncome)
+                                        let income = FMIncome(value: Double(value) ?? 0.0, frequency: frequencyIndex, comments: comments)
+                                        viewModel.addNew(income: income)
                                         shouldPresentAddIncomeView.toggle()
                                     }
             )

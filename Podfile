@@ -7,6 +7,7 @@ target 'FinMan (iOS)' do
   platform :ios, ‘10.0’
 
   pod 'Firebase/Firestore'
+  pod 'Firebase/Auth'
   pod 'FirebaseFirestoreSwift'
 end
 

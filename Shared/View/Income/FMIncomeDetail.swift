@@ -25,7 +25,7 @@ struct FMIncomeDetail: View {
                 Text("Frequency")
                     .foregroundColor(.secondary)
                 Spacer()
-                Text(income.frequency.title)
+                Text(FMIncome.Frequency(rawValue: income.frequency)?.title ?? "")
             }
             HStack {
                 Text("Additional Comments")
