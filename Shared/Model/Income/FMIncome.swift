@@ -6,6 +6,7 @@
 //
 import Foundation
 import FirebaseFirestoreSwift
+import FirebaseFirestore
 
 struct FMIncome: Identifiable, Codable {
     @DocumentID var id: String?
@@ -13,6 +14,7 @@ struct FMIncome: Identifiable, Codable {
     var frequency: Int = 0
     var comments: String? = nil
     var userId: String?
+    @ServerTimestamp var createdAt: Timestamp?
 }
 
 extension FMIncome {

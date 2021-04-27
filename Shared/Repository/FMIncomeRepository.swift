@@ -22,7 +22,6 @@ class FMIncomeRepository: ObservableObject {
     @Published var isFetching: Bool = false
     
     init() {
-        // 1
         authenticationService.$user
             .compactMap { user in
                 user?.uid
@@ -30,12 +29,10 @@ class FMIncomeRepository: ObservableObject {
             .assign(to: \.userId, on: self)
             .store(in: &cancellables)
         
-        // 2
         authenticationService.$user
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                // 3
-                self?.getCards()
+                self?.getIncomes()
             }
             .store(in: &cancellables)
     }
@@ -51,9 +48,10 @@ class FMIncomeRepository: ObservableObject {
         }
     }
     
-    func getCards() {
+    func getIncomes() {
         isFetching = true
         store.collection(path)
+            .order(by: "createdAt", descending: true)
             .whereField("userId", isEqualTo: userId)
             .addSnapshotListener { [self] (querySnapshot, error) in
                 if let error = error {

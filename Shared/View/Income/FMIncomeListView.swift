@@ -35,6 +35,11 @@ struct FMIncomeListView: View {
                         label: { FMIncomeRow(incomeRowViewModel: incomeRowViewModel) }
                     )
                 }
+                .onDelete { (indexSet) in
+                    if let index = indexSet.first {
+                        viewModel.incomeRowViewModel[index].delete()
+                    }
+                }
             }
             .frame(minWidth: 250)
             .navigationTitle("Income")
