@@ -12,7 +12,8 @@ struct FMAddIncomeview: View {
     @State var frequencyIndex: Int = 0
     @State var comments: String = " "
     
-    @EnvironmentObject var viewModel: FMIncomeListViewModel
+    var viewModel: FMIncomeListViewModel? = nil
+    var incomeRowViewModel: FMIncomeRowViewModel? = nil
     @Binding var shouldPresentAddIncomeView: Bool
     
     var body: some View {
@@ -38,17 +39,31 @@ struct FMAddIncomeview: View {
             .navigationBarTitle(Text("Add Income"), displayMode: .inline)
             .navigationBarItems(trailing:
                                     Button("Save") {
-                                        let income = FMIncome(value: Double(value) ?? 0.0, frequency: frequencyIndex, comments: comments)
-                                        viewModel.addNew(income: income)
+                                        saveButtonTapped()
                                         shouldPresentAddIncomeView.toggle()
                                     }
             )
+        }
+    }
+    
+    func saveButtonTapped() {
+        if incomeRowViewModel?.id == nil && viewModel != nil {
+            let income = FMIncome(value: Double(value) ?? 0.0, frequency: frequencyIndex, comments: comments)
+            viewModel?.addNew(income: income)
+        } else {
+            if let income = incomeRowViewModel?.income {
+                var updatedIncome = income
+                updatedIncome.value = Double(value) ?? 0.0
+                updatedIncome.frequency = frequencyIndex
+                updatedIncome.comments = comments
+                incomeRowViewModel?.update(income: updatedIncome)
+            }
         }
     }
 }
 
 struct FMAddIncomeview_Previews: PreviewProvider {
     static var previews: some View {
-        FMAddIncomeview(value: "16000", frequencyIndex: 0, comments: " ", shouldPresentAddIncomeView: .constant(false)).environmentObject(FMIncomeListViewModel())
+        FMAddIncomeview(viewModel: FMIncomeListViewModel(), shouldPresentAddIncomeView: .constant(false))
     }
 }

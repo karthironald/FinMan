@@ -19,6 +19,7 @@ class FMIncomeRepository: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
     
     @Published var incomes: [FMIncome] = []
+    @Published var isFetching: Bool = false
     
     init() {
         // 1
@@ -51,9 +52,10 @@ class FMIncomeRepository: ObservableObject {
     }
     
     func getCards() {
+        isFetching = true
         store.collection(path)
-//            .whereField("userId", isEqualTo: userId)
-            .addSnapshotListener { (querySnapshot, error) in
+            .whereField("userId", isEqualTo: userId)
+            .addSnapshotListener { [self] (querySnapshot, error) in
                 if let error = error {
                     print(error.localizedDescription)
                     return
@@ -61,6 +63,7 @@ class FMIncomeRepository: ObservableObject {
                 self.incomes = querySnapshot?.documents.compactMap({ document in
                     try? document.data(as: FMIncome.self)
                 }) ?? []
+                isFetching = false
             }
     }
     

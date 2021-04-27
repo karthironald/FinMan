@@ -28,10 +28,11 @@ struct FMIncomeListView: View {
                                 .foregroundColor(.primary)
                         }
                     )
-                ForEach(viewModel.incomeRepository.incomes) { income in
+                    .redacted(reason: viewModel.isFetching ? .placeholder : [])
+                ForEach(viewModel.incomeRowViewModel, id: \.id) { incomeRowViewModel in
                     NavigationLink(
-                        destination: FMIncomeDetail(income: income, viewModel: viewModel),
-                        label: { FMIncomeRow(income: income) }
+                        destination: FMIncomeDetail(incomeRowViewModel: incomeRowViewModel),
+                        label: { FMIncomeRow(incomeRowViewModel: incomeRowViewModel) }
                     )
                 }
             }
@@ -48,7 +49,7 @@ struct FMIncomeListView: View {
                 }
             })
             .sheet(isPresented: $shouldPresentAddIncomeView, content: {
-                FMAddIncomeview(shouldPresentAddIncomeView: $shouldPresentAddIncomeView).environmentObject(viewModel)
+                FMAddIncomeview(viewModel: viewModel, shouldPresentAddIncomeView: $shouldPresentAddIncomeView)
             })
         }
     }

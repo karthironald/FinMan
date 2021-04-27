@@ -9,15 +9,15 @@ import SwiftUI
 
 struct FMIncomeRow: View {
     
-    let income: FMIncome
+    @ObservedObject var incomeRowViewModel: FMIncomeRowViewModel
     
     var body: some View {
         HStack(alignment: .center) {
-            Text("\(income.value, specifier: "%0.2f")")
+            Text("\(incomeRowViewModel.income.value, specifier: "%0.2f")")
                 .font(.body)
                 .bold()
             Spacer()
-            Text("\(FMIncome.Frequency(rawValue: income.frequency)?.title ?? "")")
+            Text("\(FMIncome.Frequency(rawValue: incomeRowViewModel.income.frequency)?.title ?? "")")
                 .font(.footnote)
                 .foregroundColor(.secondary)
         }
@@ -26,6 +26,6 @@ struct FMIncomeRow: View {
 
 struct FMIncomeRow_Previews: PreviewProvider {
     static var previews: some View {
-        FMIncomeRow(income: FMIncome.sampleData.first ?? FMIncome(id: UUID().uuidString, value: 100, frequency: 0))
+        FMIncomeRow(incomeRowViewModel: FMIncomeRowViewModel(income: FMIncome.sampleData.first!))
     }
 }

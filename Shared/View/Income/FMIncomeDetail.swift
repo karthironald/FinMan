@@ -9,8 +9,7 @@ import SwiftUI
 
 struct FMIncomeDetail: View {
     
-    var income: FMIncome
-    @ObservedObject var viewModel: FMIncomeListViewModel
+    @ObservedObject var incomeRowViewModel: FMIncomeRowViewModel
     @State var shouldPresentEditScreen = false
     
     var body: some View {
@@ -19,19 +18,19 @@ struct FMIncomeDetail: View {
                 Text("Value")
                     .foregroundColor(.secondary)
                 Spacer()
-                Text("\(income.value, specifier: "%0.02f")")
+                Text("\(incomeRowViewModel.income.value, specifier: "%0.02f")")
             }
             HStack {
                 Text("Frequency")
                     .foregroundColor(.secondary)
                 Spacer()
-                Text(FMIncome.Frequency(rawValue: income.frequency)?.title ?? "")
+                Text(FMIncome.Frequency(rawValue: incomeRowViewModel.income.frequency)?.title ?? "")
             }
             HStack {
                 Text("Additional Comments")
                     .foregroundColor(.secondary)
                 Spacer()
-                Text(income.comments ?? "-")
+                Text(incomeRowViewModel.income.comments ?? "-")
             }
         }
         .navigationBarTitle("Income Details", displayMode: .inline)
@@ -42,13 +41,16 @@ struct FMIncomeDetail: View {
                 .resizable()
                 .font(.title)
         }))
+        .sheet(isPresented: $shouldPresentEditScreen) {
+            FMAddIncomeview(value: String(incomeRowViewModel.income.value), frequencyIndex: incomeRowViewModel.income.frequency, comments: incomeRowViewModel.income.comments ?? " ", incomeRowViewModel: incomeRowViewModel, shouldPresentAddIncomeView: $shouldPresentEditScreen)
+        }
     }
 }
 
 struct FMIncomeDetail_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            FMIncomeDetail(income: FMIncome.sampleData.first!, viewModel: FMIncomeListViewModel())
+            FMIncomeDetail(incomeRowViewModel: FMIncomeRowViewModel(income: FMIncome.sampleData.first!))
         }
     }
 }
