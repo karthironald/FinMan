@@ -13,9 +13,17 @@ struct FMIncomeRow: View {
     
     var body: some View {
         HStack(alignment: .center) {
-            Text("\(incomeRowViewModel.income.value, specifier: "%0.2f")")
-                .font(.body)
-                .bold()
+            VStack(alignment: .leading) {
+                Text("\(incomeRowViewModel.income.value, specifier: "%0.2f")")
+                    .font(.body)
+                    .bold()
+                HStack {
+                    Text("\(incomeRowViewModel.income.createdAt?.dateValue() ?? Date(), style: .date)")
+                    Text("\(incomeRowViewModel.income.createdAt?.dateValue() ?? Date(), style: .time)")
+                }
+                .font(.footnote)
+                .foregroundColor(.secondary)
+            }
             Spacer()
             Text("\(FMIncome.Frequency(rawValue: incomeRowViewModel.income.frequency)?.title ?? "")")
                 .font(.footnote)
