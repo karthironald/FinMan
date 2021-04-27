@@ -21,7 +21,7 @@ struct FMAddIncomeview: View {
             Form {
                 Section(header: Text("Value")) {
                     TextField("value", text: $value)
-                        .keyboardType(.numbersAndPunctuation)
+                        .keyboardType(.decimalPad)
                 }
                 Section(header: Text("Frequency")) {
                     Picker("Frequency", selection: $frequencyIndex) {

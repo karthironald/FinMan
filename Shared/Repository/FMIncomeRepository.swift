@@ -15,7 +15,7 @@ class FMIncomeRepository: ObservableObject {
     private let store = Firestore.firestore()
     
     var userId = ""
-    private let authenticationService = FMAuthenticationService()
+    private let authenticationService = FMAuthenticationService.shared
     private var cancellables: Set<AnyCancellable> = []
     
     @Published var incomes: [FMIncome] = []

@@ -9,12 +9,13 @@ import Firebase
 
 class FMAuthenticationService: ObservableObject {
     
+    static let shared = FMAuthenticationService()
     @Published var user: User?
     private var authStateDidChangeHandler: AuthStateDidChangeListenerHandle?
     
     // MARK: - Init Methods
     
-    init() {
+    private init() {
         addListener()
     }
     
