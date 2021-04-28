@@ -13,6 +13,10 @@ struct FMIncomeRow: View {
     
     var body: some View {
         HStack(alignment: .center) {
+            Image(systemName: "\(FMIncome.Source(rawValue: incomeRowViewModel.income.source)?.imageName ?? "")")
+                .resizable()
+                .frame(width: 25, height: 25)
+                .padding(.trailing, 5)
             VStack(alignment: .leading) {
                 Text("\(incomeRowViewModel.income.value, specifier: "%0.2f")")
                     .font(.body)
@@ -29,6 +33,7 @@ struct FMIncomeRow: View {
                 .font(.footnote)
                 .foregroundColor(.secondary)
         }
+        .padding([.top, .bottom], 5)
     }
 }
 

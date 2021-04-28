@@ -26,6 +26,7 @@ struct FMIncomeListView: View {
                             Text("\(viewModel.totalIncome(), specifier: "%0.2f")")
                                 .font(.largeTitle)
                                 .foregroundColor(.primary)
+                                .bold()
                         }
                     )
                     .redacted(reason: viewModel.isFetching ? .placeholder : [])
@@ -61,10 +62,13 @@ struct FMIncomeListView: View {
     
 }
 
-struct FMContentViewiOS_Previews: PreviewProvider {
+struct FMIncomeListView_Previews: PreviewProvider {
     
     static var previews: some View {
-        ContentView()
+        let viewModel = FMIncomeListViewModel()
+        let rowViewModel = FMIncomeRowViewModel(income: FMIncome.sampleData.first!)
+        viewModel.incomeRowViewModel = [rowViewModel]
+        return FMIncomeListView(viewModel: viewModel, shouldPresentAddIncomeView: false)
     }
     
 }

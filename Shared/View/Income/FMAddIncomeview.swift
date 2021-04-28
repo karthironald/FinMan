@@ -9,8 +9,9 @@ import SwiftUI
 
 struct FMAddIncomeview: View {
     @State var value: String = ""
-    @State var frequencyIndex: Int = 0
-    @State var comments: String = " "
+    @State var frequency: FMIncome.Frequency = .onetime
+    @State var source: FMIncome.Source = .earned
+    @State var comments: String = ""
     
     var viewModel: FMIncomeListViewModel? = nil
     var incomeRowViewModel: FMIncomeRowViewModel? = nil
@@ -19,21 +20,36 @@ struct FMAddIncomeview: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Value")) {
-                    TextField("value", text: $value)
+                Section {
+                    TextField("Enter amount value", text: $value)
                         .keyboardType(.decimalPad)
                 }
-                Section(header: Text("Frequency")) {
-                    Picker("Frequency", selection: $frequencyIndex) {
-                        ForEach(0..<FMIncome.Frequency.allCases.count, id: \.self) { freq in
-                            Text("\(FMIncome.Frequency.allCases[freq].title)")
+                Section(footer: Text("\(source.info)").padding(.leading)) {
+                    Picker("Frequency", selection: $frequency) {
+                        ForEach(FMIncome.Frequency.allCases, id: \.self) { freq in
+                            Text("\(freq.title)")
+                        }
+                    }
+                    .pickerStyle(DefaultPickerStyle())
+                    Picker("Source", selection: $source) {
+                        ForEach(FMIncome.Source.allCases, id: \.self) { source in
+                            Text("\(source.title)")
                         }
                     }
                     .pickerStyle(DefaultPickerStyle())
                 }
-                Section(header: Text("Additional comments")) {
-                    TextEditor(text: $comments)
-                        .frame(height: 100, alignment: .center)
+
+                Section {
+                    ZStack(alignment: .topLeading) {
+                        if comments.isEmpty {
+                            Text("Enter additional comments(if any)")
+                                .foregroundColor(.secondary)
+                                .opacity(0.5)
+                                .padding([.top, .leading], 5)
+                        }
+                        TextEditor(text: $comments)
+                            .frame(height: 100, alignment: .center)
+                    }
                 }
             }
             .navigationBarTitle(Text("Add Income"), displayMode: .inline)
@@ -48,13 +64,14 @@ struct FMAddIncomeview: View {
     
     func saveButtonTapped() {
         if incomeRowViewModel?.id == nil && viewModel != nil {
-            let income = FMIncome(value: Double(value) ?? 0.0, frequency: frequencyIndex, comments: comments)
+            let income = FMIncome(value: Double(value) ?? 0.0, frequency: frequency.rawValue, source: source.rawValue, comments: comments)
             viewModel?.addNew(income: income)
         } else {
             if let income = incomeRowViewModel?.income {
                 var updatedIncome = income
                 updatedIncome.value = Double(value) ?? 0.0
-                updatedIncome.frequency = frequencyIndex
+                updatedIncome.frequency = frequency.rawValue
+                updatedIncome.source = source.rawValue
                 updatedIncome.comments = comments
                 incomeRowViewModel?.update(income: updatedIncome)
             }

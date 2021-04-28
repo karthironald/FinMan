@@ -27,6 +27,12 @@ struct FMIncomeDetail: View {
                 Text(FMIncome.Frequency(rawValue: incomeRowViewModel.income.frequency)?.title ?? "")
             }
             HStack {
+                Text("Source")
+                    .foregroundColor(.secondary)
+                Spacer()
+                Text(FMIncome.Source(rawValue: incomeRowViewModel.income.source)?.title ?? "")
+            }
+            HStack {
                 Text("Additional Comments")
                     .foregroundColor(.secondary)
                 Spacer()
@@ -42,7 +48,7 @@ struct FMIncomeDetail: View {
                 .font(.title)
         }))
         .sheet(isPresented: $shouldPresentEditScreen) {
-            FMAddIncomeview(value: String(incomeRowViewModel.income.value), frequencyIndex: incomeRowViewModel.income.frequency, comments: incomeRowViewModel.income.comments ?? " ", incomeRowViewModel: incomeRowViewModel, shouldPresentAddIncomeView: $shouldPresentEditScreen)
+            FMAddIncomeview(value: String(incomeRowViewModel.income.value), frequency: FMIncome.Frequency(rawValue: incomeRowViewModel.income.frequency) ?? .onetime, source: FMIncome.Source(rawValue: incomeRowViewModel.income.source) ?? .earned, comments: incomeRowViewModel.income.comments ?? " ", incomeRowViewModel: incomeRowViewModel, shouldPresentAddIncomeView: $shouldPresentEditScreen)
         }
     }
 }
