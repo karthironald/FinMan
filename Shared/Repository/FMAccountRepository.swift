@@ -11,6 +11,7 @@ import Combine
 
 class FMAccountRepository: ObservableObject {
     
+    static let shared = FMAccountRepository()
     private let path: String = "Account"
     private let store = Firestore.firestore()
     
@@ -18,10 +19,11 @@ class FMAccountRepository: ObservableObject {
     private let authenticationService = FMAuthenticationService.shared
     private var cancellables: Set<AnyCancellable> = []
     
-    @Published var accounts: [FMAccount] = FMAccount.sampleData
+    @Published var accounts: [FMAccount] = []
+    @Published var selectedAccount: FMAccount?
     @Published var isFetching: Bool = false
     
-    init() {
+    private init() {
         authenticationService.$user
             .compactMap { user in
                 user?.uid
@@ -61,6 +63,9 @@ class FMAccountRepository: ObservableObject {
                 self.accounts = querySnapshot?.documents.compactMap({ document in
                     try? document.data(as: FMAccount.self)
                 }) ?? []
+                if selectedAccount == nil {
+                    self.selectedAccount = self.accounts.first
+                }
                 isFetching = false
             }
     }

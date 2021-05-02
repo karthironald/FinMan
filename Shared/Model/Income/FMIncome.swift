@@ -15,6 +15,7 @@ struct FMIncome: Identifiable, Codable {
     var source: String
     var comments: String? = nil
     var userId: String?
+    var accountId: String?
     @ServerTimestamp var createdAt: Timestamp?
 }
 

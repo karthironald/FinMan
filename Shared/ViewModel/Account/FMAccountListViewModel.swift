@@ -10,10 +10,11 @@ import Combine
 
 class FMAccountListViewModel: ObservableObject {
     
-    @Published var accountRepository = FMAccountRepository()
+    @Published var accountRepository = FMAccountRepository.shared
     @Published var accountRowViewModel: [FMAccountRowViewModel] = []
     @Published var isFetching: Bool = true
     
+    var selectedAccount: FMAccount?
     private var cancellables: Set<AnyCancellable> = []
     
     

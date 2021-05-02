@@ -12,7 +12,7 @@ class FMAccountRowViewModel: ObservableObject {
     
     @Published var account: FMAccount
     
-    private let accountRepository = FMAccountRepository()
+    private let accountRepository = FMAccountRepository.shared
     var id: String?
     private var cancellables: Set<AnyCancellable> = []
     

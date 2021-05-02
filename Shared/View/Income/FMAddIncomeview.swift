@@ -62,7 +62,7 @@ struct FMAddIncomeview: View {
         }
     }
     
-    func saveButtonTapped() {
+    private func saveButtonTapped() {
         if incomeRowViewModel?.id == nil && viewModel != nil {
             let income = FMIncome(value: Double(value) ?? 0.0, frequency: frequency.rawValue, source: source.rawValue, comments: comments)
             viewModel?.addNew(income: income)

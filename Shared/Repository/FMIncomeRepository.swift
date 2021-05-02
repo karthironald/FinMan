@@ -11,17 +11,20 @@ import Combine
 
 class FMIncomeRepository: ObservableObject {
     
+    static let shared = FMIncomeRepository()
     private let path: String = "Income"
     private let store = Firestore.firestore()
     
     var userId = ""
+    var accountId = ""
     private let authenticationService = FMAuthenticationService.shared
+    private let accountRepository = FMAccountRepository.shared
     private var cancellables: Set<AnyCancellable> = []
     
     @Published var incomes: [FMIncome] = []
     @Published var isFetching: Bool = false
     
-    init() {
+    private init() {
         authenticationService.$user
             .compactMap { user in
                 user?.uid
@@ -35,6 +38,20 @@ class FMIncomeRepository: ObservableObject {
                 self?.getIncomes()
             }
             .store(in: &cancellables)
+        accountRepository.$selectedAccount
+            .compactMap {
+                print("🟢 \($0?.name): \($0?.id)")
+                return $0?.id
+            }
+            .assign(to: \.accountId, on: self)
+            .store(in: &cancellables)
+        accountRepository.$selectedAccount
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                print("🟢🔴 \(self?.accountId)")
+                self?.getIncomes()
+            }
+            .store(in: &cancellables)
     }
     
     
@@ -42,6 +59,7 @@ class FMIncomeRepository: ObservableObject {
         do {
             var newIncome = income
             newIncome.userId = userId
+            newIncome.accountId = accountId
             _ = try store.collection(path).addDocument(from: newIncome)
         } catch {
             fatalError("Unable to add card: \(error.localizedDescription).")
@@ -53,15 +71,18 @@ class FMIncomeRepository: ObservableObject {
         store.collection(path)
             .order(by: "createdAt", descending: true)
             .whereField("userId", isEqualTo: userId)
-            .addSnapshotListener { [self] (querySnapshot, error) in
+            .whereField("accountId", isEqualTo: accountId)
+            .addSnapshotListener { [weak self] (querySnapshot, error) in
+                guard let self = self else { return }
                 if let error = error {
                     print(error.localizedDescription)
+                    self.isFetching = false
                     return
                 }
                 self.incomes = querySnapshot?.documents.compactMap({ document in
                     try? document.data(as: FMIncome.self)
                 }) ?? []
-                isFetching = false
+                self.isFetching = false
             }
     }
     

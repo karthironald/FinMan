@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct FMAccountRow: View {
+struct FMAccountRowView: View {
     
     @ObservedObject var accountRowViewModel: FMAccountRowViewModel
     @State private var shouldShowInfo = false
@@ -66,6 +66,6 @@ struct FMAccountRow: View {
 
 struct FMAccountRow_Previews: PreviewProvider {
     static var previews: some View {
-        FMAccountRow(accountRowViewModel: FMAccountRowViewModel(account: FMAccount.sampleData.first!))
+        FMAccountRowView(accountRowViewModel: FMAccountRowViewModel(account: FMAccount.sampleData.first!))
     }
 }

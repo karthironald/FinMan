@@ -11,12 +11,16 @@ import SwiftUI
 struct FMIncomeListView: View {
     
     @StateObject var viewModel = FMIncomeListViewModel()
+    @StateObject var accountViewModel = FMAccountListViewModel()
+    
     @State var shouldPresentAddIncomeView: Bool = false
+    @State var shouldPresentAddAccountView: Bool = false
+    @State var shouldPresentAddExpenseView: Bool = false
     
     var body: some View {
         NavigationView {
-            VStack {
-                FMAccountListView()
+            VStack(spacing: 0) {
+                FMAccountListView(viewModel: accountViewModel)
                     .frame(height: 150, alignment: .center)
                     .padding()
                 List {
@@ -51,12 +55,28 @@ struct FMIncomeListView: View {
             }
             .navigationTitle("Income")
             .toolbar(content: {
-                ToolbarItem {
+                Menu {
+                    Button(action: {
+                        shouldPresentAddAccountView.toggle()
+                    }, label: {
+                        Label("Add Account", systemImage: "person.badge.plus")
+                    })
+                    .sheet(isPresented: $shouldPresentAddAccountView, content: {
+                        FMAddAccountView(shouldPresentAddAccountView: $shouldPresentAddAccountView, viewModel: accountViewModel)
+                    })
                     Button(action: {
                         shouldPresentAddIncomeView.toggle()
                     }, label: {
-                        Label("Add Income", systemImage: "plus")
+                        Label("Add Income", systemImage: "bag.badge.plus")
                     })
+                    Button(action: {
+                        shouldPresentAddExpenseView.toggle()
+                    }, label: {
+                        Label("Add Expense", systemImage: "cart.badge.minus")
+                    })
+                } label: {
+                    Image(systemName: "plus")
+                        .font(.title)
                 }
             })
             .sheet(isPresented: $shouldPresentAddIncomeView, content: {

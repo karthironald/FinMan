@@ -10,7 +10,7 @@ import Combine
 
 class FMIncomeListViewModel: ObservableObject {
     
-    @Published var incomeRepository = FMIncomeRepository()
+    @Published var incomeRepository = FMIncomeRepository.shared
     @Published var incomeRowViewModel: [FMIncomeRowViewModel] = []
     @Published var isFetching: Bool = true
     

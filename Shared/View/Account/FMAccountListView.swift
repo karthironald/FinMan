@@ -9,18 +9,28 @@ import SwiftUI
 
 struct FMAccountListView: View {
     
-    @StateObject var viewModel = FMAccountListViewModel()
+    @ObservedObject var viewModel: FMAccountListViewModel
+    @State private var selectedTab = 0
     
     var body: some View {
         GeometryReader { proxy in
-            LazyHStack {
-                TabView {
-                    ForEach(viewModel.accountRowViewModel, id: \.id) { accountRowViewModel in
-                        FMAccountRow(accountRowViewModel: accountRowViewModel)
+            if viewModel.accountRowViewModel.count > 0 {
+                LazyHStack {
+                    TabView(selection: $selectedTab) {
+                        ForEach(0..<viewModel.accountRowViewModel.count, id: \.self) { index in
+                            FMAccountRowView(accountRowViewModel: viewModel.accountRowViewModel[index])
+                                .tag(index)
+                        }
                     }
+                    .frame(width: proxy.size.width, alignment: .center)
+                    .tabViewStyle(PageTabViewStyle())
+                    .onChange(of: selectedTab, perform: { value in
+                        FMAccountRepository.shared.selectedAccount = viewModel.accountRowViewModel[value].account
+                    })
                 }
-                .frame(width: proxy.size.width, alignment: .center)
-                .tabViewStyle(PageTabViewStyle())
+            } else {
+                FMAccountRowView(accountRowViewModel: FMAccountRowViewModel(account: FMAccount.sampleData.first!))
+                    .redacted(reason: .placeholder)
             }
         }
         .background(Color.pink)
