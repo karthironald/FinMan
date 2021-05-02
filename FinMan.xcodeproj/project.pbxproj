@@ -46,6 +46,8 @@
 		77C3AE0D263E49F900FAEF88 /* FMAccountRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3AE0B263E49F900FAEF88 /* FMAccountRowView.swift */; };
 		77C3AE13263E887900FAEF88 /* FMAddAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3AE12263E887800FAEF88 /* FMAddAccountView.swift */; };
 		77C3AE14263E887900FAEF88 /* FMAddAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3AE12263E887800FAEF88 /* FMAddAccountView.swift */; };
+		77C3AE3B263F069F00FAEF88 /* FMExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3AE3A263F069E00FAEF88 /* FMExtension.swift */; };
+		77C3AE3C263F069F00FAEF88 /* FMExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3AE3A263F069E00FAEF88 /* FMExtension.swift */; };
 		77C6AF57262C315900321F04 /* FMIncomeDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C6AF56262C315900321F04 /* FMIncomeDetail.swift */; };
 		77C6AF58262C315900321F04 /* FMIncomeDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C6AF56262C315900321F04 /* FMIncomeDetail.swift */; };
 		77E5C7B62637329B00F64A73 /* FMAuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E5C7B52637329B00F64A73 /* FMAuthenticationService.swift */; };
@@ -103,6 +105,7 @@
 		77C3AE00263E49ED00FAEF88 /* FMAccountListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMAccountListView.swift; sourceTree = "<group>"; };
 		77C3AE0B263E49F900FAEF88 /* FMAccountRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMAccountRowView.swift; sourceTree = "<group>"; };
 		77C3AE12263E887800FAEF88 /* FMAddAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMAddAccountView.swift; sourceTree = "<group>"; };
+		77C3AE3A263F069E00FAEF88 /* FMExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMExtension.swift; sourceTree = "<group>"; };
 		77C6AF56262C315900321F04 /* FMIncomeDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMIncomeDetail.swift; sourceTree = "<group>"; };
 		77E5C7B52637329B00F64A73 /* FMAuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMAuthenticationService.swift; sourceTree = "<group>"; };
 		77E5C80A2637363800F64A73 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -212,7 +215,6 @@
 			children = (
 				776155A126372479000382B4 /* Repository */,
 				77BE7198262C2A6C0017CDCE /* Helper */,
-				77E5C7B52637329B00F64A73 /* FMAuthenticationService.swift */,
 				77AB83CA261CC68C00F44999 /* Model */,
 				77AB83C7261CC68C00F44999 /* View */,
 				77AB83C8261CC68C00F44999 /* ViewModel */,
@@ -299,6 +301,8 @@
 		77BE7198262C2A6C0017CDCE /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				77E5C7B52637329B00F64A73 /* FMAuthenticationService.swift */,
+				77C3AE3A263F069E00FAEF88 /* FMExtension.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -576,6 +580,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77C3AE3B263F069F00FAEF88 /* FMExtension.swift in Sources */,
 				77C3AE01263E49ED00FAEF88 /* FMAccountListView.swift in Sources */,
 				77C6AF57262C315900321F04 /* FMIncomeDetail.swift in Sources */,
 				776155AB263724D2000382B4 /* FMIncomeRowViewModel.swift in Sources */,
@@ -602,6 +607,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77C3AE3C263F069F00FAEF88 /* FMExtension.swift in Sources */,
 				77C3AE02263E49ED00FAEF88 /* FMAccountListView.swift in Sources */,
 				77C6AF58262C315900321F04 /* FMIncomeDetail.swift in Sources */,
 				776155AC263724D2000382B4 /* FMIncomeRowViewModel.swift in Sources */,
