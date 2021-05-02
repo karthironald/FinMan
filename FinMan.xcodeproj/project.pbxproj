@@ -32,6 +32,18 @@
 		77AB83AC261CC1F600F44999 /* FinManApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77AB8382261CC1F500F44999 /* FinManApp.swift */; };
 		77AB83AF261CC1F600F44999 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 77AB8384261CC1F600F44999 /* Assets.xcassets */; };
 		77AB83B0261CC1F600F44999 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 77AB8384261CC1F600F44999 /* Assets.xcassets */; };
+		77C3ADC3263E3A7100FAEF88 /* FMAccountRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3ADC2263E3A7100FAEF88 /* FMAccountRepository.swift */; };
+		77C3ADC4263E3A7100FAEF88 /* FMAccountRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3ADC2263E3A7100FAEF88 /* FMAccountRepository.swift */; };
+		77C3ADCB263E3AB200FAEF88 /* FMAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3ADCA263E3AB200FAEF88 /* FMAccount.swift */; };
+		77C3ADCC263E3AB200FAEF88 /* FMAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3ADCA263E3AB200FAEF88 /* FMAccount.swift */; };
+		77C3ADD7263E3B5500FAEF88 /* FMAccountListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3ADD6263E3B5500FAEF88 /* FMAccountListViewModel.swift */; };
+		77C3ADD8263E3B5500FAEF88 /* FMAccountListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3ADD6263E3B5500FAEF88 /* FMAccountListViewModel.swift */; };
+		77C3ADE2263E3BAF00FAEF88 /* FMAccountRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3ADE1263E3BAF00FAEF88 /* FMAccountRowViewModel.swift */; };
+		77C3ADE3263E3BAF00FAEF88 /* FMAccountRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3ADE1263E3BAF00FAEF88 /* FMAccountRowViewModel.swift */; };
+		77C3AE01263E49ED00FAEF88 /* FMAccountListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3AE00263E49ED00FAEF88 /* FMAccountListView.swift */; };
+		77C3AE02263E49ED00FAEF88 /* FMAccountListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3AE00263E49ED00FAEF88 /* FMAccountListView.swift */; };
+		77C3AE0C263E49F900FAEF88 /* FMAccountRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3AE0B263E49F900FAEF88 /* FMAccountRow.swift */; };
+		77C3AE0D263E49F900FAEF88 /* FMAccountRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3AE0B263E49F900FAEF88 /* FMAccountRow.swift */; };
 		77C6AF57262C315900321F04 /* FMIncomeDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C6AF56262C315900321F04 /* FMIncomeDetail.swift */; };
 		77C6AF58262C315900321F04 /* FMIncomeDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C6AF56262C315900321F04 /* FMIncomeDetail.swift */; };
 		77E5C7B62637329B00F64A73 /* FMAuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E5C7B52637329B00F64A73 /* FMAuthenticationService.swift */; };
@@ -82,6 +94,12 @@
 		77AB83A4261CC1F600F44999 /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		77AB83A8261CC1F600F44999 /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		77AB83AA261CC1F600F44999 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		77C3ADC2263E3A7100FAEF88 /* FMAccountRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMAccountRepository.swift; sourceTree = "<group>"; };
+		77C3ADCA263E3AB200FAEF88 /* FMAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMAccount.swift; sourceTree = "<group>"; };
+		77C3ADD6263E3B5500FAEF88 /* FMAccountListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMAccountListViewModel.swift; sourceTree = "<group>"; };
+		77C3ADE1263E3BAF00FAEF88 /* FMAccountRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMAccountRowViewModel.swift; sourceTree = "<group>"; };
+		77C3AE00263E49ED00FAEF88 /* FMAccountListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMAccountListView.swift; sourceTree = "<group>"; };
+		77C3AE0B263E49F900FAEF88 /* FMAccountRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMAccountRow.swift; sourceTree = "<group>"; };
 		77C6AF56262C315900321F04 /* FMIncomeDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMIncomeDetail.swift; sourceTree = "<group>"; };
 		77E5C7B52637329B00F64A73 /* FMAuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMAuthenticationService.swift; sourceTree = "<group>"; };
 		77E5C80A2637363800F64A73 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -129,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				776155B126372500000382B4 /* FMIncomeRepository.swift */,
+				77C3ADC2263E3A7100FAEF88 /* FMAccountRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -249,6 +268,7 @@
 		77AB83C7261CC68C00F44999 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				77C3ADFF263E49DE00FAEF88 /* Account */,
 				77A22F222621A8C900AE2F4F /* Common */,
 				77A22F242621A8C900AE2F4F /* Income */,
 			);
@@ -258,6 +278,7 @@
 		77AB83C8261CC68C00F44999 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				77C3ADD5263E3B3F00FAEF88 /* Account */,
 				77A22F472621A92000AE2F4F /* Income */,
 			);
 			path = ViewModel;
@@ -266,6 +287,7 @@
 		77AB83CA261CC68C00F44999 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				77C3ADC9263E3AAA00FAEF88 /* Account */,
 				77A22F382621A8F200AE2F4F /* Income */,
 			);
 			path = Model;
@@ -276,6 +298,32 @@
 			children = (
 			);
 			path = Helper;
+			sourceTree = "<group>";
+		};
+		77C3ADC9263E3AAA00FAEF88 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				77C3ADCA263E3AB200FAEF88 /* FMAccount.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
+		77C3ADD5263E3B3F00FAEF88 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				77C3ADD6263E3B5500FAEF88 /* FMAccountListViewModel.swift */,
+				77C3ADE1263E3BAF00FAEF88 /* FMAccountRowViewModel.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
+		77C3ADFF263E49DE00FAEF88 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				77C3AE00263E49ED00FAEF88 /* FMAccountListView.swift */,
+				77C3AE0B263E49F900FAEF88 /* FMAccountRow.swift */,
+			);
+			path = Account;
 			sourceTree = "<group>";
 		};
 		C0C2EDD35A43BB80C408C4EC /* Pods */ = {
@@ -524,17 +572,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77C3AE01263E49ED00FAEF88 /* FMAccountListView.swift in Sources */,
 				77C6AF57262C315900321F04 /* FMIncomeDetail.swift in Sources */,
 				776155AB263724D2000382B4 /* FMIncomeRowViewModel.swift in Sources */,
 				77A22F3A2621A8F200AE2F4F /* FMIncome.swift in Sources */,
 				77A22F272621A8C900AE2F4F /* ContentView.swift in Sources */,
 				7759FB152622083900F8520B /* FMAddIncomeview.swift in Sources */,
 				77A22F292621A8C900AE2F4F /* FMIncomeListView.swift in Sources */,
+				77C3AE0C263E49F900FAEF88 /* FMAccountRow.swift in Sources */,
+				77C3ADC3263E3A7100FAEF88 /* FMAccountRepository.swift in Sources */,
 				77E5C7B62637329B00F64A73 /* FMAuthenticationService.swift in Sources */,
 				77A22F492621A92000AE2F4F /* FMIncomeListViewModel.swift in Sources */,
 				776155B226372500000382B4 /* FMIncomeRepository.swift in Sources */,
+				77C3ADE2263E3BAF00FAEF88 /* FMAccountRowViewModel.swift in Sources */,
 				77A22F2B2621A8C900AE2F4F /* FMIncomeRow.swift in Sources */,
 				77A22F322621A8E400AE2F4F /* FMTabView.swift in Sources */,
+				77C3ADD7263E3B5500FAEF88 /* FMAccountListViewModel.swift in Sources */,
+				77C3ADCB263E3AB200FAEF88 /* FMAccount.swift in Sources */,
 				77AB83AB261CC1F600F44999 /* FinManApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -543,17 +597,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77C3AE02263E49ED00FAEF88 /* FMAccountListView.swift in Sources */,
 				77C6AF58262C315900321F04 /* FMIncomeDetail.swift in Sources */,
 				776155AC263724D2000382B4 /* FMIncomeRowViewModel.swift in Sources */,
 				77A22F3B2621A8F200AE2F4F /* FMIncome.swift in Sources */,
 				77A22F282621A8C900AE2F4F /* ContentView.swift in Sources */,
 				7759FB162622083900F8520B /* FMAddIncomeview.swift in Sources */,
 				77A22F2A2621A8C900AE2F4F /* FMIncomeListView.swift in Sources */,
+				77C3AE0D263E49F900FAEF88 /* FMAccountRow.swift in Sources */,
+				77C3ADC4263E3A7100FAEF88 /* FMAccountRepository.swift in Sources */,
 				77E5C7B72637329B00F64A73 /* FMAuthenticationService.swift in Sources */,
 				77A22F4A2621A92000AE2F4F /* FMIncomeListViewModel.swift in Sources */,
 				776155B326372500000382B4 /* FMIncomeRepository.swift in Sources */,
+				77C3ADE3263E3BAF00FAEF88 /* FMAccountRowViewModel.swift in Sources */,
 				77A22F332621A8E400AE2F4F /* FMTabView.swift in Sources */,
 				77A22F2C2621A8C900AE2F4F /* FMIncomeRow.swift in Sources */,
+				77C3ADD8263E3B5500FAEF88 /* FMAccountListViewModel.swift in Sources */,
+				77C3ADCC263E3AB200FAEF88 /* FMAccount.swift in Sources */,
 				77AB83AC261CC1F600F44999 /* FinManApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

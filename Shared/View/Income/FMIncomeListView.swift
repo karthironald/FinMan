@@ -15,36 +15,41 @@ struct FMIncomeListView: View {
     
     var body: some View {
         NavigationView {
-            List {
-                RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.clear)
-                    .frame(height: 100, alignment: .center)
-                    .overlay(
-                        VStack {
-                            Text("Total Income")
-                                .foregroundColor(.secondary)
-                            Text("\(viewModel.totalIncome(), specifier: "%0.2f")")
-                                .font(.largeTitle)
-                                .foregroundColor(.primary)
-                                .bold()
+            VStack {
+                FMAccountListView()
+                    .frame(height: 150, alignment: .center)
+                    .padding()
+                List {
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.clear)
+                        .frame(height: 100, alignment: .center)
+                        .overlay(
+                            VStack {
+                                Text("Total Income")
+                                    .foregroundColor(.secondary)
+                                Text("\(viewModel.totalIncome(), specifier: "%0.2f")")
+                                    .font(.largeTitle)
+                                    .foregroundColor(.primary)
+                                    .bold()
+                            }
+                        )
+                        .redacted(reason: viewModel.isFetching ? .placeholder : [])
+                    ForEach(viewModel.incomeRowViewModel, id: \.id) { incomeRowViewModel in
+                        NavigationLink(
+                            destination: FMIncomeDetail(incomeRowViewModel: incomeRowViewModel),
+                            label: { FMIncomeRow(incomeRowViewModel: incomeRowViewModel) }
+                        )
+                    }
+                    .onDelete { (indexSet) in
+                        if let index = indexSet.first {
+                            viewModel.incomeRowViewModel[index].delete()
                         }
-                    )
-                    .redacted(reason: viewModel.isFetching ? .placeholder : [])
-                ForEach(viewModel.incomeRowViewModel, id: \.id) { incomeRowViewModel in
-                    NavigationLink(
-                        destination: FMIncomeDetail(incomeRowViewModel: incomeRowViewModel),
-                        label: { FMIncomeRow(incomeRowViewModel: incomeRowViewModel) }
-                    )
-                }
-                .onDelete { (indexSet) in
-                    if let index = indexSet.first {
-                        viewModel.incomeRowViewModel[index].delete()
                     }
                 }
+                .frame(minWidth: 250)
+                .listStyle(InsetGroupedListStyle())
             }
-            .frame(minWidth: 250)
             .navigationTitle("Income")
-            .listStyle(InsetGroupedListStyle())
             .toolbar(content: {
                 ToolbarItem {
                     Button(action: {

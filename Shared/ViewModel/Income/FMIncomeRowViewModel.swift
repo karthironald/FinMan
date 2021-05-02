@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+
 class FMIncomeRowViewModel: ObservableObject {
     
     @Published var income: FMIncome
