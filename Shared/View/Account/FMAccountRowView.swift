@@ -24,7 +24,7 @@ struct FMAccountRowView: View {
                     Spacer()
                     VStack {
                         Text("Income")
-                        Text("\(accountRowViewModel.account.income, specifier: "%0.2f")")
+                        Text("\(accountRowViewModel.totalIncomeValue, specifier: "%0.2f")")
                             .font(.title2)
                             .bold()
                     }

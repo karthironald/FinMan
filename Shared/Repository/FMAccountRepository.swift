@@ -57,6 +57,7 @@ class FMAccountRepository: ObservableObject {
             .whereField("userId", isEqualTo: userId)
             .addSnapshotListener { [self] (querySnapshot, error) in
                 if let error = error {
+                    isFetching = false
                     print(error.localizedDescription)
                     return
                 }

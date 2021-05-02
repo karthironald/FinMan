@@ -24,20 +24,6 @@ struct FMIncomeListView: View {
                     .frame(height: 150, alignment: .center)
                     .padding()
                 List {
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(Color.clear)
-                        .frame(height: 100, alignment: .center)
-                        .overlay(
-                            VStack {
-                                Text("Total Income")
-                                    .foregroundColor(.secondary)
-                                Text("\(viewModel.totalIncome(), specifier: "%0.2f")")
-                                    .font(.largeTitle)
-                                    .foregroundColor(.primary)
-                                    .bold()
-                            }
-                        )
-                        .redacted(reason: viewModel.isFetching ? .placeholder : [])
                     ForEach(viewModel.incomeRowViewModel, id: \.id) { incomeRowViewModel in
                         NavigationLink(
                             destination: FMIncomeDetail(incomeRowViewModel: incomeRowViewModel),
@@ -50,8 +36,11 @@ struct FMIncomeListView: View {
                         }
                     }
                 }
+                .padding(0)
                 .frame(minWidth: 250)
                 .listStyle(InsetGroupedListStyle())
+                EmptyView()
+                    
             }
             .navigationTitle("Income")
             .toolbar(content: {
@@ -60,9 +49,6 @@ struct FMIncomeListView: View {
                         shouldPresentAddAccountView.toggle()
                     }, label: {
                         Label("Add Account", systemImage: "person.badge.plus")
-                    })
-                    .sheet(isPresented: $shouldPresentAddAccountView, content: {
-                        FMAddAccountView(shouldPresentAddAccountView: $shouldPresentAddAccountView, viewModel: accountViewModel)
                     })
                     Button(action: {
                         shouldPresentAddIncomeView.toggle()
@@ -78,6 +64,9 @@ struct FMIncomeListView: View {
                     Image(systemName: "plus")
                         .font(.title)
                 }
+                .sheet(isPresented: $shouldPresentAddAccountView, content: {
+                    FMAddAccountView(shouldPresentAddAccountView: $shouldPresentAddAccountView, viewModel: accountViewModel)
+                })
             })
             .sheet(isPresented: $shouldPresentAddIncomeView, content: {
                 FMAddIncomeview(viewModel: viewModel, shouldPresentAddIncomeView: $shouldPresentAddIncomeView)

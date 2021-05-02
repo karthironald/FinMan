@@ -29,11 +29,18 @@ struct FMAccountListView: View {
                     })
                 }
             } else {
-                FMAccountRowView(accountRowViewModel: FMAccountRowViewModel(account: FMAccount.sampleData.first!))
-                    .redacted(reason: .placeholder)
+                if viewModel.isFetching {
+                    Text("Loading..")
+                        .foregroundColor(.white)
+                        .frame(width: proxy.size.width, height: proxy.size.height, alignment: .center)
+                } else {
+                    Text("Seems, no account has been added. Add an Account to proceed further")
+                        .foregroundColor(.white)
+                        .frame(width: proxy.size.width, height: proxy.size.height, alignment: .center)
+                }
             }
         }
-        .background(Color.pink)
+        .background(Color.orange.opacity(0.1))
         .cornerRadius(10)
     }
 }
