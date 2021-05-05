@@ -56,15 +56,20 @@ class FMAccountRepository: ObservableObject {
             .order(by: "createdAt", descending: true)
             .whereField("userId", isEqualTo: userId)
             .addSnapshotListener { [self] (querySnapshot, error) in
+                
+                let updatedAccounts = querySnapshot?.documentChanges ?? []
+
                 if let error = error {
                     isFetching = false
                     print(error.localizedDescription)
                     return
                 }
+                
+                let shouldSelectFirstAccount = (updatedAccounts.count == 1 && updatedAccounts.first!.type == .added)
                 self.accounts = querySnapshot?.documents.compactMap({ document in
                     try? document.data(as: FMAccount.self)
                 }) ?? []
-                if selectedAccount == nil {
+                if selectedAccount == nil || shouldSelectFirstAccount {
                     self.selectedAccount = self.accounts.first
                 }
                 isFetching = false

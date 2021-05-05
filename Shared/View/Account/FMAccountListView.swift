@@ -31,16 +31,14 @@ struct FMAccountListView: View {
             } else {
                 if viewModel.isFetching {
                     Text("Loading..")
-                        .foregroundColor(.white)
                         .frame(width: proxy.size.width, height: proxy.size.height, alignment: .center)
                 } else {
                     Text("Seems, no account has been added. Add an Account to proceed further")
-                        .foregroundColor(.white)
                         .frame(width: proxy.size.width, height: proxy.size.height, alignment: .center)
                 }
             }
         }
-        .background(Color.orange.opacity(0.1))
+        .background(Color.green)
         .cornerRadius(10)
     }
 }

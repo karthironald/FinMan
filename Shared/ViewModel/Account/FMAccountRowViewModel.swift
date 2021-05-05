@@ -11,7 +11,6 @@ import Combine
 class FMAccountRowViewModel: ObservableObject {
     
     @Published var account: FMAccount
-    @Published var totalIncomeValue: Double = 0.0
     
     private let accountRepository = FMAccountRepository.shared
     private let incomeRepository = FMIncomeRepository.shared
@@ -26,12 +25,6 @@ class FMAccountRowViewModel: ObservableObject {
             .compactMap { $0.id }
             .assign(to: \.id, on: self)
             .store(in: &cancellables)
-        incomeRepository.$incomes
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                self?.totalIncome()
-            }
-            .store(in: &cancellables)
     }
     
     func update(account: FMAccount) {
@@ -43,8 +36,5 @@ class FMAccountRowViewModel: ObservableObject {
         accountRepository.delete(account: account)
     }
     
-    func totalIncome() {
-        totalIncomeValue = FMIncomeRepository.shared.incomes.map{ $0.value }.reduce(0.0, +)
-    }
 }
 

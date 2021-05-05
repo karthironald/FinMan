@@ -33,6 +33,7 @@ class FMIncomeRepository: ObservableObject {
             .store(in: &cancellables)
         
         authenticationService.$user
+            .debounce(for: 0.85, scheduler: RunLoop.main) // Delay the network request
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.getIncomes()
@@ -46,6 +47,7 @@ class FMIncomeRepository: ObservableObject {
             .assign(to: \.accountId, on: self)
             .store(in: &cancellables)
         accountRepository.$selectedAccount
+            .debounce(for: 0.85, scheduler: RunLoop.main) // Delay the network request
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 print("🟢🔴 \(self?.accountId)")
@@ -60,7 +62,22 @@ class FMIncomeRepository: ObservableObject {
             var newIncome = income
             newIncome.userId = userId
             newIncome.accountId = accountId
-            _ = try store.collection(path).addDocument(from: newIncome)
+            
+            let batch = store.batch()
+            
+            let accountRef = store.collection("Account").document(accountRepository.selectedAccount?.id ?? "")
+            batch.updateData(["income": (accountRepository.selectedAccount?.income ?? 0.0) + (income.value)], forDocument: accountRef)
+            
+            let newIncomeRef = store.collection(path).document()
+            try batch.setData(from: newIncome, forDocument: newIncomeRef)
+            
+            batch.commit { error in
+                if let error = error {
+                    print(error)
+                } else {
+                    print("Success")
+                }
+            }
         } catch {
             fatalError("Unable to add card: \(error.localizedDescription).")
         }
@@ -86,10 +103,31 @@ class FMIncomeRepository: ObservableObject {
             }
     }
     
-    func update(income: FMIncome) {
+    func update(income: FMIncome, oldIncome: FMIncome) {
         guard let id = income.id else { return }
         do {
-            try store.collection(path).document(id).setData(from: income)
+            let batch = store.batch()
+            
+            let accountRef = store.collection("Account").document(accountRepository.selectedAccount?.id ?? "")
+            
+            let accountIncome = accountRepository.selectedAccount?.income ?? 0.0
+            let oldIncomeValue = oldIncome.value
+            let newIncomeValue = income.value
+            
+            let newAccountIncome = (accountIncome - oldIncomeValue) + newIncomeValue
+            
+            batch.updateData(["income": newAccountIncome], forDocument: accountRef)
+            
+            let updateIncomeRef = store.collection(path).document(id)
+            try batch.setData(from: income, forDocument: updateIncomeRef)
+            
+            batch.commit { error in
+                if let error = error {
+                    print(error)
+                } else {
+                    print("Success")
+                }
+            }
         } catch {
             print("Unable to update card")
         }
@@ -97,11 +135,27 @@ class FMIncomeRepository: ObservableObject {
     
     func delete(income: FMIncome) {
         guard let id = income.id else { return }
-        store.collection(path).document(id).delete(completion: { (error) in
+        
+        let batch = store.batch()
+        
+        let accountRef = store.collection("Account").document(accountRepository.selectedAccount?.id ?? "")
+        
+        let accountIncome = accountRepository.selectedAccount?.income ?? 0.0
+        let incomeValue = income.value
+        let newAccountIncome = accountIncome - incomeValue
+        
+        batch.updateData(["income": newAccountIncome], forDocument: accountRef)
+        
+        let deleteIncomeDocRef = store.collection(path).document(id)
+        batch.deleteDocument(deleteIncomeDocRef)
+        
+        batch.commit { error in
             if let error = error {
-                print(error.localizedDescription)
+                print(error)
+            } else {
+                print("Success")
             }
-        })
+        }
     }
     
 }

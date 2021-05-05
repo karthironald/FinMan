@@ -26,8 +26,8 @@ class FMIncomeRowViewModel: ObservableObject {
     }
     
     func update(income: FMIncome) {
+        incomeRepository.update(income: income, oldIncome: self.income)
         self.income = income
-        incomeRepository.update(income: income)
     }
     
     func delete() {
