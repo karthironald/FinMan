@@ -31,9 +31,13 @@ struct FMAccountListView: View {
             } else {
                 if viewModel.isFetching {
                     Text("Loading..")
+                        .multilineTextAlignment(.center)
+                        .padding()
                         .frame(width: proxy.size.width, height: proxy.size.height, alignment: .center)
                 } else {
                     Text("Seems, no account has been added. Add an Account to proceed further")
+                        .multilineTextAlignment(.center)
+                        .padding()
                         .frame(width: proxy.size.width, height: proxy.size.height, alignment: .center)
                 }
             }
