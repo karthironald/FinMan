@@ -71,6 +71,10 @@ class FMAccountRepository: ObservableObject {
                 }) ?? []
                 if selectedAccount == nil || shouldSelectFirstAccount {
                     self.selectedAccount = self.accounts.first
+                } else {
+                    if let account = self.accounts.filter({ $0.id == selectedAccount?.id }).first {
+                        self.selectedAccount = account
+                    }
                 }
                 isFetching = false
             }
