@@ -15,35 +15,29 @@ struct FMAccountListView: View {
     var body: some View {
         GeometryReader { proxy in
             if viewModel.accountRowViewModel.count > 0 {
-                LazyHStack {
-                    TabView(selection: $selectedTab) {
-                        ForEach(0..<viewModel.accountRowViewModel.count, id: \.self) { index in
-                            FMAccountRowView(accountRowViewModel: viewModel.accountRowViewModel[index])
-                                .tag(index)
-                        }
+                TabView(selection: $selectedTab) {
+                    ForEach(0..<viewModel.accountRowViewModel.count, id: \.self) { index in
+                        FMAccountRowView(accountRowViewModel: viewModel.accountRowViewModel[index])
+                            .tag(index)
                     }
-                    .frame(width: proxy.size.width, alignment: .center)
-                    .tabViewStyle(PageTabViewStyle())
-                    .onChange(of: selectedTab, perform: { value in
-                        FMAccountRepository.shared.selectedAccount = viewModel.accountRowViewModel[value].account
-                    })
                 }
+                .onAppear(perform: {
+                    UIScrollView.appearance().bounces = false // To restrict the vertical scroll of the tabView
+                })
+                .frame(width: proxy.size.width, height: 165, alignment: .center) // Provided height to adjust the paging indicator position
+                .tabViewStyle(PageTabViewStyle())
+                .onChange(of: selectedTab, perform: { value in
+                    FMAccountRepository.shared.selectedAccount = viewModel.accountRowViewModel[value].account
+                })
             } else {
-                if viewModel.isFetching {
-                    Text("Loading..")
-                        .multilineTextAlignment(.center)
-                        .padding()
-                        .frame(width: proxy.size.width, height: proxy.size.height, alignment: .center)
-                } else {
-                    Text("Seems, no account has been added. Add an Account to proceed further")
-                        .multilineTextAlignment(.center)
-                        .padding()
-                        .frame(width: proxy.size.width, height: proxy.size.height, alignment: .center)
-                }
+                Text(viewModel.isFetching ? "Loading..." : "Seems, no account has been added. Add an Account to proceed further")
+                    .multilineTextAlignment(.center)
+                    .padding()
+                    .frame(width: proxy.size.width, height: proxy.size.height, alignment: .center)
             }
         }
-        .background(Color.green)
-        .cornerRadius(10)
+        .background(Color.secondary.opacity(0.3))
+        .cornerRadius(20)
     }
 }
 
