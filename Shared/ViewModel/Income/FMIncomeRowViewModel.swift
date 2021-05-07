@@ -8,13 +8,16 @@
 import Foundation
 import Combine
 
-class FMIncomeRowViewModel: ObservableObject {
+class FMIncomeRowViewModel: ObservableObject, Dated {
     
     @Published var income: FMIncome
     
     private let incomeRepository = FMIncomeRepository.shared
     var id: String?
     private var cancellables: Set<AnyCancellable> = []
+    var createdDate: Date {
+        income.createdAt?.dateValue() ?? Date()
+    }
     
     init(income: FMIncome) {
         self.income = income
@@ -34,5 +37,10 @@ class FMIncomeRowViewModel: ObservableObject {
         incomeRepository.delete(income: income)
     }
     
+    func imageName() -> String {
+        let date = income.createdAt?.dateValue() ?? Date()
+        let components = Calendar.current.dateComponents([.day], from: date)
+        return String(components.day ?? 0)
+    }
     
 }

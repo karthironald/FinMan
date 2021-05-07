@@ -41,7 +41,7 @@ class FMIncomeRepository: ObservableObject {
             .store(in: &cancellables)
         accountRepository.$selectedAccount
             .compactMap {
-                print("🟢 \($0?.name): \($0?.id)")
+                print("🟢 \(String(describing: $0?.name)): \(String(describing: $0?.id))")
                 return $0?.id
             }
             .assign(to: \.accountId, on: self)
@@ -50,7 +50,7 @@ class FMIncomeRepository: ObservableObject {
             .debounce(for: 0.85, scheduler: RunLoop.main) // Delay the network request
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                print("🟢🔴 \(self?.accountId)")
+                print("🟢🔴 \(String(describing: self?.accountId))")
                 self?.getIncomes()
             }
             .store(in: &cancellables)

@@ -12,13 +12,18 @@ protocol Dated {
 }
 
 extension Array where Element: Dated {
-    func groupedBy(dateComponents: Set<Calendar.Component>) -> [Date: [Element]] {
-        let initial: [Date: [Element]] = [:]
+    func groupedBy(dateComponents: Set<Calendar.Component>) -> [String: [Element]] {
+        let initial: [String: [Element]] = [:]
         let groupedByDateComponents = reduce(into: initial) { acc, cur in
             let components = Calendar.current.dateComponents(dateComponents, from: cur.createdDate)
             let date = Calendar.current.date(from: components)!
-            let existing = acc[date] ?? []
-            acc[date] = existing + [cur]
+            
+            let df = DateFormatter()
+            df.dateFormat = "MMM yyyy"
+            
+            let dString = df.string(from: date)
+            let existing = acc[dString] ?? []
+            acc[dString] = existing + [cur]
         }
         
         return groupedByDateComponents

@@ -12,17 +12,19 @@ class FMIncomeListViewModel: ObservableObject {
     
     @Published var incomeRepository = FMIncomeRepository.shared
     @Published var incomeRowViewModel: [FMIncomeRowViewModel] = []
+    @Published var groupedIncomeRowViewModel: [String: [FMIncomeRowViewModel]] = [:]
     @Published var isFetching: Bool = true
     
     private var cancellables: Set<AnyCancellable> = []
     
     
     init() {
-        incomeRepository.$incomes.map { income in
-            income.map(FMIncomeRowViewModel.init)
-        }
-        .assign(to: \.incomeRowViewModel, on: self)
-        .store(in: &cancellables)
+        incomeRepository.$incomes
+            .map { income in
+                income.map(FMIncomeRowViewModel.init)
+            }
+            .assign(to: \.incomeRowViewModel, on: self)
+            .store(in: &cancellables)
         
         incomeRepository.$isFetching
             .map {
@@ -30,6 +32,14 @@ class FMIncomeListViewModel: ObservableObject {
                 return $0
             }
             .assign(to: \.isFetching, on: self)
+            .store(in: &cancellables)
+        $incomeRowViewModel
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                if let groupdIncome = self?.incomeRowViewModel.groupedBy(dateComponents: [.month, .year]) {
+                    self?.groupedIncomeRowViewModel = groupdIncome
+                }
+            }
             .store(in: &cancellables)
     }
     

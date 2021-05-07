@@ -24,21 +24,24 @@ struct FMIncomeListView: View {
                     .frame(height: 150, alignment: .center)
                     .padding()
                 List {
-                    ForEach(viewModel.incomeRowViewModel, id: \.id) { incomeRowViewModel in
-                        NavigationLink(
-                            destination: FMIncomeDetail(incomeRowViewModel: incomeRowViewModel),
-                            label: { FMIncomeRow(incomeRowViewModel: incomeRowViewModel) }
-                        )
-                    }
-                    .onDelete { (indexSet) in
-                        if let index = indexSet.first {
-                            viewModel.incomeRowViewModel[index].delete()
+                    ForEach(Array(viewModel.groupedIncomeRowViewModel.keys.sorted(by: >)), id: \.self) { (key) in
+                        Section(header: Text("\(key)")) {
+                            ForEach(viewModel.groupedIncomeRowViewModel[key]!, id: \.id) { incomeRowViewModel in
+                                NavigationLink(
+                                    destination: FMIncomeDetail(incomeRowViewModel: incomeRowViewModel),
+                                    label: { FMIncomeRow(incomeRowViewModel: incomeRowViewModel) }
+                                )
+                            }
+                            .onDelete { (indexSet) in
+                                if let index = indexSet.first {
+                                    viewModel.incomeRowViewModel[index].delete()
+                                }
+                            }
                         }
                     }
                 }
                 .padding(0)
                 .frame(minWidth: 250)
-                .listStyle(InsetGroupedListStyle())
             }
             .navigationTitle("Income")
             .toolbar(content: {

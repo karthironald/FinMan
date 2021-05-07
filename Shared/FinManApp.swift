@@ -19,6 +19,7 @@ struct FinManApp: App {
     var body: some Scene {
         WindowGroup {
             FMTabView()
+                .accentColor(.orange)
         }
     }
 }

@@ -13,27 +13,25 @@ struct FMIncomeRow: View {
     
     var body: some View {
         HStack(alignment: .center) {
-            Image(systemName: "\(FMIncome.Source(rawValue: incomeRowViewModel.income.source)?.imageName ?? "")")
+            Image(systemName: "\(incomeRowViewModel.imageName()).square.fill")
                 .resizable()
-                .frame(width: 25, height: 25)
+                .frame(width: 30, height: 30)
                 .padding(.trailing, 5)
-            VStack(alignment: .leading) {
+                .foregroundColor(.secondary)
+                .opacity(0.5)
+            VStack(alignment: .leading, spacing: 5) {
                 Text("\(incomeRowViewModel.income.value, specifier: "%0.2f")")
                     .font(.body)
                     .bold()
-                HStack {
-                    Text("\(incomeRowViewModel.income.createdAt?.dateValue() ?? Date(), style: .date)")
-                    Text("\(incomeRowViewModel.income.createdAt?.dateValue() ?? Date(), style: .time)")
-                }
-                .font(.footnote)
-                .foregroundColor(.secondary)
+                Text("\(incomeRowViewModel.income.createdAt?.dateValue() ?? Date(), style: .time)")
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
             }
             Spacer()
             Text("\(FMIncome.Frequency(rawValue: incomeRowViewModel.income.frequency)?.title ?? "")")
                 .font(.footnote)
                 .foregroundColor(.secondary)
         }
-        .padding([.top, .bottom], 5)
     }
 }
 
