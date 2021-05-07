@@ -19,7 +19,7 @@ struct FMIncomeRow: View {
                 .padding(.trailing, 5)
                 .foregroundColor(.secondary)
                 .opacity(0.5)
-            VStack(alignment: .leading, spacing: 5) {
+            VStack(alignment: .leading, spacing: 2) {
                 Text("\(incomeRowViewModel.income.value, specifier: "%0.2f")")
                     .font(.body)
                     .bold()

@@ -42,6 +42,7 @@ struct FMIncomeListView: View {
                 }
                 .padding(0)
                 .frame(minWidth: 250)
+                .listStyle(InsetGroupedListStyle())
             }
             .navigationTitle("Income")
             .toolbar(content: {
