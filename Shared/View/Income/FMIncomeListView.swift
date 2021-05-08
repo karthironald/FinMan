@@ -29,7 +29,14 @@ struct FMIncomeListView: View {
                             ForEach(viewModel.groupedIncomeRowViewModel[key]!, id: \.id) { incomeRowViewModel in
                                 NavigationLink(
                                     destination: FMIncomeDetail(incomeRowViewModel: incomeRowViewModel),
-                                    label: { FMIncomeRow(incomeRowViewModel: incomeRowViewModel) }
+                                    label: {
+                                        FMIncomeRow(incomeRowViewModel: incomeRowViewModel)
+                                            .onAppear {
+                                                if incomeRowViewModel == viewModel.incomeRowViewModel.last {
+                                                    viewModel.fetchNextBadge()
+                                                }
+                                            }
+                                    }
                                 )
                             }
                             .onDelete { (indexSet) in

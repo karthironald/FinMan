@@ -14,10 +14,11 @@ class FMIncomeListViewModel: ObservableObject {
     @Published var incomeRowViewModel: [FMIncomeRowViewModel] = []
     @Published var groupedIncomeRowViewModel: [String: [FMIncomeRowViewModel]] = [:]
     @Published var isFetching: Bool = true
+    @Published var isPaginating: Bool = false
     
     private var cancellables: Set<AnyCancellable> = []
-    
-    
+     
+
     init() {
         incomeRepository.$incomes
             .map { income in
@@ -32,6 +33,10 @@ class FMIncomeListViewModel: ObservableObject {
                 return $0
             }
             .assign(to: \.isFetching, on: self)
+            .store(in: &cancellables)
+        incomeRepository.$isPaginating
+            .map { $0 }
+            .assign(to: \.isPaginating, on: self)
             .store(in: &cancellables)
         $incomeRowViewModel
             .receive(on: DispatchQueue.main)
@@ -51,6 +56,10 @@ class FMIncomeListViewModel: ObservableObject {
     
     func totalIncome() -> Double {
         incomeRepository.incomes.map{ $0.value }.reduce(0.0, +)
+    }
+    
+    func fetchNextBadge() {
+        incomeRepository.fetchNextPage()
     }
     
 }

@@ -9,6 +9,8 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import Combine
 
+let kPaginationCount = 5
+
 class FMIncomeRepository: ObservableObject {
     
     static let shared = FMIncomeRepository()
@@ -23,6 +25,10 @@ class FMIncomeRepository: ObservableObject {
     
     @Published var incomes: [FMIncome] = []
     @Published var isFetching: Bool = false
+    @Published var isPaginating: Bool = false
+    
+    var lastDocument: DocumentSnapshot?
+    var incomeQuery: Query?
     
     private init() {
         authenticationService.$user
@@ -85,22 +91,50 @@ class FMIncomeRepository: ObservableObject {
     
     func getIncomes() {
         isFetching = true
-        store.collection(path)
+        incomeQuery = store.collection(path)
             .order(by: "createdAt", descending: true)
             .whereField("userId", isEqualTo: userId)
             .whereField("accountId", isEqualTo: accountId)
-            .addSnapshotListener { [weak self] (querySnapshot, error) in
+            .limit(to: kPaginationCount)
+        incomeQuery?.addSnapshotListener { [weak self] (querySnapshot, error) in
                 guard let self = self else { return }
+                self.isFetching = false
                 if let error = error {
                     print(error.localizedDescription)
-                    self.isFetching = false
                     return
                 }
-                self.incomes = querySnapshot?.documents.compactMap({ document in
+                let docs = querySnapshot?.documents
+                self.lastDocument = docs?.last
+            
+                self.incomes = docs?.compactMap({ document in
                     try? document.data(as: FMIncome.self)
                 }) ?? []
-                self.isFetching = false
             }
+    }
+    
+    func fetchNextPage() {
+        if let query = incomeQuery, let lastDoc = lastDocument {
+            isPaginating = true
+            query
+                .start(afterDocument: lastDoc)
+                .getDocuments { [weak self] (querySnapshot, error) in
+                    guard let self = self else { return }
+                    self.isPaginating = false
+                    
+                    if let error = error {
+                        print(error.localizedDescription)
+                    } else {
+                        let docs = querySnapshot?.documents
+                        self.lastDocument = docs?.last
+                        
+                        let nextBatchIncome = docs?.compactMap({ document in
+                            try? document.data(as: FMIncome.self)
+                        }) ?? []
+                        
+                        self.incomes.append(contentsOf: nextBatchIncome)
+                    }
+                }
+        }
     }
     
     func update(income: FMIncome, oldIncome: FMIncome) {

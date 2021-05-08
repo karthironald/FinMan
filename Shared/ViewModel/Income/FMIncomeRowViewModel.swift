@@ -44,3 +44,11 @@ class FMIncomeRowViewModel: ObservableObject, Dated {
     }
     
 }
+
+extension FMIncomeRowViewModel: Equatable {
+    
+    static func == (lhs: FMIncomeRowViewModel, rhs: FMIncomeRowViewModel) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+}
