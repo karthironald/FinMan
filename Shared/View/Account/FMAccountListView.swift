@@ -24,7 +24,7 @@ struct FMAccountListView: View {
                 .onAppear(perform: {
                     UIScrollView.appearance().bounces = false // To restrict the vertical scroll of the tabView
                 })
-                .frame(width: proxy.size.width, height: 165, alignment: .center) // Provided height to adjust the paging indicator position
+                .frame(width: proxy.size.width, height: 115, alignment: .center) // Provided height to adjust the paging indicator position
                 .tabViewStyle(PageTabViewStyle())
                 .onChange(of: selectedTab, perform: { value in
                     FMAccountRepository.shared.selectedAccount = viewModel.accountRowViewModel[value].account

@@ -21,11 +21,11 @@ struct FMIncomeListView: View {
         NavigationView {
             VStack(spacing: 0) {
                 FMAccountListView(viewModel: accountViewModel)
-                    .frame(height: 150, alignment: .center)
+                    .frame(height: 100, alignment: .center)
                     .padding()
                 List {
                     ForEach(Array(viewModel.groupedIncomeRowViewModel.keys.sorted(by: >)), id: \.self) { (key) in
-                        Section(header: Text("\(key)")) {
+                        Section(header: Text("\(key) (\(viewModel.groupedIncomeRowViewModel[key]!.count))")) {
                             ForEach(viewModel.groupedIncomeRowViewModel[key]!, id: \.id) { incomeRowViewModel in
                                 NavigationLink(
                                     destination: FMIncomeDetail(incomeRowViewModel: incomeRowViewModel),
@@ -51,7 +51,7 @@ struct FMIncomeListView: View {
                 .frame(minWidth: 250)
                 .listStyle(InsetGroupedListStyle())
             }
-            .navigationTitle("Income")
+            .navigationTitle("Dashboard")
             .toolbar(content: {
                 Menu {
                     Button(action: {

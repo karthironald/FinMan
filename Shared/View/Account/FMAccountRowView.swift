@@ -14,17 +14,16 @@ struct FMAccountRowView: View {
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            VStack(alignment: .center) {
-                Spacer()
+            VStack(alignment: .center, spacing: 5) {
                 Text(accountRowViewModel.account.name)
-                    .font(.body)
+                    .font(.footnote)
                     .bold()
                     .foregroundColor(.secondary)
-                    .padding([.bottom], 10)
                 HStack(spacing: 10) {
                     Spacer()
                     VStack {
                         Text("Income")
+                            .font(.footnote)
                         Text("\(accountRowViewModel.account.income, specifier: "%0.2f")")
                             .font(.title2)
                             .bold()
@@ -33,6 +32,7 @@ struct FMAccountRowView: View {
                     Spacer()
                     VStack {
                         Text("Expense")
+                            .font(.footnote)
                         Text("\(accountRowViewModel.account.expense, specifier: "%0.2f")")
                             .font(.title2)
                             .bold()
@@ -40,8 +40,6 @@ struct FMAccountRowView: View {
                     }
                     Spacer()
                 }
-                .padding([.bottom], 30)
-                Spacer()
             }
             .opacity(shouldShowInfo ? 0.1 : 1)
             if let comments = accountRowViewModel.account.comments {
@@ -61,6 +59,7 @@ struct FMAccountRowView: View {
                     .frame(width: 20, height: 20, alignment: .center)
             })
             .foregroundColor(.secondary)
+            .opacity(0.8)
         }
         .frame(maxHeight: .infinity, alignment: .center)
         .padding()

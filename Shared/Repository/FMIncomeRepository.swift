@@ -9,7 +9,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import Combine
 
-let kPaginationCount = 5
+let kPaginationCount = 20
 
 class FMIncomeRepository: ObservableObject {
     
