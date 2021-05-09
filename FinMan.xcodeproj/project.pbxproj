@@ -3,18 +3,57 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		571165E17AFFF4F098559E8A /* Pods_FinMan__macOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E0256DFA6C71A756F2C6C2A /* Pods_FinMan__macOS_.framework */; };
+		7759FB152622083900F8520B /* FMAddIncomeview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7759FB142622083900F8520B /* FMAddIncomeview.swift */; };
+		7759FB162622083900F8520B /* FMAddIncomeview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7759FB142622083900F8520B /* FMAddIncomeview.swift */; };
+		776155AB263724D2000382B4 /* FMIncomeRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776155AA263724D2000382B4 /* FMIncomeRowViewModel.swift */; };
+		776155AC263724D2000382B4 /* FMIncomeRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776155AA263724D2000382B4 /* FMIncomeRowViewModel.swift */; };
+		776155B226372500000382B4 /* FMIncomeRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776155B126372500000382B4 /* FMIncomeRepository.swift */; };
+		776155B326372500000382B4 /* FMIncomeRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776155B126372500000382B4 /* FMIncomeRepository.swift */; };
+		77A22F272621A8C900AE2F4F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F232621A8C900AE2F4F /* ContentView.swift */; };
+		77A22F282621A8C900AE2F4F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F232621A8C900AE2F4F /* ContentView.swift */; };
+		77A22F292621A8C900AE2F4F /* FMIncomeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F252621A8C900AE2F4F /* FMIncomeListView.swift */; };
+		77A22F2A2621A8C900AE2F4F /* FMIncomeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F252621A8C900AE2F4F /* FMIncomeListView.swift */; };
+		77A22F2B2621A8C900AE2F4F /* FMIncomeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F262621A8C900AE2F4F /* FMIncomeRow.swift */; };
+		77A22F2C2621A8C900AE2F4F /* FMIncomeRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F262621A8C900AE2F4F /* FMIncomeRow.swift */; };
+		77A22F322621A8E400AE2F4F /* FMTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F312621A8E400AE2F4F /* FMTabView.swift */; };
+		77A22F332621A8E400AE2F4F /* FMTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F312621A8E400AE2F4F /* FMTabView.swift */; };
+		77A22F3A2621A8F200AE2F4F /* FMIncome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F392621A8F200AE2F4F /* FMIncome.swift */; };
+		77A22F3B2621A8F200AE2F4F /* FMIncome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F392621A8F200AE2F4F /* FMIncome.swift */; };
+		77A22F492621A92000AE2F4F /* FMIncomeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F482621A92000AE2F4F /* FMIncomeListViewModel.swift */; };
+		77A22F4A2621A92000AE2F4F /* FMIncomeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F482621A92000AE2F4F /* FMIncomeListViewModel.swift */; };
 		77AB839E261CC1F600F44999 /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77AB839D261CC1F600F44999 /* Tests_iOS.swift */; };
 		77AB83A9261CC1F600F44999 /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77AB83A8261CC1F600F44999 /* Tests_macOS.swift */; };
 		77AB83AB261CC1F600F44999 /* FinManApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77AB8382261CC1F500F44999 /* FinManApp.swift */; };
 		77AB83AC261CC1F600F44999 /* FinManApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77AB8382261CC1F500F44999 /* FinManApp.swift */; };
-		77AB83AD261CC1F600F44999 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77AB8383261CC1F500F44999 /* ContentView.swift */; };
-		77AB83AE261CC1F600F44999 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77AB8383261CC1F500F44999 /* ContentView.swift */; };
 		77AB83AF261CC1F600F44999 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 77AB8384261CC1F600F44999 /* Assets.xcassets */; };
 		77AB83B0261CC1F600F44999 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 77AB8384261CC1F600F44999 /* Assets.xcassets */; };
+		77C3ADC3263E3A7100FAEF88 /* FMAccountRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3ADC2263E3A7100FAEF88 /* FMAccountRepository.swift */; };
+		77C3ADC4263E3A7100FAEF88 /* FMAccountRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3ADC2263E3A7100FAEF88 /* FMAccountRepository.swift */; };
+		77C3ADCB263E3AB200FAEF88 /* FMAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3ADCA263E3AB200FAEF88 /* FMAccount.swift */; };
+		77C3ADCC263E3AB200FAEF88 /* FMAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3ADCA263E3AB200FAEF88 /* FMAccount.swift */; };
+		77C3ADD7263E3B5500FAEF88 /* FMAccountListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3ADD6263E3B5500FAEF88 /* FMAccountListViewModel.swift */; };
+		77C3ADD8263E3B5500FAEF88 /* FMAccountListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3ADD6263E3B5500FAEF88 /* FMAccountListViewModel.swift */; };
+		77C3ADE2263E3BAF00FAEF88 /* FMAccountRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3ADE1263E3BAF00FAEF88 /* FMAccountRowViewModel.swift */; };
+		77C3ADE3263E3BAF00FAEF88 /* FMAccountRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3ADE1263E3BAF00FAEF88 /* FMAccountRowViewModel.swift */; };
+		77C3AE01263E49ED00FAEF88 /* FMAccountListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3AE00263E49ED00FAEF88 /* FMAccountListView.swift */; };
+		77C3AE02263E49ED00FAEF88 /* FMAccountListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3AE00263E49ED00FAEF88 /* FMAccountListView.swift */; };
+		77C3AE0C263E49F900FAEF88 /* FMAccountRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3AE0B263E49F900FAEF88 /* FMAccountRowView.swift */; };
+		77C3AE0D263E49F900FAEF88 /* FMAccountRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3AE0B263E49F900FAEF88 /* FMAccountRowView.swift */; };
+		77C3AE13263E887900FAEF88 /* FMAddAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3AE12263E887800FAEF88 /* FMAddAccountView.swift */; };
+		77C3AE14263E887900FAEF88 /* FMAddAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3AE12263E887800FAEF88 /* FMAddAccountView.swift */; };
+		77C3AE3B263F069F00FAEF88 /* FMExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3AE3A263F069E00FAEF88 /* FMExtension.swift */; };
+		77C3AE3C263F069F00FAEF88 /* FMExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3AE3A263F069E00FAEF88 /* FMExtension.swift */; };
+		77C6AF57262C315900321F04 /* FMIncomeDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C6AF56262C315900321F04 /* FMIncomeDetail.swift */; };
+		77C6AF58262C315900321F04 /* FMIncomeDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C6AF56262C315900321F04 /* FMIncomeDetail.swift */; };
+		77E5C7B62637329B00F64A73 /* FMAuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E5C7B52637329B00F64A73 /* FMAuthenticationService.swift */; };
+		77E5C7B72637329B00F64A73 /* FMAuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E5C7B52637329B00F64A73 /* FMAuthenticationService.swift */; };
+		77E5C80B2637363800F64A73 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 77E5C80A2637363800F64A73 /* GoogleService-Info.plist */; };
+		CE1AF24C6D6266D03CD8C5D8 /* Pods_FinMan__iOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C87E7DE35C041FE296F56E19 /* Pods_FinMan__iOS_.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,8 +74,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		06EA067A2BD20ACF388C0B7C /* Pods-FinMan (iOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FinMan (iOS).debug.xcconfig"; path = "Target Support Files/Pods-FinMan (iOS)/Pods-FinMan (iOS).debug.xcconfig"; sourceTree = "<group>"; };
+		0722921A7EFE7562C77A1452 /* Pods-FinMan (macOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FinMan (macOS).release.xcconfig"; path = "Target Support Files/Pods-FinMan (macOS)/Pods-FinMan (macOS).release.xcconfig"; sourceTree = "<group>"; };
+		7759FB142622083900F8520B /* FMAddIncomeview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMAddIncomeview.swift; sourceTree = "<group>"; };
+		776155AA263724D2000382B4 /* FMIncomeRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMIncomeRowViewModel.swift; sourceTree = "<group>"; };
+		776155B126372500000382B4 /* FMIncomeRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMIncomeRepository.swift; sourceTree = "<group>"; };
+		77A22F232621A8C900AE2F4F /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		77A22F252621A8C900AE2F4F /* FMIncomeListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMIncomeListView.swift; sourceTree = "<group>"; };
+		77A22F262621A8C900AE2F4F /* FMIncomeRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMIncomeRow.swift; sourceTree = "<group>"; };
+		77A22F312621A8E400AE2F4F /* FMTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMTabView.swift; sourceTree = "<group>"; };
+		77A22F392621A8F200AE2F4F /* FMIncome.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMIncome.swift; sourceTree = "<group>"; };
+		77A22F482621A92000AE2F4F /* FMIncomeListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMIncomeListViewModel.swift; sourceTree = "<group>"; };
 		77AB8382261CC1F500F44999 /* FinManApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinManApp.swift; sourceTree = "<group>"; };
-		77AB8383261CC1F500F44999 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		77AB8384261CC1F600F44999 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		77AB8389261CC1F600F44999 /* FinMan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinMan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		77AB838C261CC1F600F44999 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -49,6 +98,21 @@
 		77AB83A4261CC1F600F44999 /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		77AB83A8261CC1F600F44999 /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		77AB83AA261CC1F600F44999 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		77C3ADC2263E3A7100FAEF88 /* FMAccountRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMAccountRepository.swift; sourceTree = "<group>"; };
+		77C3ADCA263E3AB200FAEF88 /* FMAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMAccount.swift; sourceTree = "<group>"; };
+		77C3ADD6263E3B5500FAEF88 /* FMAccountListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMAccountListViewModel.swift; sourceTree = "<group>"; };
+		77C3ADE1263E3BAF00FAEF88 /* FMAccountRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMAccountRowViewModel.swift; sourceTree = "<group>"; };
+		77C3AE00263E49ED00FAEF88 /* FMAccountListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMAccountListView.swift; sourceTree = "<group>"; };
+		77C3AE0B263E49F900FAEF88 /* FMAccountRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMAccountRowView.swift; sourceTree = "<group>"; };
+		77C3AE12263E887800FAEF88 /* FMAddAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMAddAccountView.swift; sourceTree = "<group>"; };
+		77C3AE3A263F069E00FAEF88 /* FMExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMExtension.swift; sourceTree = "<group>"; };
+		77C6AF56262C315900321F04 /* FMIncomeDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMIncomeDetail.swift; sourceTree = "<group>"; };
+		77E5C7B52637329B00F64A73 /* FMAuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMAuthenticationService.swift; sourceTree = "<group>"; };
+		77E5C80A2637363800F64A73 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		9E0256DFA6C71A756F2C6C2A /* Pods_FinMan__macOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FinMan__macOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C87E7DE35C041FE296F56E19 /* Pods_FinMan__iOS_.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FinMan__iOS_.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCF5B48F956346ECF3822AED /* Pods-FinMan (iOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FinMan (iOS).release.xcconfig"; path = "Target Support Files/Pods-FinMan (iOS)/Pods-FinMan (iOS).release.xcconfig"; sourceTree = "<group>"; };
+		F3F5A8FC264C2D9C324863A5 /* Pods-FinMan (macOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FinMan (macOS).debug.xcconfig"; path = "Target Support Files/Pods-FinMan (macOS)/Pods-FinMan (macOS).debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +120,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE1AF24C6D6266D03CD8C5D8 /* Pods_FinMan__iOS_.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +128,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				571165E17AFFF4F098559E8A /* Pods_FinMan__macOS_.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,23 +149,76 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		776155A126372479000382B4 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				776155B126372500000382B4 /* FMIncomeRepository.swift */,
+				77C3ADC2263E3A7100FAEF88 /* FMAccountRepository.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		77A22F222621A8C900AE2F4F /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				77A22F312621A8E400AE2F4F /* FMTabView.swift */,
+				77A22F232621A8C900AE2F4F /* ContentView.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		77A22F242621A8C900AE2F4F /* Income */ = {
+			isa = PBXGroup;
+			children = (
+				77A22F252621A8C900AE2F4F /* FMIncomeListView.swift */,
+				77A22F262621A8C900AE2F4F /* FMIncomeRow.swift */,
+				7759FB142622083900F8520B /* FMAddIncomeview.swift */,
+				77C6AF56262C315900321F04 /* FMIncomeDetail.swift */,
+			);
+			path = Income;
+			sourceTree = "<group>";
+		};
+		77A22F382621A8F200AE2F4F /* Income */ = {
+			isa = PBXGroup;
+			children = (
+				77A22F392621A8F200AE2F4F /* FMIncome.swift */,
+			);
+			path = Income;
+			sourceTree = "<group>";
+		};
+		77A22F472621A92000AE2F4F /* Income */ = {
+			isa = PBXGroup;
+			children = (
+				77A22F482621A92000AE2F4F /* FMIncomeListViewModel.swift */,
+				776155AA263724D2000382B4 /* FMIncomeRowViewModel.swift */,
+			);
+			path = Income;
+			sourceTree = "<group>";
+		};
 		77AB837C261CC1F500F44999 = {
 			isa = PBXGroup;
 			children = (
+				77E5C80A2637363800F64A73 /* GoogleService-Info.plist */,
 				77AB8381261CC1F500F44999 /* Shared */,
 				77AB838B261CC1F600F44999 /* iOS */,
 				77AB8392261CC1F600F44999 /* macOS */,
 				77AB839C261CC1F600F44999 /* Tests iOS */,
 				77AB83A7261CC1F600F44999 /* Tests macOS */,
 				77AB838A261CC1F600F44999 /* Products */,
+				C0C2EDD35A43BB80C408C4EC /* Pods */,
+				E5180E2012D1134638C7CD10 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		77AB8381261CC1F500F44999 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				776155A126372479000382B4 /* Repository */,
+				77BE7198262C2A6C0017CDCE /* Helper */,
+				77AB83CA261CC68C00F44999 /* Model */,
+				77AB83C7261CC68C00F44999 /* View */,
+				77AB83C8261CC68C00F44999 /* ViewModel */,
 				77AB8382261CC1F500F44999 /* FinManApp.swift */,
-				77AB8383261CC1F500F44999 /* ContentView.swift */,
 				77AB8384261CC1F600F44999 /* Assets.xcassets */,
 			);
 			path = Shared;
@@ -151,6 +270,90 @@
 			path = "Tests macOS";
 			sourceTree = "<group>";
 		};
+		77AB83C7261CC68C00F44999 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				77C3ADFF263E49DE00FAEF88 /* Account */,
+				77A22F222621A8C900AE2F4F /* Common */,
+				77A22F242621A8C900AE2F4F /* Income */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		77AB83C8261CC68C00F44999 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				77C3ADD5263E3B3F00FAEF88 /* Account */,
+				77A22F472621A92000AE2F4F /* Income */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		77AB83CA261CC68C00F44999 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				77C3ADC9263E3AAA00FAEF88 /* Account */,
+				77A22F382621A8F200AE2F4F /* Income */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		77BE7198262C2A6C0017CDCE /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				77E5C7B52637329B00F64A73 /* FMAuthenticationService.swift */,
+				77C3AE3A263F069E00FAEF88 /* FMExtension.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		77C3ADC9263E3AAA00FAEF88 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				77C3ADCA263E3AB200FAEF88 /* FMAccount.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
+		77C3ADD5263E3B3F00FAEF88 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				77C3ADD6263E3B5500FAEF88 /* FMAccountListViewModel.swift */,
+				77C3ADE1263E3BAF00FAEF88 /* FMAccountRowViewModel.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
+		77C3ADFF263E49DE00FAEF88 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				77C3AE00263E49ED00FAEF88 /* FMAccountListView.swift */,
+				77C3AE0B263E49F900FAEF88 /* FMAccountRowView.swift */,
+				77C3AE12263E887800FAEF88 /* FMAddAccountView.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
+		C0C2EDD35A43BB80C408C4EC /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				06EA067A2BD20ACF388C0B7C /* Pods-FinMan (iOS).debug.xcconfig */,
+				DCF5B48F956346ECF3822AED /* Pods-FinMan (iOS).release.xcconfig */,
+				F3F5A8FC264C2D9C324863A5 /* Pods-FinMan (macOS).debug.xcconfig */,
+				0722921A7EFE7562C77A1452 /* Pods-FinMan (macOS).release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		E5180E2012D1134638C7CD10 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C87E7DE35C041FE296F56E19 /* Pods_FinMan__iOS_.framework */,
+				9E0256DFA6C71A756F2C6C2A /* Pods_FinMan__macOS_.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -158,9 +361,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 77AB83B3261CC1F600F44999 /* Build configuration list for PBXNativeTarget "FinMan (iOS)" */;
 			buildPhases = (
+				AA6DBFFE48513D212C6BC345 /* [CP] Check Pods Manifest.lock */,
 				77AB8385261CC1F600F44999 /* Sources */,
 				77AB8386261CC1F600F44999 /* Frameworks */,
 				77AB8387261CC1F600F44999 /* Resources */,
+				F8E6EAF4EB6CC690134E34F0 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -175,6 +380,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 77AB83B6261CC1F600F44999 /* Build configuration list for PBXNativeTarget "FinMan (macOS)" */;
 			buildPhases = (
+				F924935B501FCA7DC1B31868 /* [CP] Check Pods Manifest.lock */,
 				77AB838D261CC1F600F44999 /* Sources */,
 				77AB838E261CC1F600F44999 /* Frameworks */,
 				77AB838F261CC1F600F44999 /* Resources */,
@@ -230,6 +436,7 @@
 		77AB837D261CC1F500F44999 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = FM;
 				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
@@ -276,6 +483,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				77AB83AF261CC1F600F44999 /* Assets.xcassets in Resources */,
+				77E5C80B2637363800F64A73 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,12 +511,94 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		AA6DBFFE48513D212C6BC345 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FinMan (iOS)-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F8E6EAF4EB6CC690134E34F0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FinMan (iOS)/Pods-FinMan (iOS)-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FinMan (iOS)/Pods-FinMan (iOS)-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FinMan (iOS)/Pods-FinMan (iOS)-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F924935B501FCA7DC1B31868 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FinMan (macOS)-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		77AB8385261CC1F600F44999 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				77AB83AD261CC1F600F44999 /* ContentView.swift in Sources */,
+				77C3AE3B263F069F00FAEF88 /* FMExtension.swift in Sources */,
+				77C3AE01263E49ED00FAEF88 /* FMAccountListView.swift in Sources */,
+				77C6AF57262C315900321F04 /* FMIncomeDetail.swift in Sources */,
+				776155AB263724D2000382B4 /* FMIncomeRowViewModel.swift in Sources */,
+				77A22F3A2621A8F200AE2F4F /* FMIncome.swift in Sources */,
+				77A22F272621A8C900AE2F4F /* ContentView.swift in Sources */,
+				7759FB152622083900F8520B /* FMAddIncomeview.swift in Sources */,
+				77A22F292621A8C900AE2F4F /* FMIncomeListView.swift in Sources */,
+				77C3AE0C263E49F900FAEF88 /* FMAccountRowView.swift in Sources */,
+				77C3ADC3263E3A7100FAEF88 /* FMAccountRepository.swift in Sources */,
+				77E5C7B62637329B00F64A73 /* FMAuthenticationService.swift in Sources */,
+				77A22F492621A92000AE2F4F /* FMIncomeListViewModel.swift in Sources */,
+				776155B226372500000382B4 /* FMIncomeRepository.swift in Sources */,
+				77C3ADE2263E3BAF00FAEF88 /* FMAccountRowViewModel.swift in Sources */,
+				77A22F2B2621A8C900AE2F4F /* FMIncomeRow.swift in Sources */,
+				77A22F322621A8E400AE2F4F /* FMTabView.swift in Sources */,
+				77C3ADD7263E3B5500FAEF88 /* FMAccountListViewModel.swift in Sources */,
+				77C3ADCB263E3AB200FAEF88 /* FMAccount.swift in Sources */,
+				77C3AE13263E887900FAEF88 /* FMAddAccountView.swift in Sources */,
 				77AB83AB261CC1F600F44999 /* FinManApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -317,7 +607,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				77AB83AE261CC1F600F44999 /* ContentView.swift in Sources */,
+				77C3AE3C263F069F00FAEF88 /* FMExtension.swift in Sources */,
+				77C3AE02263E49ED00FAEF88 /* FMAccountListView.swift in Sources */,
+				77C6AF58262C315900321F04 /* FMIncomeDetail.swift in Sources */,
+				776155AC263724D2000382B4 /* FMIncomeRowViewModel.swift in Sources */,
+				77A22F3B2621A8F200AE2F4F /* FMIncome.swift in Sources */,
+				77A22F282621A8C900AE2F4F /* ContentView.swift in Sources */,
+				7759FB162622083900F8520B /* FMAddIncomeview.swift in Sources */,
+				77A22F2A2621A8C900AE2F4F /* FMIncomeListView.swift in Sources */,
+				77C3AE0D263E49F900FAEF88 /* FMAccountRowView.swift in Sources */,
+				77C3ADC4263E3A7100FAEF88 /* FMAccountRepository.swift in Sources */,
+				77E5C7B72637329B00F64A73 /* FMAuthenticationService.swift in Sources */,
+				77A22F4A2621A92000AE2F4F /* FMIncomeListViewModel.swift in Sources */,
+				776155B326372500000382B4 /* FMIncomeRepository.swift in Sources */,
+				77C3ADE3263E3BAF00FAEF88 /* FMAccountRowViewModel.swift in Sources */,
+				77A22F332621A8E400AE2F4F /* FMTabView.swift in Sources */,
+				77A22F2C2621A8C900AE2F4F /* FMIncomeRow.swift in Sources */,
+				77C3ADD8263E3B5500FAEF88 /* FMAccountListViewModel.swift in Sources */,
+				77C3ADCC263E3AB200FAEF88 /* FMAccount.swift in Sources */,
+				77C3AE14263E887900FAEF88 /* FMAddAccountView.swift in Sources */,
 				77AB83AC261CC1F600F44999 /* FinManApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -467,6 +775,7 @@
 		};
 		77AB83B4261CC1F600F44999 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 06EA067A2BD20ACF388C0B7C /* Pods-FinMan (iOS).debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -489,6 +798,7 @@
 		};
 		77AB83B5261CC1F600F44999 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DCF5B48F956346ECF3822AED /* Pods-FinMan (iOS).release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -512,6 +822,7 @@
 		};
 		77AB83B7261CC1F600F44999 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F3F5A8FC264C2D9C324863A5 /* Pods-FinMan (macOS).debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -536,6 +847,7 @@
 		};
 		77AB83B8261CC1F600F44999 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0722921A7EFE7562C77A1452 /* Pods-FinMan (macOS).release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

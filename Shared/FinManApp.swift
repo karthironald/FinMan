@@ -6,12 +6,20 @@
 //
 
 import SwiftUI
+import Firebase
 
 @main
 struct FinManApp: App {
+    
+    init() {
+        FirebaseApp.configure()
+        FMAuthenticationService.shared.signIn()
+    }
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            FMTabView()
+                .accentColor(.orange)
         }
     }
 }
