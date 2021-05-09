@@ -1,5 +1,5 @@
 //
-//  FMIncome.swift
+//  FMTransaction.swift
 //  FinMan (iOS)
 //
 //  Created by Karthick Selvaraj on 09/04/21.
@@ -8,7 +8,7 @@ import Foundation
 import FirebaseFirestoreSwift
 import FirebaseFirestore
 
-struct FMIncome: Identifiable, Codable {
+struct FMTransaction: Identifiable, Codable {
     @DocumentID var id: String?
     var value: Double
     var frequency: String
@@ -19,7 +19,7 @@ struct FMIncome: Identifiable, Codable {
     @ServerTimestamp var createdAt: Timestamp?
 }
 
-extension FMIncome {
+extension FMTransaction {
     
     enum Frequency: String, CaseIterable {
         case onetime, weekly, monthly, quatarly, halfEarly, yearly
@@ -78,13 +78,13 @@ extension FMIncome {
     
 }
 
-extension FMIncome {
+extension FMTransaction {
     
     static var sampleData = [
-        FMIncome(id: UUID().uuidString, value: 1000, frequency: Frequency.onetime.rawValue, source: Source.earned.rawValue, comments: nil, userId: nil),
-        FMIncome(id: UUID().uuidString, value: 1000, frequency: Frequency.weekly.rawValue, source: Source.dividend.rawValue, comments: nil, userId: nil),
-        FMIncome(id: UUID().uuidString, value: 1000, frequency: Frequency.monthly.rawValue, source: Source.capitalGain.rawValue, comments: nil, userId: nil),
-        FMIncome(id: UUID().uuidString, value: 1000, frequency: Frequency.yearly.rawValue, source: Source.interest.rawValue, comments: nil, userId: nil),
+        FMTransaction(id: UUID().uuidString, value: 1000, frequency: Frequency.onetime.rawValue, source: Source.earned.rawValue, comments: nil, userId: nil),
+        FMTransaction(id: UUID().uuidString, value: 1000, frequency: Frequency.weekly.rawValue, source: Source.dividend.rawValue, comments: nil, userId: nil),
+        FMTransaction(id: UUID().uuidString, value: 1000, frequency: Frequency.monthly.rawValue, source: Source.capitalGain.rawValue, comments: nil, userId: nil),
+        FMTransaction(id: UUID().uuidString, value: 1000, frequency: Frequency.yearly.rawValue, source: Source.interest.rawValue, comments: nil, userId: nil),
     ]
     
 }

@@ -1,5 +1,5 @@
 //
-//  FMIncomeListView.swift
+//  FMTransactionListView.swift
 //  FinMan (iOS)
 //
 //  Created by Karthick Selvaraj on 09/04/21.
@@ -8,14 +8,13 @@
 import Foundation
 import SwiftUI
 
-struct FMIncomeListView: View {
+struct FMTransactionListView: View {
     
-    @StateObject var viewModel = FMIncomeListViewModel()
+    @StateObject var viewModel = FMTransactionListViewModel()
     @StateObject var accountViewModel = FMAccountListViewModel()
     
-    @State var shouldPresentAddIncomeView: Bool = false
+    @State var shouldPresentAddTransactionView: Bool = false
     @State var shouldPresentAddAccountView: Bool = false
-    @State var shouldPresentAddExpenseView: Bool = false
     
     var body: some View {
         NavigationView {
@@ -24,15 +23,15 @@ struct FMIncomeListView: View {
                     .frame(height: 100, alignment: .center)
                     .padding()
                 List {
-                    ForEach(Array(viewModel.groupedIncomeRowViewModel.keys.sorted(by: >)), id: \.self) { (key) in
-                        Section(header: Text("\(key) (\(viewModel.groupedIncomeRowViewModel[key]!.count))")) {
-                            ForEach(viewModel.groupedIncomeRowViewModel[key]!, id: \.id) { incomeRowViewModel in
+                    ForEach(Array(viewModel.groupedTransactionRowViewModel.keys.sorted(by: >)), id: \.self) { (key) in
+                        Section(header: Text("\(key) (\(viewModel.groupedTransactionRowViewModel[key]!.count))")) {
+                            ForEach(viewModel.groupedTransactionRowViewModel[key]!, id: \.id) { transactionRowViewModel in
                                 NavigationLink(
-                                    destination: FMIncomeDetail(incomeRowViewModel: incomeRowViewModel),
+                                    destination: FMTransactionDetailView(transactionRowViewModel: transactionRowViewModel),
                                     label: {
-                                        FMIncomeRow(incomeRowViewModel: incomeRowViewModel)
+                                        FMTransactionRow(transactionRowViewModel: transactionRowViewModel)
                                             .onAppear {
-                                                if incomeRowViewModel == viewModel.incomeRowViewModel.last {
+                                                if transactionRowViewModel == viewModel.transactionRowViewModel.last {
                                                     viewModel.fetchNextBadge()
                                                 }
                                             }
@@ -41,7 +40,7 @@ struct FMIncomeListView: View {
                             }
                             .onDelete { (indexSet) in
                                 if let index = indexSet.first {
-                                    viewModel.incomeRowViewModel[index].delete()
+                                    viewModel.transactionRowViewModel[index].delete()
                                 }
                             }
                         }
@@ -60,14 +59,9 @@ struct FMIncomeListView: View {
                         Label("Add Account", systemImage: "person.badge.plus")
                     })
                     Button(action: {
-                        shouldPresentAddIncomeView.toggle()
+                        shouldPresentAddTransactionView.toggle()
                     }, label: {
-                        Label("Add Income", systemImage: "bag.badge.plus")
-                    })
-                    Button(action: {
-                        shouldPresentAddExpenseView.toggle()
-                    }, label: {
-                        Label("Add Expense", systemImage: "cart.badge.minus")
+                        Label("Add Transaction", systemImage: "bag.badge.plus")
                     })
                 } label: {
                     Image(systemName: "plus")
@@ -77,21 +71,21 @@ struct FMIncomeListView: View {
                     FMAddAccountView(shouldPresentAddAccountView: $shouldPresentAddAccountView, viewModel: accountViewModel)
                 })
             })
-            .sheet(isPresented: $shouldPresentAddIncomeView, content: {
-                FMAddIncomeview(viewModel: viewModel, shouldPresentAddIncomeView: $shouldPresentAddIncomeView)
+            .sheet(isPresented: $shouldPresentAddTransactionView, content: {
+                FMAddTransactionView(viewModel: viewModel, shouldPresentAddTransactionView: $shouldPresentAddTransactionView)
             })
         }
     }
     
 }
 
-struct FMIncomeListView_Previews: PreviewProvider {
+struct FMTransactionListView_Previews: PreviewProvider {
     
     static var previews: some View {
-        let viewModel = FMIncomeListViewModel()
-        let rowViewModel = FMIncomeRowViewModel(income: FMIncome.sampleData.first!)
-        viewModel.incomeRowViewModel = [rowViewModel]
-        return FMIncomeListView(viewModel: viewModel, shouldPresentAddIncomeView: false)
+        let viewModel = FMTransactionListViewModel()
+        let rowViewModel = FMTransactionRowViewModel(transaction: FMTransaction.sampleData.first!)
+        viewModel.transactionRowViewModel = [rowViewModel]
+        return FMTransactionListView(viewModel: viewModel, shouldPresentAddTransactionView: false)
     }
     
 }

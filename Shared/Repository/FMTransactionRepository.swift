@@ -1,5 +1,5 @@
 //
-//  FMIncomeRepository.swift
+//  FMTransactionRepository.swift
 //  FinMan
 //
 //  Created by Karthick Selvaraj on 26/04/21.
@@ -11,10 +11,10 @@ import Combine
 
 let kPaginationCount = 20
 
-class FMIncomeRepository: ObservableObject {
+class FMTransactionRepository: ObservableObject {
     
-    static let shared = FMIncomeRepository()
-    private let path: String = "Income"
+    static let shared = FMTransactionRepository()
+    private let path: String = "Transaction"
     private let store = Firestore.firestore()
     
     var userId = ""
@@ -23,12 +23,12 @@ class FMIncomeRepository: ObservableObject {
     private let accountRepository = FMAccountRepository.shared
     private var cancellables: Set<AnyCancellable> = []
     
-    @Published var incomes: [FMIncome] = []
+    @Published var transactions: [FMTransaction] = []
     @Published var isFetching: Bool = false
     @Published var isPaginating: Bool = false
     
     var lastDocument: DocumentSnapshot?
-    var incomeQuery: Query?
+    var transactionQuery: Query?
     
     private init() {
         authenticationService.$user
@@ -42,7 +42,7 @@ class FMIncomeRepository: ObservableObject {
             .debounce(for: 0.85, scheduler: RunLoop.main) // Delay the network request
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.getIncomes()
+                self?.getTransactions()
             }
             .store(in: &cancellables)
         accountRepository.$selectedAccount
@@ -57,25 +57,25 @@ class FMIncomeRepository: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 print("🟢🔴 \(String(describing: self?.accountId))")
-                self?.getIncomes()
+                self?.getTransactions()
             }
             .store(in: &cancellables)
     }
     
     
-    func add(_ income: FMIncome) {
+    func add(_ transaction: FMTransaction) {
         do {
-            var newIncome = income
-            newIncome.userId = userId
-            newIncome.accountId = accountId
+            var newTransaction = transaction
+            newTransaction.userId = userId
+            newTransaction.accountId = accountId
             
             let batch = store.batch()
             
             let accountRef = store.collection("Account").document(accountRepository.selectedAccount?.id ?? "")
-            batch.updateData(["income": (accountRepository.selectedAccount?.income ?? 0.0) + (income.value)], forDocument: accountRef)
+            batch.updateData(["income": (accountRepository.selectedAccount?.income ?? 0.0) + (transaction.value)], forDocument: accountRef)
             
-            let newIncomeRef = store.collection(path).document()
-            try batch.setData(from: newIncome, forDocument: newIncomeRef)
+            let newTransactionRef = store.collection(path).document()
+            try batch.setData(from: newTransaction, forDocument: newTransactionRef)
             
             batch.commit { error in
                 if let error = error {
@@ -89,14 +89,14 @@ class FMIncomeRepository: ObservableObject {
         }
     }
     
-    func getIncomes() {
+    func getTransactions() {
         isFetching = true
-        incomeQuery = store.collection(path)
+        transactionQuery = store.collection(path)
             .order(by: "createdAt", descending: true)
             .whereField("userId", isEqualTo: userId)
             .whereField("accountId", isEqualTo: accountId)
             .limit(to: kPaginationCount)
-        incomeQuery?.addSnapshotListener { [weak self] (querySnapshot, error) in
+        transactionQuery?.addSnapshotListener { [weak self] (querySnapshot, error) in
                 guard let self = self else { return }
                 self.isFetching = false
                 if let error = error {
@@ -106,14 +106,14 @@ class FMIncomeRepository: ObservableObject {
                 let docs = querySnapshot?.documents
                 self.lastDocument = docs?.last
             
-                self.incomes = docs?.compactMap({ document in
-                    try? document.data(as: FMIncome.self)
+                self.transactions = docs?.compactMap({ document in
+                    try? document.data(as: FMTransaction.self)
                 }) ?? []
             }
     }
     
     func fetchNextPage() {
-        if let query = incomeQuery, let lastDoc = lastDocument {
+        if let query = transactionQuery, let lastDoc = lastDocument {
             isPaginating = true
             query
                 .start(afterDocument: lastDoc)
@@ -127,33 +127,33 @@ class FMIncomeRepository: ObservableObject {
                         let docs = querySnapshot?.documents
                         self.lastDocument = docs?.last
                         
-                        let nextBatchIncome = docs?.compactMap({ document in
-                            try? document.data(as: FMIncome.self)
+                        let nextBatchTransaction = docs?.compactMap({ document in
+                            try? document.data(as: FMTransaction.self)
                         }) ?? []
                         
-                        self.incomes.append(contentsOf: nextBatchIncome)
+                        self.transactions.append(contentsOf: nextBatchTransaction)
                     }
                 }
         }
     }
     
-    func update(income: FMIncome, oldIncome: FMIncome) {
-        guard let id = income.id else { return }
+    func update(transaction: FMTransaction, oldTransaction: FMTransaction) {
+        guard let id = transaction.id else { return }
         do {
             let batch = store.batch()
             
             let accountRef = store.collection("Account").document(accountRepository.selectedAccount?.id ?? "")
             
-            let accountIncome = accountRepository.selectedAccount?.income ?? 0.0
-            let oldIncomeValue = oldIncome.value
-            let newIncomeValue = income.value
+            let accountTransaction = accountRepository.selectedAccount?.income ?? 0.0
+            let oldTransactionValue = oldTransaction.value
+            let newTransactionValue = transaction.value
             
-            let newAccountIncome = (accountIncome - oldIncomeValue) + newIncomeValue
+            let newAccountIncome = (accountTransaction - oldTransactionValue) + newTransactionValue
             
             batch.updateData(["income": newAccountIncome], forDocument: accountRef)
             
             let updateIncomeRef = store.collection(path).document(id)
-            try batch.setData(from: income, forDocument: updateIncomeRef)
+            try batch.setData(from: transaction, forDocument: updateIncomeRef)
             
             batch.commit { error in
                 if let error = error {
@@ -167,15 +167,15 @@ class FMIncomeRepository: ObservableObject {
         }
     }
     
-    func delete(income: FMIncome) {
-        guard let id = income.id else { return }
+    func delete(transaction: FMTransaction) {
+        guard let id = transaction.id else { return }
         
         let batch = store.batch()
         
         let accountRef = store.collection("Account").document(accountRepository.selectedAccount?.id ?? "")
         
         let accountIncome = accountRepository.selectedAccount?.income ?? 0.0
-        let incomeValue = income.value
+        let incomeValue = transaction.value
         let newAccountIncome = accountIncome - incomeValue
         
         batch.updateData(["income": newAccountIncome], forDocument: accountRef)

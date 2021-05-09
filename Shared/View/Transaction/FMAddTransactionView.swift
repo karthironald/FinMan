@@ -1,5 +1,5 @@
 //
-//  FMAddIncomeview.swift
+//  FMAddTransactionView.swift
 //  FinMan
 //
 //  Created by Karthick Selvaraj on 10/04/21.
@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-struct FMAddIncomeview: View {
+struct FMAddTransactionView: View {
     @State var value: String = ""
-    @State var frequency: FMIncome.Frequency = .onetime
-    @State var source: FMIncome.Source = .earned
+    @State var frequency: FMTransaction.Frequency = .onetime
+    @State var source: FMTransaction.Source = .earned
     @State var comments: String = ""
     
-    var viewModel: FMIncomeListViewModel? = nil
-    var incomeRowViewModel: FMIncomeRowViewModel? = nil
-    @Binding var shouldPresentAddIncomeView: Bool
+    var viewModel: FMTransactionListViewModel? = nil
+    var transactionRowViewModel: FMTransactionRowViewModel? = nil
+    @Binding var shouldPresentAddTransactionView: Bool
     
     var body: some View {
         NavigationView {
@@ -26,13 +26,13 @@ struct FMAddIncomeview: View {
                 }
                 Section(footer: Text("\(source.info)").padding(.leading)) {
                     Picker("Frequency", selection: $frequency) {
-                        ForEach(FMIncome.Frequency.allCases, id: \.self) { freq in
+                        ForEach(FMTransaction.Frequency.allCases, id: \.self) { freq in
                             Text("\(freq.title)")
                         }
                     }
                     .pickerStyle(DefaultPickerStyle())
                     Picker("Source", selection: $source) {
-                        ForEach(FMIncome.Source.allCases, id: \.self) { source in
+                        ForEach(FMTransaction.Source.allCases, id: \.self) { source in
                             Text("\(source.title)")
                         }
                     }
@@ -52,35 +52,35 @@ struct FMAddIncomeview: View {
                     }
                 }
             }
-            .navigationBarTitle(Text("Add Income"), displayMode: .inline)
+            .navigationBarTitle(Text("Add Transaction"), displayMode: .inline)
             .navigationBarItems(trailing:
                                     Button("Save") {
                                         saveButtonTapped()
-                                        shouldPresentAddIncomeView.toggle()
+                                        shouldPresentAddTransactionView.toggle()
                                     }
             )
         }
     }
     
     private func saveButtonTapped() {
-        if incomeRowViewModel?.id == nil && viewModel != nil {
-            let income = FMIncome(value: Double(value) ?? 0.0, frequency: frequency.rawValue, source: source.rawValue, comments: comments)
-            viewModel?.addNew(income: income)
+        if transactionRowViewModel?.id == nil && viewModel != nil {
+            let transaction = FMTransaction(value: Double(value) ?? 0.0, frequency: frequency.rawValue, source: source.rawValue, comments: comments)
+            viewModel?.addNew(transaction: transaction)
         } else {
-            if let income = incomeRowViewModel?.income {
-                var updatedIncome = income
-                updatedIncome.value = Double(value) ?? 0.0
-                updatedIncome.frequency = frequency.rawValue
-                updatedIncome.source = source.rawValue
-                updatedIncome.comments = comments
-                incomeRowViewModel?.update(income: updatedIncome)
+            if let transaction = transactionRowViewModel?.transaction {
+                var updatedTransaction = transaction
+                updatedTransaction.value = Double(value) ?? 0.0
+                updatedTransaction.frequency = frequency.rawValue
+                updatedTransaction.source = source.rawValue
+                updatedTransaction.comments = comments
+                transactionRowViewModel?.update(transaction: updatedTransaction)
             }
         }
     }
 }
 
-struct FMAddIncomeview_Previews: PreviewProvider {
+struct FMAddTransactionView_Previews: PreviewProvider {
     static var previews: some View {
-        FMAddIncomeview(viewModel: FMIncomeListViewModel(), shouldPresentAddIncomeView: .constant(false))
+        FMAddTransactionView(viewModel: FMTransactionListViewModel(), shouldPresentAddTransactionView: .constant(false))
     }
 }
