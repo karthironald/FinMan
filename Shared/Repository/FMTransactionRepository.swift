@@ -95,16 +95,17 @@ class FMTransactionRepository: ObservableObject {
     
     func getTransactions() {
         isFetching = true
-        transactionQuery = store.collection(path)
+        store.collection(path)
             .order(by: "createdAt", descending: true)
             .whereField("userId", isEqualTo: userId)
             .whereField("accountId", isEqualTo: accountId)
-            .limit(to: kPaginationCount)
-        transactionQuery?.addSnapshotListener { [weak self] (querySnapshot, error) in
+//            .limit(to: kPaginationCount)
+            .addSnapshotListener { [weak self] (querySnapshot, error) in
+                print("🔵🔵")
                 guard let self = self else { return }
-                self.isFetching = false
                 if let error = error {
                     print(error.localizedDescription)
+                    self.isFetching = false
                     return
                 }
                 let docs = querySnapshot?.documents
@@ -113,6 +114,7 @@ class FMTransactionRepository: ObservableObject {
                 self.transactions = docs?.compactMap({ document in
                     try? document.data(as: FMTransaction.self)
                 }) ?? []
+                self.isFetching = false
             }
     }
     
