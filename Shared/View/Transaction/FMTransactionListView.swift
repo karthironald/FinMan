@@ -29,7 +29,7 @@ struct FMTransactionListView: View {
                                 NavigationLink(
                                     destination: FMTransactionDetailView(transactionRowViewModel: transactionRowViewModel),
                                     label: {
-                                        FMTransactionRow(transactionRowViewModel: transactionRowViewModel)
+                                        FMTransactionRowView(transactionRowViewModel: transactionRowViewModel)
                                             .onAppear {
                                                 if transactionRowViewModel == viewModel.transactionRowViewModel.last {
                                                     viewModel.fetchNextBadge()

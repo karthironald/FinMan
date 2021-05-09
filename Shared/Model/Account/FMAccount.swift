@@ -16,6 +16,8 @@ struct FMAccount: Identifiable, Codable {
     var userId: String?
     var income: Double = 0.0
     var expense: Double = 0.0
+    var incomeCount: Int64 = 0
+    var expenseCount: Int64 = 0
     @ServerTimestamp var createdAt: Timestamp?
 }
 

@@ -9,9 +9,11 @@ import SwiftUI
 
 struct FMAddTransactionView: View {
     @State var value: String = ""
-    @State var frequency: FMTransaction.Frequency = .onetime
-    @State var source: FMTransaction.Source = .earned
+    @State var frequency: FMTransaction.IncomeFrequency = .onetime
+    @State var source: FMTransaction.IncomeSource = .earned
     @State var comments: String = ""
+    @State var transactionType: FMTransaction.TransactionType = .income
+    @State var expenseCategory: FMTransaction.ExpenseCategory = .housing
     
     var viewModel: FMTransactionListViewModel? = nil
     var transactionRowViewModel: FMTransactionRowViewModel? = nil
@@ -24,21 +26,35 @@ struct FMAddTransactionView: View {
                     TextField("Enter amount value", text: $value)
                         .keyboardType(.decimalPad)
                 }
-                Section(footer: Text("\(source.info)").padding(.leading)) {
-                    Picker("Frequency", selection: $frequency) {
-                        ForEach(FMTransaction.Frequency.allCases, id: \.self) { freq in
-                            Text("\(freq.title)")
+                Section {
+                    Picker("Type", selection: $transactionType) {
+                        ForEach(FMTransaction.TransactionType.allCases, id: \.self) { transType in
+                            Text("\(transType.rawValue.capitalized)")
                         }
                     }
-                    .pickerStyle(DefaultPickerStyle())
-                    Picker("Source", selection: $source) {
-                        ForEach(FMTransaction.Source.allCases, id: \.self) { source in
-                            Text("\(source.title)")
+                    .pickerStyle(SegmentedPickerStyle())
+                    if transactionType == .income {
+                        Picker("Frequency", selection: $frequency) {
+                            ForEach(FMTransaction.IncomeFrequency.allCases, id: \.self) { freq in
+                                Text("\(freq.title)")
+                            }
                         }
+                        .pickerStyle(DefaultPickerStyle())
+                        Picker("Source", selection: $source) {
+                            ForEach(FMTransaction.IncomeSource.allCases, id: \.self) { source in
+                                Text("\(source.title)")
+                            }
+                        }
+                        .pickerStyle(DefaultPickerStyle())
+                    } else {
+                        Picker("Category", selection: $expenseCategory) {
+                            ForEach(FMTransaction.ExpenseCategory.allCases, id: \.self) { expCategory in
+                                Text("\(expCategory.rawValue.capitalized)")
+                            }
+                        }
+                        .pickerStyle(DefaultPickerStyle())
                     }
-                    .pickerStyle(DefaultPickerStyle())
                 }
-
                 Section {
                     ZStack(alignment: .topLeading) {
                         if comments.isEmpty {
@@ -64,14 +80,27 @@ struct FMAddTransactionView: View {
     
     private func saveButtonTapped() {
         if transactionRowViewModel?.id == nil && viewModel != nil {
-            let transaction = FMTransaction(value: Double(value) ?? 0.0, frequency: frequency.rawValue, source: source.rawValue, comments: comments)
+            var transaction = FMTransaction(value: Double(value) ?? 0.0)
+            if transactionType == .income {
+                transaction.frequency = frequency.rawValue
+                transaction.source = source.rawValue
+            } else {
+                transaction.expenseCategory = expenseCategory.rawValue
+            }
+            transaction.transactionType = transactionType.rawValue
+            transaction.comments = comments
             viewModel?.addNew(transaction: transaction)
         } else {
             if let transaction = transactionRowViewModel?.transaction {
                 var updatedTransaction = transaction
                 updatedTransaction.value = Double(value) ?? 0.0
-                updatedTransaction.frequency = frequency.rawValue
-                updatedTransaction.source = source.rawValue
+                if transactionType == .income {
+                    updatedTransaction.frequency = frequency.rawValue
+                    updatedTransaction.source = source.rawValue
+                } else {
+                    updatedTransaction.expenseCategory = expenseCategory.rawValue
+                }
+                updatedTransaction.transactionType = transactionType.rawValue
                 updatedTransaction.comments = comments
                 transactionRowViewModel?.update(transaction: updatedTransaction)
             }

@@ -24,13 +24,17 @@ struct FMTransactionDetailView: View {
                 Text("Frequency")
                     .foregroundColor(.secondary)
                 Spacer()
-                Text(FMTransaction.Frequency(rawValue: transactionRowViewModel.transaction.frequency)?.title ?? "")
+                if let frequency = transactionRowViewModel.transaction.frequency {
+                    Text(FMTransaction.IncomeFrequency(rawValue: frequency)?.title ?? "")
+                }
             }
             HStack {
                 Text("Source")
                     .foregroundColor(.secondary)
                 Spacer()
-                Text(FMTransaction.Source(rawValue: transactionRowViewModel.transaction.source)?.title ?? "")
+                if let source = transactionRowViewModel.transaction.source {
+                    Text(FMTransaction.IncomeSource(rawValue: source)?.title ?? "")
+                }
             }
             HStack {
                 Text("Additional Comments")
@@ -48,7 +52,7 @@ struct FMTransactionDetailView: View {
                 .font(.title)
         }))
         .sheet(isPresented: $shouldPresentEditScreen) {
-            FMAddTransactionView(value: String(transactionRowViewModel.transaction.value), frequency: FMTransaction.Frequency(rawValue: transactionRowViewModel.transaction.frequency) ?? .onetime, source: FMTransaction.Source(rawValue: transactionRowViewModel.transaction.source) ?? .earned, comments: transactionRowViewModel.transaction.comments ?? " ", transactionRowViewModel: transactionRowViewModel, shouldPresentAddTransactionView: $shouldPresentEditScreen)
+            FMAddTransactionView(value: String(transactionRowViewModel.transaction.value), frequency: FMTransaction.IncomeFrequency(rawValue: transactionRowViewModel.transaction.frequency ?? "") ?? .onetime, source: FMTransaction.IncomeSource(rawValue: transactionRowViewModel.transaction.source ?? "") ?? .earned, comments: transactionRowViewModel.transaction.comments ?? " ", transactionType: FMTransaction.TransactionType(rawValue: transactionRowViewModel.transaction.transactionType ) ?? .income, expenseCategory: FMTransaction.ExpenseCategory(rawValue: transactionRowViewModel.transaction.expenseCategory ?? "") ?? .housing, transactionRowViewModel: transactionRowViewModel, shouldPresentAddTransactionView: $shouldPresentEditScreen)
         }
     }
 }

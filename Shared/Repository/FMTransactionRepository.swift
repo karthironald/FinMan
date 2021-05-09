@@ -72,7 +72,11 @@ class FMTransactionRepository: ObservableObject {
             let batch = store.batch()
             
             let accountRef = store.collection("Account").document(accountRepository.selectedAccount?.id ?? "")
-            batch.updateData(["income": (accountRepository.selectedAccount?.income ?? 0.0) + (transaction.value)], forDocument: accountRef)
+            if newTransaction.transactionType == FMTransaction.TransactionType.income.rawValue {
+                batch.updateData(["income": (accountRepository.selectedAccount?.income ?? 0.0) + (transaction.value), "incomeCount": (FMAccountRepository.shared.selectedAccount?.incomeCount ?? 0) + 1], forDocument: accountRef)
+            } else {
+                batch.updateData(["expense": (accountRepository.selectedAccount?.expense ?? 0.0) + (transaction.value), "expenseCount": (FMAccountRepository.shared.selectedAccount?.expenseCount ?? 0) + 1], forDocument: accountRef)
+            }
             
             let newTransactionRef = store.collection(path).document()
             try batch.setData(from: newTransaction, forDocument: newTransactionRef)
@@ -113,7 +117,7 @@ class FMTransactionRepository: ObservableObject {
     }
     
     func fetchNextPage() {
-        if let query = transactionQuery, let lastDoc = lastDocument {
+        if let query = transactionQuery, let lastDoc = lastDocument, transactions.count < FMAccountRepository.shared.totalRecordsCount() {
             isPaginating = true
             query
                 .start(afterDocument: lastDoc)
@@ -144,13 +148,23 @@ class FMTransactionRepository: ObservableObject {
             
             let accountRef = store.collection("Account").document(accountRepository.selectedAccount?.id ?? "")
             
-            let accountTransaction = accountRepository.selectedAccount?.income ?? 0.0
-            let oldTransactionValue = oldTransaction.value
-            let newTransactionValue = transaction.value
-            
-            let newAccountIncome = (accountTransaction - oldTransactionValue) + newTransactionValue
-            
-            batch.updateData(["income": newAccountIncome], forDocument: accountRef)
+            if transaction.transactionType == FMTransaction.TransactionType.income.rawValue {
+                let accountTransaction = accountRepository.selectedAccount?.income ?? 0.0
+                let oldTransactionValue = oldTransaction.value
+                let newTransactionValue = transaction.value
+                
+                let newAccountIncome = (accountTransaction - oldTransactionValue) + newTransactionValue
+                
+                batch.updateData(["income": newAccountIncome], forDocument: accountRef)
+            } else {
+                let accountTransaction = accountRepository.selectedAccount?.expense ?? 0.0
+                let oldTransactionValue = oldTransaction.value
+                let newTransactionValue = transaction.value
+                
+                let newAccountExpense = (accountTransaction - oldTransactionValue) + newTransactionValue
+                
+                batch.updateData(["expense": newAccountExpense], forDocument: accountRef)
+            }
             
             let updateIncomeRef = store.collection(path).document(id)
             try batch.setData(from: transaction, forDocument: updateIncomeRef)
@@ -174,11 +188,19 @@ class FMTransactionRepository: ObservableObject {
         
         let accountRef = store.collection("Account").document(accountRepository.selectedAccount?.id ?? "")
         
-        let accountIncome = accountRepository.selectedAccount?.income ?? 0.0
-        let incomeValue = transaction.value
-        let newAccountIncome = accountIncome - incomeValue
-        
-        batch.updateData(["income": newAccountIncome], forDocument: accountRef)
+        if transaction.transactionType == FMTransaction.TransactionType.income.rawValue {
+            let accountIncome = accountRepository.selectedAccount?.income ?? 0.0
+            let incomeValue = transaction.value
+            let newAccountIncome = accountIncome - incomeValue
+            
+            batch.updateData(["income": newAccountIncome, "incomeCount": (FMAccountRepository.shared.selectedAccount?.incomeCount ?? 0) - 1], forDocument: accountRef)
+        } else {
+            let accountExpense = accountRepository.selectedAccount?.expense ?? 0.0
+            let expenseValue = transaction.value
+            let newAccountExpense = accountExpense - expenseValue
+            
+            batch.updateData(["expense": newAccountExpense, "expenseCount": (FMAccountRepository.shared.selectedAccount?.expenseCount ?? 0) - 1], forDocument: accountRef)
+        }
         
         let deleteIncomeDocRef = store.collection(path).document(id)
         batch.deleteDocument(deleteIncomeDocRef)
