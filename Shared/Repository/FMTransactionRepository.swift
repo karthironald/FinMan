@@ -95,12 +95,12 @@ class FMTransactionRepository: ObservableObject {
     
     func getTransactions() {
         isFetching = true
-        store.collection(path)
-            .order(by: "createdAt", descending: true)
+        transactionQuery = store.collection(path)
+            .order(by: "transactionDate", descending: true)
             .whereField("userId", isEqualTo: userId)
             .whereField("accountId", isEqualTo: accountId)
-//            .limit(to: kPaginationCount)
-            .addSnapshotListener { [weak self] (querySnapshot, error) in
+            .limit(to: kPaginationCount)
+        transactionQuery?.addSnapshotListener { [weak self] (querySnapshot, error) in
                 print("🔵🔵")
                 guard let self = self else { return }
                 if let error = error {

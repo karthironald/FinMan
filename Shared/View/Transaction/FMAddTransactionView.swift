@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 struct FMAddTransactionView: View {
     @State var value: String = ""
@@ -14,6 +16,7 @@ struct FMAddTransactionView: View {
     @State var comments: String = ""
     @State var transactionType: FMTransaction.TransactionType = .income
     @State var expenseCategory: FMTransaction.ExpenseCategory = .housing
+    @State var transactionDate: Date = Date()
     
     var viewModel: FMTransactionListViewModel? = nil
     var transactionRowViewModel: FMTransactionRowViewModel? = nil
@@ -55,6 +58,9 @@ struct FMAddTransactionView: View {
                         .pickerStyle(DefaultPickerStyle())
                     }
                 }
+                
+                DatePicker("Date", selection: $transactionDate)
+                
                 Section {
                     ZStack(alignment: .topLeading) {
                         if comments.isEmpty {
@@ -89,6 +95,7 @@ struct FMAddTransactionView: View {
             }
             transaction.transactionType = transactionType.rawValue
             transaction.comments = comments
+            transaction.transactionDate = Timestamp(date: transactionDate)
             viewModel?.addNew(transaction: transaction)
         } else {
             if let transaction = transactionRowViewModel?.transaction {
@@ -101,6 +108,7 @@ struct FMAddTransactionView: View {
                     updatedTransaction.expenseCategory = expenseCategory.rawValue
                 }
                 updatedTransaction.transactionType = transactionType.rawValue
+                updatedTransaction.transactionDate = Timestamp(date: transactionDate)
                 updatedTransaction.comments = comments
                 transactionRowViewModel?.update(transaction: updatedTransaction)
             }

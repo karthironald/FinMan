@@ -18,6 +18,7 @@ struct FMTransaction: Identifiable, Codable {
     var accountId: String?
     var transactionType: String = TransactionType.income.rawValue
     var expenseCategory: String? = nil
+    @ServerTimestamp var transactionDate: Timestamp?
     @ServerTimestamp var createdAt: Timestamp?
 }
 

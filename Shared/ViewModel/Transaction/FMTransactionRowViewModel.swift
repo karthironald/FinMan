@@ -16,7 +16,7 @@ class FMTransactionRowViewModel: ObservableObject, Dated {
     var id: String?
     private var cancellables: Set<AnyCancellable> = []
     var createdDate: Date {
-        transaction.createdAt?.dateValue() ?? Date()
+        transaction.transactionDate?.dateValue() ?? Date()
     }
     
     init(transaction: FMTransaction) {
@@ -38,7 +38,7 @@ class FMTransactionRowViewModel: ObservableObject, Dated {
     }
     
     func imageName() -> String {
-        let date = transaction.createdAt?.dateValue() ?? Date()
+        let date = transaction.transactionDate?.dateValue() ?? Date()
         let components = Calendar.current.dateComponents([.day], from: date)
         return String(components.day ?? 0)
     }

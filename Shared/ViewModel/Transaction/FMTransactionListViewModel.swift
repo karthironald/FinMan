@@ -58,4 +58,8 @@ class FMTransactionListViewModel: ObservableObject {
         transactionRepository.fetchNextPage()
     }
     
+    func shouldEnableLoadMore() -> Bool {
+        transactionRowViewModel.count < FMAccountRepository.shared.totalRecordsCount()
+    }
+    
 }

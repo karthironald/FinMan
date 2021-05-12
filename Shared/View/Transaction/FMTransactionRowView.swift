@@ -16,7 +16,6 @@ struct FMTransactionRowView: View {
             Image(systemName: "\(transactionRowViewModel.imageName()).square.fill")
                 .resizable()
                 .frame(width: 30, height: 30)
-                .padding(.trailing, 5)
                 .foregroundColor(.secondary)
                 .opacity(0.5)
             VStack(alignment: .leading, spacing: 2) {

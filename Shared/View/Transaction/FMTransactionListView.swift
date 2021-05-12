@@ -30,13 +30,6 @@ struct FMTransactionListView: View {
                                     destination: FMTransactionDetailView(transactionRowViewModel: transactionRowViewModel),
                                     label: {
                                         FMTransactionRowView(transactionRowViewModel: transactionRowViewModel)
-                                        
-                                        // Transaction update issue is occuring if we uncomment below lines
-//                                            .onAppear {
-//                                                if (transactionRowViewModel == viewModel.transactionRowViewModel.last) && viewModel.transactionRowViewModel.count < FMAccountRepository.shared.totalRecordsCount() {
-//                                                    viewModel.fetchNextBadge()
-//                                                }
-//                                            }
                                     }
                                 )
                             }
@@ -47,6 +40,10 @@ struct FMTransactionListView: View {
                             }
                         }
                     }
+                    Button("Load More...") {
+                        viewModel.fetchNextBadge()
+                    }
+                    .disabled(!viewModel.shouldEnableLoadMore())
                 }
                 .padding(0)
                 .frame(minWidth: 250)
