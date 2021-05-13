@@ -18,12 +18,12 @@ struct FMTransactionRowView: View {
                 .frame(width: 30, height: 30)
                 .foregroundColor(.secondary)
                 .opacity(0.5)
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading) {
                 Text("\(transactionRowViewModel.transaction.value, specifier: "%0.2f")")
                     .font(.body)
                     .bold()
                     .foregroundColor((transactionRowViewModel.transaction.transactionType == FMTransaction.TransactionType.income.rawValue) ? .green : .red)
-                Text("\(transactionRowViewModel.transaction.createdAt?.dateValue() ?? Date(), style: .time)")
+                Text("\(transactionRowViewModel.transaction.transactionDate?.dateValue() ?? Date(), style: .time)")
                     .font(.footnote)
                     .foregroundColor(.secondary)
             }
