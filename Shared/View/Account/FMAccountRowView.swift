@@ -37,15 +37,6 @@ struct FMAccountRowView: View {
                     }
                     HStack {
                         VStack(alignment: .leading, spacing: 0) {
-                            Text("Total")
-                                .font(.footnote)
-                            Text("\(accountRowViewModel.total(), specifier: "%0.2f")")
-                                .font(.body)
-                                .bold()
-                                .foregroundColor(.blue)
-                        }
-                        Spacer()
-                        VStack(alignment: .leading, spacing: 0) {
                             Text("Income")
                                 .font(.footnote)
                             Text("\(accountRowViewModel.account.income, specifier: "%0.2f")")
@@ -61,6 +52,15 @@ struct FMAccountRowView: View {
                                 .font(.body)
                                 .bold()
                                 .foregroundColor(.red)
+                        }
+                        Spacer()
+                        VStack(alignment: .leading, spacing: 0) {
+                            Text("Total")
+                                .font(.footnote)
+                            Text("\(accountRowViewModel.total(), specifier: "%0.2f")")
+                                .font(.body)
+                                .bold()
+                                .foregroundColor(.blue)
                         }
                     }
                 }
