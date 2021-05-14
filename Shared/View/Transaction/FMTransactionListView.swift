@@ -40,14 +40,16 @@ struct FMTransactionListView: View {
                             }
                         }
                     }
-                    Button("Load More...") {
-                        viewModel.fetchNextBadge()
+                    Section {
+                        Button("Load More...") {
+                            viewModel.fetchNextBadge()
+                        }
+                        .disabled(!viewModel.shouldEnableLoadMore())
                     }
-                    .disabled(!viewModel.shouldEnableLoadMore())
                 }
                 .padding(0)
                 .frame(minWidth: 250)
-                .listStyle(InsetGroupedListStyle())
+                .listStyle(PlainListStyle())
             }
             .navigationTitle("Dashboard")
             .toolbar(content: {

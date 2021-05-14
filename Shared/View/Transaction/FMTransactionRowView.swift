@@ -27,19 +27,22 @@ struct FMTransactionRowView: View {
                     .font(.footnote)
                     .foregroundColor(.secondary)
             }
+            .padding([.top, .bottom], 5)
             Spacer()
             if let freqency = transactionRowViewModel.transaction.source {
                 Text("\(FMTransaction.IncomeSource(rawValue: freqency)?.title ?? "")")
                     .font(.footnote)
                     .foregroundColor(.green)
-                    .padding(7)
+                    .padding([.top, .bottom], 2)
+                    .padding([.leading, .trailing], 8)
                     .background(Color.green.opacity(0.2))
                     .clipShape(RoundedRectangle(cornerRadius: 15))
             } else if let expenseCategory = transactionRowViewModel.transaction.expenseCategory {
                 Text("\(FMTransaction.ExpenseCategory(rawValue: expenseCategory)?.rawValue.capitalized ?? "")")
                     .font(.footnote)
                     .foregroundColor(.red)
-                    .padding(5)
+                    .padding([.top, .bottom], 2)
+                    .padding([.leading, .trailing], 8)
                     .background(Color.red.opacity(0.2))
                     .clipShape(RoundedRectangle(cornerRadius: 10))
             }
