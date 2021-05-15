@@ -14,6 +14,10 @@ struct FMTabView: View {
                 .tabItem {
                     Label("Dashboard", systemImage: "dollarsign.circle")
                 }
+            FMProfileView()
+                .tabItem {
+                    Label("Profile", systemImage: "person.circle.fill")
+                }
         }
     }
 }

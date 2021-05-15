@@ -30,10 +30,40 @@ class FMAuthenticationService: ObservableObject {
         })
     }
     
-    func signIn() {
-        if Auth.auth().currentUser == nil {
-            Auth.auth().signInAnonymously()
+    func signup(with email: String?, password: String?, status: @escaping (Bool) -> Void) {
+        guard let email = email, let password = password else { return }
+        Auth.auth().createUser(withEmail: email, password: password) { result, error in
+            if let error = error {
+                print(error.localizedDescription)
+                status(false)
+            } else {
+                print(result)
+                self.user = result?.user
+                status(true)
+            }
         }
     }
     
+    func signin(with email: String?, password: String?, status: @escaping (Bool) -> Void) {
+        guard let email = email, let password = password else { return }
+        Auth.auth().signIn(withEmail: email, password: password) { result, error in
+            if let error = error {
+                print(error.localizedDescription)
+                status(false)
+            } else {
+                print(result)
+                self.user = result?.user
+                status(true)
+            }
+        }
+    }
+    
+    func signOut() {
+        do {
+            try Auth.auth().signOut()
+            user = nil
+        } catch {
+            print(error)
+        }
+    }
 }

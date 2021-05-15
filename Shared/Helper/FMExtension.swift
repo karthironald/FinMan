@@ -6,12 +6,14 @@
 //
 
 import Foundation
+import SwiftUI
 
 protocol Dated {
     var createdDate: Date { get }
 }
 
 extension Array where Element: Dated {
+    
     func groupedBy(dateComponents: Set<Calendar.Component>) -> [String: [Element]] {
         let initial: [String: [Element]] = [:]
         let groupedByDateComponents = reduce(into: initial) { acc, cur in
@@ -29,4 +31,39 @@ extension Array where Element: Dated {
         return groupedByDateComponents
     }
     
+}
+
+struct FMButton: View {
+    var title: String
+    var type: ButtonType = .primary
+    var action: () -> ()
+    
+    var body: some View {
+        Button(action: {
+            action()
+        }, label: {
+            HStack {
+                Spacer()
+                Text(title)
+                Spacer()
+            }
+        })
+        .modifier(FMButtonThemeModifier(type: type))
+    }
+    
+    enum ButtonType {
+        case primary, secondary
+    }
+}
+
+struct FMButtonThemeModifier: ViewModifier {
+    var type: FMButton.ButtonType
+    
+    func body(content: Content) -> some View {
+        content
+            .frame(height: 50, alignment: .center)
+            .background((type == .primary) ? AppSettings.appPrimaryColour : AppSettings.appSecondaryColour)
+            .foregroundColor((type == .primary) ? .white : AppSettings.appPrimaryColour)
+            .cornerRadius(10)
+    }
 }
