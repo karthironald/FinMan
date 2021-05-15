@@ -19,7 +19,7 @@ extension Array where Element: Dated {
             let date = Calendar.current.date(from: components)!
             
             let df = DateFormatter()
-            df.dateFormat = "MMM yyyy"
+            df.dateFormat = "yyyy MMM"
             
             let dString = df.string(from: date)
             let existing = acc[dString] ?? []

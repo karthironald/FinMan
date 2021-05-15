@@ -11,55 +11,73 @@ struct FMAccountRowView: View {
     
     @ObservedObject var accountRowViewModel: FMAccountRowViewModel
     @State private var shouldShowInfo = false
+    @Namespace private var animation
     
     var body: some View {
-        ZStack(alignment: .topTrailing) {
-            VStack(alignment: .center, spacing: 5) {
-                Text(accountRowViewModel.account.name)
-                    .font(.footnote)
-                    .bold()
-                    .foregroundColor(.secondary)
-                HStack(spacing: 10) {
-                    Spacer()
-                    VStack {
-                        Text("Income")
+        ZStack {
+            HStack(alignment: .center, spacing: 5) {
+                VStack(alignment: .leading, spacing: 5) {
+                    HStack {
+                        Text(accountRowViewModel.account.name)
                             .font(.footnote)
-                        Text("\(accountRowViewModel.account.income, specifier: "%0.2f")")
-                            .font(.title2)
                             .bold()
-                            .foregroundColor(.green)
+                            .foregroundColor(.secondary)
+                        if let comments = accountRowViewModel.account.comments?.trimmingCharacters(in: .whitespacesAndNewlines), !comments.isEmpty, !shouldShowInfo {
+                            Text("(\(comments))")
+                                .font(.footnote)
+                                .foregroundColor(.secondary)
+                                .matchedGeometryEffect(id: "InfoText", in: animation)
+                                .onTapGesture {
+                                    withAnimation {
+                                        shouldShowInfo.toggle()
+                                    }
+                                }
+                        }
+                        Spacer()
                     }
-                    Spacer()
-                    VStack {
-                        Text("Expense")
-                            .font(.footnote)
-                        Text("\(accountRowViewModel.account.expense, specifier: "%0.2f")")
-                            .font(.title2)
-                            .bold()
-                            .foregroundColor(.red)
+                    HStack {
+                        VStack(alignment: .leading, spacing: 0) {
+                            Text("Income")
+                                .font(.footnote)
+                            Text("\(accountRowViewModel.account.income, specifier: "%0.2f")")
+                                .font(.body)
+                                .bold()
+                                .foregroundColor(.green)
+                        }
+                        Spacer()
+                        VStack(alignment: .leading, spacing: 0) {
+                            Text("Expense")
+                                .font(.footnote)
+                            Text("\(accountRowViewModel.account.expense, specifier: "%0.2f")")
+                                .font(.body)
+                                .bold()
+                                .foregroundColor(.red)
+                        }
+                        Spacer()
+                        VStack(alignment: .leading, spacing: 0) {
+                            Text("Total")
+                                .font(.footnote)
+                            Text("\(accountRowViewModel.total(), specifier: "%0.2f")")
+                                .font(.body)
+                                .bold()
+                                .foregroundColor(.blue)
+                        }
                     }
-                    Spacer()
                 }
             }
             .opacity(shouldShowInfo ? 0.1 : 1)
-            if let comments = accountRowViewModel.account.comments {
-                Text(comments)
+            .padding([.bottom], 15)
+            if let comments = accountRowViewModel.account.comments?.trimmingCharacters(in: .whitespacesAndNewlines), !comments.isEmpty, shouldShowInfo {
+                Text("(\(comments))")
                     .font(.footnote)
-                    .foregroundColor(.primary)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                    .opacity(shouldShowInfo ? 1 : 0.0)
+                    .foregroundColor(.secondary)
+                    .matchedGeometryEffect(id: "InfoText", in: animation)
+                    .onTapGesture {
+                        withAnimation {
+                            shouldShowInfo.toggle()
+                        }
+                    }
             }
-            Button(action: {
-                withAnimation {
-                    shouldShowInfo.toggle()
-                }
-            }, label: {
-                Image(systemName: shouldShowInfo ? "xmark.circle" : "info.circle" )
-                    .resizable()
-                    .frame(width: 20, height: 20, alignment: .center)
-            })
-            .foregroundColor(.secondary)
-            .opacity(0.8)
         }
         .frame(maxHeight: .infinity, alignment: .center)
         .padding()

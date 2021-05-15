@@ -98,4 +98,8 @@ class FMAccountRepository: ObservableObject {
         })
     }
     
+    func totalRecordsCount() -> Int64 {
+        let total = (selectedAccount?.incomeCount ?? 0) + (selectedAccount?.expenseCount ?? 0)
+        return total
+    }
 }

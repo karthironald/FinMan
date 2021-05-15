@@ -1,5 +1,5 @@
 //
-//  FMIncome.swift
+//  FMTransaction.swift
 //  FinMan (iOS)
 //
 //  Created by Karthick Selvaraj on 09/04/21.
@@ -8,20 +8,23 @@ import Foundation
 import FirebaseFirestoreSwift
 import FirebaseFirestore
 
-struct FMIncome: Identifiable, Codable {
+struct FMTransaction: Identifiable, Codable {
     @DocumentID var id: String?
     var value: Double
-    var frequency: String
-    var source: String
+    var frequency: String? = nil
+    var source: String? = nil
     var comments: String? = nil
     var userId: String?
     var accountId: String?
+    var transactionType: String = TransactionType.income.rawValue
+    var expenseCategory: String? = nil
+    @ServerTimestamp var transactionDate: Timestamp?
     @ServerTimestamp var createdAt: Timestamp?
 }
 
-extension FMIncome {
+extension FMTransaction {
     
-    enum Frequency: String, CaseIterable {
+    enum IncomeFrequency: String, CaseIterable {
         case onetime, weekly, monthly, quatarly, halfEarly, yearly
         
         var title: String {
@@ -36,7 +39,7 @@ extension FMIncome {
         }
     }
     
-    enum Source: String, CaseIterable {
+    enum IncomeSource: String, CaseIterable {
         case earned, profit, interest, dividend, rental, capitalGain, royalty
         
         var title: String {
@@ -76,15 +79,23 @@ extension FMIncome {
         }
     }
     
+    enum TransactionType: String, CaseIterable {
+        case income, expense
+    }
+    
+    enum ExpenseCategory: String, CaseIterable {
+        case housing, transportation, food, utilities, clothing, medical, insurance, household, personal, debt, dducation, savings, gifts, entertainment, others
+    }
+    
 }
 
-extension FMIncome {
+extension FMTransaction {
     
     static var sampleData = [
-        FMIncome(id: UUID().uuidString, value: 1000, frequency: Frequency.onetime.rawValue, source: Source.earned.rawValue, comments: nil, userId: nil),
-        FMIncome(id: UUID().uuidString, value: 1000, frequency: Frequency.weekly.rawValue, source: Source.dividend.rawValue, comments: nil, userId: nil),
-        FMIncome(id: UUID().uuidString, value: 1000, frequency: Frequency.monthly.rawValue, source: Source.capitalGain.rawValue, comments: nil, userId: nil),
-        FMIncome(id: UUID().uuidString, value: 1000, frequency: Frequency.yearly.rawValue, source: Source.interest.rawValue, comments: nil, userId: nil),
+        FMTransaction(id: UUID().uuidString, value: 1000, frequency: IncomeFrequency.onetime.rawValue, source: IncomeSource.earned.rawValue, comments: nil, userId: nil),
+        FMTransaction(id: UUID().uuidString, value: 1000, frequency: IncomeFrequency.weekly.rawValue, source: IncomeSource.dividend.rawValue, comments: nil, userId: nil),
+        FMTransaction(id: UUID().uuidString, value: 1000, frequency: IncomeFrequency.monthly.rawValue, source: IncomeSource.capitalGain.rawValue, comments: nil, userId: nil),
+        FMTransaction(id: UUID().uuidString, value: 1000, frequency: IncomeFrequency.yearly.rawValue, source: IncomeSource.interest.rawValue, comments: nil, userId: nil),
     ]
     
 }
