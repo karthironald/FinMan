@@ -27,6 +27,7 @@ struct FMLandingView: View {
                                 .frame(width: 100, height: 100, alignment: .center)
                                 .padding()
                                 .foregroundColor(AppSettings.appPrimaryColour)
+                                
                             Text("Hi, Welcome!")
                                 .font(.title)
                                 .bold()
@@ -37,26 +38,28 @@ struct FMLandingView: View {
                                 .padding()
                                 .multilineTextAlignment(.center)
                         }
+                        
                         .frame(width: geo.size.width - 30, height: geo.size.height * 0.6, alignment: .center)
                         Spacer()
                         FMButton(title: "Login", type: .secondary) {
                             shouldPresentLoginForm.toggle()
                         }
+                        .sheet(isPresented: $shouldPresentLoginForm, content: {
+                            FMSignupView(shouldPresentSignupForm: $shouldPresentLoginForm, type: .login)
+                        })
                         FMButton(title: "Register", type: .primary) {
                             shouldPresentSignupForm.toggle()
                         }
-                        
+                        .sheet(isPresented: $shouldPresentSignupForm, content: {
+                            FMSignupView(shouldPresentSignupForm: $shouldPresentSignupForm, type: .signup)
+                        })
                     }
+                    
                     .padding()
                 }
-                .sheet(isPresented: $shouldPresentLoginForm, content: {
-                    FMSignupView(shouldPresentSignupForm: $shouldPresentLoginForm, type: .login)
-                })
             }
             .accentColor(AppSettings.appPrimaryColour)
-            .sheet(isPresented: $shouldPresentSignupForm, content: {
-                FMSignupView(shouldPresentSignupForm: $shouldPresentSignupForm, type: .signup)
-            })
+            
         }
     }
 }

@@ -11,8 +11,8 @@ struct FMSignupView: View {
     
     @StateObject private var authService = FMAuthenticationService.shared
     
-    @State private var email = "karthick3@gmail.com"
-    @State private var password = "Password123"
+    @State private var email = ""
+    @State private var password = ""
     @State private var emailInfoMessage = ""
     @State private var passwordInfoMessage = ""
     
@@ -51,7 +51,7 @@ struct FMSignupView: View {
                 Spacer()
             }
             .padding()
-            .navigationBarTitle(type == .signup ? Text("New Registration") : Text("Login"), displayMode: .inline)
+            .navigationBarTitle(type == .signup ? Text("Registration") : Text("Login"), displayMode: .inline)
             .navigationBarItems(trailing: closeButtonView())
         }
     }
