@@ -12,33 +12,36 @@ struct FMProfileView: View {
     @StateObject var authService = FMAuthenticationService.shared
     
     var body: some View {
-        List {
-            VStack(alignment: .leading) {
-                Text("Email")
-                    .font(.footnote)
-                    .foregroundColor(.secondary)
-                Text(authService.user?.email ?? "-")
-            }
-            VStack(alignment: .leading) {
-                Text("Anonymous")
-                    .font(.footnote)
-                    .foregroundColor(.secondary)
-                Text((authService.user?.isAnonymous == true) ? "Yes" : "No")
-            }
-            VStack(alignment: .leading) {
-                Text("Email Verification Status")
-                    .font(.footnote)
-                    .foregroundColor(.secondary)
-                Text((authService.user?.isEmailVerified == true) ? "Verified" : "Not Verified")
-            }
-            Section {
-                Button("Logout") {
-                    authService.signOut()
+        NavigationView {
+            List {
+                VStack(alignment: .leading) {
+                    Text("Email")
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                    Text(authService.user?.email ?? "-")
                 }
-                .foregroundColor(.red)
+                VStack(alignment: .leading) {
+                    Text("Anonymous")
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                    Text((authService.user?.isAnonymous == true) ? "Yes" : "No")
+                }
+                VStack(alignment: .leading) {
+                    Text("Email Verification Status")
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                    Text((authService.user?.isEmailVerified == true) ? "Verified" : "Not Verified")
+                }
+                Section {
+                    Button("Logout") {
+                        authService.signOut()
+                    }
+                    .foregroundColor(.red)
+                }
             }
+            .listStyle(InsetGroupedListStyle())
+            .navigationTitle("Profile")
         }
-        .listStyle(InsetGroupedListStyle())
     }
     
 }
