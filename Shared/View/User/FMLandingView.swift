@@ -37,9 +37,7 @@ struct FMLandingView: View {
                                 .padding()
                                 .multilineTextAlignment(.center)
                         }
-                        .frame(width: geo.size.width - 30, height: geo.size.height * 0.7, alignment: .center)
-                        .background(AppSettings.appSecondaryColour)
-                        .cornerRadius(AppSettings.appCornerRadius)
+                        .frame(width: geo.size.width - 30, height: geo.size.height * 0.6, alignment: .center)
                         Spacer()
                         FMButton(title: "Login", type: .secondary) {
                             shouldPresentLoginForm.toggle()
