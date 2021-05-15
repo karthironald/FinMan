@@ -64,6 +64,34 @@ struct FMButtonThemeModifier: ViewModifier {
             .frame(height: 50, alignment: .center)
             .background((type == .primary) ? AppSettings.appPrimaryColour : AppSettings.appSecondaryColour)
             .foregroundColor((type == .primary) ? .white : AppSettings.appPrimaryColour)
-            .cornerRadius(10)
+            .cornerRadius(AppSettings.appCornerRadius)
+    }
+}
+
+struct FMTextField: View {
+    var title: String
+    var keyboardType: UIKeyboardType = .default
+    
+    @Binding var value: String
+    
+    var body: some View {
+        TextField(title, text: $value)
+            .modifier(FMTextFieldThemeModifier(keyboardType: keyboardType))
+    }
+}
+
+struct FMTextFieldThemeModifier: ViewModifier {
+    var keyboardType: UIKeyboardType
+    
+    func body(content: Content) -> some View {
+        content
+            .font(.body)
+            .padding()
+            .frame(height: 50, alignment: .center)
+            .background(AppSettings.appSecondaryColour)
+            .cornerRadius(AppSettings.appCornerRadius)
+            .disableAutocorrection(true)
+            .autocapitalization(.none)
+            .keyboardType(keyboardType)
     }
 }

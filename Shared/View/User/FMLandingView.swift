@@ -9,8 +9,9 @@ import SwiftUI
 
 struct FMLandingView: View {
     
-    @StateObject var authenticationService = FMAuthenticationService.shared
+    @StateObject private var authenticationService = FMAuthenticationService.shared
     @State private var shouldPresentSignupForm = false
+    @State private var shouldPresentLoginForm = false
     
     var body: some View {
         if authenticationService.user != nil {
@@ -41,7 +42,7 @@ struct FMLandingView: View {
                         .cornerRadius(AppSettings.appCornerRadius)
                         Spacer()
                         FMButton(title: "Login", type: .secondary) {
-                            shouldPresentSignupForm.toggle()
+                            shouldPresentLoginForm.toggle()
                         }
                         FMButton(title: "Register", type: .primary) {
                             shouldPresentSignupForm.toggle()
@@ -49,11 +50,15 @@ struct FMLandingView: View {
                         
                     }
                     .padding()
-                    FMSignupView(shouldPresentSignupForm: $shouldPresentSignupForm)
-                        .offset(y: shouldPresentSignupForm ? (UIScreen.main.bounds.height * 0.5) : UIScreen.main.bounds.height)
                 }
+                .sheet(isPresented: $shouldPresentLoginForm, content: {
+                    FMSignupView(shouldPresentSignupForm: $shouldPresentLoginForm, type: .login)
+                })
             }
             .accentColor(AppSettings.appPrimaryColour)
+            .sheet(isPresented: $shouldPresentSignupForm, content: {
+                FMSignupView(shouldPresentSignupForm: $shouldPresentSignupForm, type: .signup)
+            })
         }
     }
 }
