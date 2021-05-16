@@ -216,4 +216,8 @@ class FMTransactionRepository: ObservableObject {
         }
     }
     
+    func resetAllData() {
+        transactions = []
+    }
+    
 }

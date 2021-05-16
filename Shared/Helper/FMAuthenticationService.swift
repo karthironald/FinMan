@@ -63,6 +63,8 @@ class FMAuthenticationService: ObservableObject {
     func signOut() {
         do {
             try Auth.auth().signOut()
+            FMAccountRepository.shared.resetAllData()
+            FMTransactionRepository.shared.resetAllData()
         } catch {
             print(error)
         }

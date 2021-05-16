@@ -102,4 +102,10 @@ class FMAccountRepository: ObservableObject {
         let total = (selectedAccount?.incomeCount ?? 0) + (selectedAccount?.expenseCount ?? 0)
         return total
     }
+    
+    func resetAllData() {
+        accounts = []
+        selectedAccount = nil
+    }
+    
 }
