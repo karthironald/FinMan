@@ -18,6 +18,9 @@ struct FMAddTransactionView: View {
     @State var expenseCategory: FMTransaction.ExpenseCategory = .housing
     @State var transactionDate: Date = Date()
     
+    @State private var alertInfoMessage = ""
+    @State private var shouldShowAlert = false
+    
     var viewModel: FMTransactionListViewModel? = nil
     var transactionRowViewModel: FMTransactionRowViewModel? = nil
     @Binding var shouldPresentAddTransactionView: Bool
@@ -74,12 +77,18 @@ struct FMAddTransactionView: View {
                     }
                 }
             }
+            .alert(isPresented: $shouldShowAlert, content: {
+                Alert(title: Text(alertInfoMessage), message: nil, dismissButton: Alert.Button.default(Text(kOkay), action: {
+                    shouldPresentAddTransactionView.toggle()
+                }))
+            })
             .navigationBarTitle(Text("Add Transaction"), displayMode: .inline)
             .navigationBarItems(trailing:
                                     Button("Save") {
                                         saveButtonTapped()
-                                        shouldPresentAddTransactionView.toggle()
+                                        
                                     }
+                                    .disabled((Double(value) ?? 0.0) > 0.0 ? false : true)
             )
         }
     }
@@ -96,7 +105,14 @@ struct FMAddTransactionView: View {
             transaction.transactionType = transactionType.rawValue
             transaction.comments = comments
             transaction.transactionDate = Timestamp(date: transactionDate)
-            viewModel?.addNew(transaction: transaction)
+            viewModel?.addNew(transaction: transaction, resultBlock: { error in
+                if let error = error {
+                    alertInfoMessage = error.localizedDescription
+                    shouldShowAlert.toggle()
+                } else {
+                    shouldPresentAddTransactionView.toggle()
+                }
+            })
         } else {
             if let transaction = transactionRowViewModel?.transaction {
                 var updatedTransaction = transaction
@@ -110,7 +126,15 @@ struct FMAddTransactionView: View {
                 updatedTransaction.transactionType = transactionType.rawValue
                 updatedTransaction.transactionDate = Timestamp(date: transactionDate)
                 updatedTransaction.comments = comments
-                transactionRowViewModel?.update(transaction: updatedTransaction)
+                
+                transactionRowViewModel?.update(transaction: updatedTransaction, resultBlock: { error in
+                    if let error = error {
+                        alertInfoMessage = error.localizedDescription
+                        shouldShowAlert.toggle()
+                    } else {
+                        shouldPresentAddTransactionView.toggle()
+                    }
+                })
             }
         }
     }

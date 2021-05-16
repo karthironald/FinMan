@@ -63,7 +63,7 @@ class FMTransactionRepository: ObservableObject {
     }
     
     
-    func add(_ transaction: FMTransaction) {
+    func add(_ transaction: FMTransaction, resultBlock: @escaping (Error?) -> Void) {
         do {
             var newTransaction = transaction
             newTransaction.userId = userId
@@ -82,11 +82,7 @@ class FMTransactionRepository: ObservableObject {
             try batch.setData(from: newTransaction, forDocument: newTransactionRef)
             
             batch.commit { error in
-                if let error = error {
-                    print(error)
-                } else {
-                    print("Success")
-                }
+                resultBlock(error)
             }
         } catch {
             fatalError("Unable to add card: \(error.localizedDescription).")
@@ -143,7 +139,7 @@ class FMTransactionRepository: ObservableObject {
         }
     }
     
-    func update(transaction: FMTransaction, oldTransaction: FMTransaction) {
+    func update(transaction: FMTransaction, oldTransaction: FMTransaction, resultBlock: @escaping (Error?) -> Void) {
         guard let id = transaction.id else { return }
         do {
             let batch = store.batch()
@@ -172,18 +168,14 @@ class FMTransactionRepository: ObservableObject {
             try batch.setData(from: transaction, forDocument: updateIncomeRef)
             
             batch.commit { error in
-                if let error = error {
-                    print(error)
-                } else {
-                    print("Success")
-                }
+                resultBlock(error)
             }
         } catch {
             print("Unable to update card")
         }
     }
     
-    func delete(transaction: FMTransaction) {
+    func delete(transaction: FMTransaction, resultBlock: @escaping (Error?) -> Void) {
         guard let id = transaction.id else { return }
         
         let batch = store.batch()
@@ -208,11 +200,7 @@ class FMTransactionRepository: ObservableObject {
         batch.deleteDocument(deleteIncomeDocRef)
         
         batch.commit { error in
-            if let error = error {
-                print(error)
-            } else {
-                print("Success")
-            }
+            resultBlock(error)
         }
     }
     

@@ -63,11 +63,8 @@ struct FMSignupView: View {
             }
             .padding()
             .navigationBarTitle(type.screenTitle, displayMode: .inline)
-            .navigationBarItems(trailing: closeButtonView {
-                shouldPresentSignupForm.toggle()
-            })
             .alert(isPresented: $shouldShowAlert, content: {
-                Alert(title: Text(alertInfoMessage), message: nil, dismissButton: Alert.Button.default(Text("Okay"), action: {
+                Alert(title: Text(alertInfoMessage), message: nil, dismissButton: Alert.Button.default(Text(kOkay), action: {
                     shouldPresentSignupForm.toggle()
                 }))
             })

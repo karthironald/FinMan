@@ -15,6 +15,8 @@ struct FMTransactionListView: View {
     
     @State var shouldPresentAddTransactionView: Bool = false
     @State var shouldPresentAddAccountView: Bool = false
+    @State private var alertInfoMessage = ""
+    @State private var shouldShowAlert = false
     
     var body: some View {
         NavigationView {
@@ -35,7 +37,12 @@ struct FMTransactionListView: View {
                             }
                             .onDelete { (indexSet) in
                                 if let index = indexSet.first {
-                                    viewModel.transactionRowViewModel[index].delete()
+                                    viewModel.transactionRowViewModel[index].delete(resultBlock: { error in
+                                        if let error = error {
+                                            alertInfoMessage = error.localizedDescription
+                                            shouldShowAlert = true
+                                        }
+                                    })
                                 }
                             }
                         }
@@ -45,8 +52,14 @@ struct FMTransactionListView: View {
                             viewModel.fetchNextBadge()
                         }
                         .disabled(!viewModel.shouldEnableLoadMore())
+                        
                     }
                 }
+                .alert(isPresented: $shouldShowAlert, content: {
+                    Alert(title: Text(alertInfoMessage), message: nil, dismissButton: Alert.Button.default(Text(kOkay), action: {
+                        // Do nothing
+                    }))
+                })
                 .padding(0)
                 .frame(minWidth: 250)
                 .listStyle(PlainListStyle())
@@ -70,10 +83,12 @@ struct FMTransactionListView: View {
                 }
                 .sheet(isPresented: $shouldPresentAddAccountView, content: {
                     FMAddAccountView(shouldPresentAddAccountView: $shouldPresentAddAccountView, viewModel: accountViewModel)
+                        .accentColor(AppSettings.appPrimaryColour)
                 })
             })
             .sheet(isPresented: $shouldPresentAddTransactionView, content: {
                 FMAddTransactionView(viewModel: viewModel, shouldPresentAddTransactionView: $shouldPresentAddTransactionView)
+                    .accentColor(AppSettings.appPrimaryColour)
             })
         }
     }

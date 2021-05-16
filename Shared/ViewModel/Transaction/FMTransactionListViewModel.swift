@@ -50,8 +50,8 @@ class FMTransactionListViewModel: ObservableObject {
     
     // MARK: - Custom methods
     
-    func addNew(transaction: FMTransaction) {
-        transactionRepository.add(transaction)
+    func addNew(transaction: FMTransaction, resultBlock: @escaping (Error?) -> Void) {
+        transactionRepository.add(transaction, resultBlock: resultBlock)
     }
     
     func fetchNextBadge() {
