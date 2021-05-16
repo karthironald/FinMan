@@ -95,3 +95,25 @@ struct FMTextFieldThemeModifier: ViewModifier {
             .keyboardType(keyboardType)
     }
 }
+
+extension View {
+    
+    func startLoading(start: Bool) -> some View {
+        Group {        
+            if start {
+                ZStack {
+                    self
+                    Circle()
+                        .fill(AppSettings.appPrimaryColour)
+                        .frame(width: 50, height: 50, alignment: .center)
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        .scaleEffect(1)
+                }
+            } else {
+                self
+            }
+        }
+    }
+    
+}

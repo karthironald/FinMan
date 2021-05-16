@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FMProfileView: View {
     
-    @StateObject var authService = FMAuthenticationService.shared
+    @StateObject private var authService = FMAuthenticationService.shared
     
     var body: some View {
         NavigationView {

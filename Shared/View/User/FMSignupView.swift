@@ -9,12 +9,15 @@ import SwiftUI
 
 struct FMSignupView: View {
     
+    @StateObject private var loadingHelper = FMLoadingHelper()
     @StateObject private var authService = FMAuthenticationService.shared
     
     @State private var email = ""
     @State private var password = ""
+    
     @State private var emailInfoMessage = ""
     @State private var passwordInfoMessage = ""
+    @State private var apiInfoMessage = ""
     
     @Binding var shouldPresentSignupForm: Bool
     
@@ -23,7 +26,7 @@ struct FMSignupView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
-                VStack(alignment: .leading, spacing: 0) {
+                VStack(alignment: .leading, spacing: 5) {
                     FMTextField(title: "Email", keyboardType: .emailAddress, value: $email)
                     if !emailInfoMessage.isEmpty {
                         Text(emailInfoMessage)
@@ -32,7 +35,7 @@ struct FMSignupView: View {
                     }
                 }
                 
-                VStack(alignment: .leading, spacing: 0) {
+                VStack(alignment: .leading, spacing: 5) {
                     SecureField("Password", text: $password)
                         .modifier(FMTextFieldThemeModifier(keyboardType: .default))
                     if !passwordInfoMessage.isEmpty {
@@ -44,8 +47,15 @@ struct FMSignupView: View {
                 
                 Spacer()
                     .frame(height: 10, alignment: .center)
-                FMButton(title: type == .signup ? "Signup" : "Login", type: .primary) {
-                    actionButtonTapped()
+                VStack(alignment: .leading, spacing: 5) {
+                    FMButton(title: type == .signup ? "Signup" : "Login", type: .primary) {
+                        actionButtonTapped()
+                    }
+                    if !apiInfoMessage.isEmpty {
+                        Text(apiInfoMessage)
+                            .font(.footnote)
+                            .foregroundColor(.red)
+                    }
                 }
                 .padding(.bottom)
                 Spacer()
@@ -53,6 +63,7 @@ struct FMSignupView: View {
             .padding()
             .navigationBarTitle(type == .signup ? Text("Registration") : Text("Login"), displayMode: .inline)
             .navigationBarItems(trailing: closeButtonView())
+            .startLoading(start: loadingHelper.shouldShowLoading)
         }
     }
     
@@ -71,34 +82,62 @@ struct FMSignupView: View {
         password = password.trimmingCharacters(in: .whitespacesAndNewlines)
         
         if email.isEmpty || !FMHelper.isValidEmail(email) {
-            withAnimation {
-                emailInfoMessage = "Please enter a valid email address"
-            }
+            setInfo(message: "Please enter a valid email address", for: .email)
             return
         } else {
-            withAnimation {
-                emailInfoMessage = ""
-            }
+            setInfo(message: "", for: .email)
         }
         
         if password.isEmpty || password.count < 8 {
-            withAnimation {
-                passwordInfoMessage = "Please enter a valid password with minimum 8 characters"
-            }
+            setInfo(message: "Please enter a valid password with minimum 8 characters", for: .password)
             return
         } else {
-            withAnimation {
-                passwordInfoMessage = ""
-            }
+            setInfo(message: "", for: .password)
         }
         
         if type == .signup {
+            setInfo(message: "", for: .api)
+            toggleLoadingIndicator()
             authService.signup(with: email, password: password) { _ in
+                toggleLoadingIndicator()
                 shouldPresentSignupForm.toggle()
+            } failureBlock: { error in
+                toggleLoadingIndicator()
+                setInfo(message: error.localizedDescription, for: .api)
             }
         } else {
+            setInfo(message: "", for: .api)
+            toggleLoadingIndicator()
             authService.signin(with: email, password: password) { _ in
+                toggleLoadingIndicator()
                 shouldPresentSignupForm.toggle()
+            } failureBlock: { error in
+                print(error)
+                toggleLoadingIndicator()
+                setInfo(message: error.localizedDescription, for: .api)
+            }
+        }
+    }
+    
+    func toggleLoadingIndicator() {
+        withAnimation {
+            loadingHelper.shouldShowLoading.toggle()
+        }
+    }
+    
+    func setInfo(message: String, for type: InfoMessageType) {
+        switch type {
+        case .email:
+            withAnimation {
+                emailInfoMessage = message
+            }
+        case .password:
+            withAnimation {
+                passwordInfoMessage = message
+            }
+        case .api:
+            withAnimation {
+                apiInfoMessage = message
             }
         }
     }
@@ -111,7 +150,12 @@ extension FMSignupView {
         case login, signup
     }
     
+    enum InfoMessageType {
+        case email, password, api
+    }
+    
 }
+
 struct FMSignupView_Previews: PreviewProvider {
     static var previews: some View {
         FMSignupView(shouldPresentSignupForm: .constant(false))
