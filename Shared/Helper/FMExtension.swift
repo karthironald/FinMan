@@ -73,10 +73,19 @@ struct FMTextField: View {
     var keyboardType: UIKeyboardType = .default
     
     @Binding var value: String
+    @Binding var infoMessage: String
     
     var body: some View {
-        TextField(title, text: $value)
-            .modifier(FMTextFieldThemeModifier(keyboardType: keyboardType))
+        VStack(alignment: .leading, spacing: 5) {
+            TextField(title, text: $value)
+                .modifier(FMTextFieldThemeModifier(keyboardType: keyboardType))
+            if !infoMessage.isEmpty {
+                Text(infoMessage)
+                    .font(.footnote)
+                    .foregroundColor(.red)
+            }
+        }
+        
     }
 }
 
@@ -97,6 +106,16 @@ struct FMTextFieldThemeModifier: ViewModifier {
 }
 
 extension View {
+    
+    func closeButtonView(actionBlock: @escaping () -> ()) -> some View {
+        Button(action: {
+            actionBlock()
+        }, label: {
+            Image(systemName: "xmark.circle.fill")
+                .font(.title3)
+        })
+        .foregroundColor(.secondary)
+    }
     
     func startLoading(start: Bool) -> some View {
         Group {        

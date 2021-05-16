@@ -12,6 +12,7 @@ struct FMLandingView: View {
     @StateObject private var authenticationService = FMAuthenticationService.shared
     @State private var shouldPresentSignupForm = false
     @State private var shouldPresentLoginForm = false
+    @State private var shouldPresentForgotPasswordForm = false
     
     var body: some View {
         if authenticationService.user != nil {
@@ -39,7 +40,7 @@ struct FMLandingView: View {
                                 .multilineTextAlignment(.center)
                         }
                         
-                        .frame(width: geo.size.width - 30, height: geo.size.height * 0.6, alignment: .center)
+                        .frame(width: geo.size.width - 30, height: geo.size.height * 0.5, alignment: .center)
                         Spacer()
                         FMButton(title: "Login", type: .secondary) {
                             shouldPresentLoginForm.toggle()
@@ -53,8 +54,16 @@ struct FMLandingView: View {
                         .sheet(isPresented: $shouldPresentSignupForm, content: {
                             FMSignupView(shouldPresentSignupForm: $shouldPresentSignupForm, type: .signup)
                         })
+                        Button("Forgot Password?") {
+                            shouldPresentForgotPasswordForm.toggle()
+                        }
+                        .padding()
+                        .foregroundColor(.secondary)
+                        .sheet(isPresented: $shouldPresentForgotPasswordForm, content: {
+                            FMSignupView(shouldPresentSignupForm: $shouldPresentForgotPasswordForm, type: .resetPassword)
+                        })
+                        
                     }
-                    
                     .padding()
                 }
             }

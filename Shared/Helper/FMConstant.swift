@@ -15,3 +15,5 @@ enum AppSettings {
     static let appCornerRadius: CGFloat = 10
     static let appShadowColour = Color.secondary.opacity(0.7)
 }
+
+let kCommonErrorMessage = "Something went wrong"

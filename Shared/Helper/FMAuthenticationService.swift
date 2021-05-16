@@ -32,8 +32,11 @@ class FMAuthenticationService: ObservableObject {
         })
     }
     
-    func signup(with email: String?, password: String?, successBlock: @escaping (Bool) -> Void, failureBlock: @escaping (Error) -> Void) {
-        guard let email = email, let password = password else { return }
+    func signup(with email: String?, password: String?, successBlock: @escaping (Bool) -> Void, failureBlock: @escaping (Error?) -> Void) {
+        guard let email = email, let password = password else {
+            failureBlock(nil)
+            return
+        }
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
             if let error = error {
                 failureBlock(error)
@@ -43,8 +46,11 @@ class FMAuthenticationService: ObservableObject {
         }
     }
     
-    func signin(with email: String?, password: String?, successBlock: @escaping (Bool) -> Void, failureBlock: @escaping (Error) -> Void) {
-        guard let email = email, let password = password else { return }
+    func signin(with email: String?, password: String?, successBlock: @escaping (Bool) -> Void, failureBlock: @escaping (Error?) -> Void) {
+        guard let email = email, let password = password else {
+            failureBlock(nil)
+            return
+        }
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             if let error = error {
                 failureBlock(error)
@@ -59,6 +65,20 @@ class FMAuthenticationService: ObservableObject {
             try Auth.auth().signOut()
         } catch {
             print(error)
+        }
+    }
+    
+    func initiateRestPassword(for email: String?, successBlock: @escaping (Bool) -> Void, failureBlock: @escaping (Error?) -> Void) {
+        guard let email = email else {
+            failureBlock(nil)
+            return
+        }
+        Auth.auth().sendPasswordReset(withEmail: email) { error in
+            if let error = error {
+                failureBlock(error)
+            } else {
+                successBlock(true)
+            }
         }
     }
     

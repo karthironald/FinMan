@@ -19,6 +19,9 @@ struct FMSignupView: View {
     @State private var passwordInfoMessage = ""
     @State private var apiInfoMessage = ""
     
+    @State private var alertInfoMessage = ""
+    @State private var shouldShowAlert = false
+    
     @Binding var shouldPresentSignupForm: Bool
     
     var type: FMSignupView.FormType = .signup
@@ -27,28 +30,26 @@ struct FMSignupView: View {
         NavigationView {
             VStack(spacing: 20) {
                 VStack(alignment: .leading, spacing: 5) {
-                    FMTextField(title: "Email", keyboardType: .emailAddress, value: $email)
-                    if !emailInfoMessage.isEmpty {
-                        Text(emailInfoMessage)
-                            .font(.footnote)
-                            .foregroundColor(.red)
+                    FMTextField(title: "Email", keyboardType: .emailAddress, value: $email, infoMessage: $emailInfoMessage)
+                }
+                
+                if (type == .login || type == .signup) {
+                    VStack(alignment: .leading, spacing: 5) {
+                        SecureField("Password", text: $password)
+                            .modifier(FMTextFieldThemeModifier(keyboardType: .default))
+                        if !passwordInfoMessage.isEmpty {
+                            Text(passwordInfoMessage)
+                                .font(.footnote)
+                                .foregroundColor(.red)
+                        }
                     }
                 }
                 
-                VStack(alignment: .leading, spacing: 5) {
-                    SecureField("Password", text: $password)
-                        .modifier(FMTextFieldThemeModifier(keyboardType: .default))
-                    if !passwordInfoMessage.isEmpty {
-                        Text(passwordInfoMessage)
-                            .font(.footnote)
-                            .foregroundColor(.red)
-                    }
-                }
                 
                 Spacer()
                     .frame(height: 10, alignment: .center)
                 VStack(alignment: .leading, spacing: 5) {
-                    FMButton(title: type == .signup ? "Signup" : "Login", type: .primary) {
+                    FMButton(title: type.actionButtonTitle, type: .primary) {
                         actionButtonTapped()
                     }
                     if !apiInfoMessage.isEmpty {
@@ -61,20 +62,17 @@ struct FMSignupView: View {
                 Spacer()
             }
             .padding()
-            .navigationBarTitle(type == .signup ? Text("Registration") : Text("Login"), displayMode: .inline)
-            .navigationBarItems(trailing: closeButtonView())
+            .navigationBarTitle(type.screenTitle, displayMode: .inline)
+            .navigationBarItems(trailing: closeButtonView {
+                shouldPresentSignupForm.toggle()
+            })
+            .alert(isPresented: $shouldShowAlert, content: {
+                Alert(title: Text(alertInfoMessage), message: nil, dismissButton: Alert.Button.default(Text("Okay"), action: {
+                    shouldPresentSignupForm.toggle()
+                }))
+            })
             .startLoading(start: loadingHelper.shouldShowLoading)
         }
-    }
-    
-    func closeButtonView() -> some View {
-        Button(action: {
-            shouldPresentSignupForm.toggle()
-        }, label: {
-            Image(systemName: "xmark.circle.fill")
-                .font(.title3)
-        })
-        .foregroundColor(.secondary)
     }
     
     func actionButtonTapped() {
@@ -87,15 +85,27 @@ struct FMSignupView: View {
         } else {
             setInfo(message: "", for: .email)
         }
-        
-        if password.isEmpty || password.count < 8 {
-            setInfo(message: "Please enter a valid password with minimum 8 characters", for: .password)
-            return
-        } else {
-            setInfo(message: "", for: .password)
+        if (type == .login || type == .signup) {
+            if password.isEmpty || password.count < 8 {
+                setInfo(message: "Please enter a valid password with minimum 8 characters", for: .password)
+                return
+            } else {
+                setInfo(message: "", for: .password)
+            }
         }
         
-        if type == .signup {
+        switch type {
+        case .login:
+            setInfo(message: "", for: .api)
+            toggleLoadingIndicator()
+            authService.signin(with: email, password: password) { _ in
+                toggleLoadingIndicator()
+                shouldPresentSignupForm.toggle()
+            } failureBlock: { error in
+                toggleLoadingIndicator()
+                setInfo(message: error?.localizedDescription ?? kCommonErrorMessage, for: .api)
+            }
+        case .signup:
             setInfo(message: "", for: .api)
             toggleLoadingIndicator()
             authService.signup(with: email, password: password) { _ in
@@ -103,18 +113,17 @@ struct FMSignupView: View {
                 shouldPresentSignupForm.toggle()
             } failureBlock: { error in
                 toggleLoadingIndicator()
-                setInfo(message: error.localizedDescription, for: .api)
+                setInfo(message: error?.localizedDescription ?? kCommonErrorMessage, for: .api)
             }
-        } else {
-            setInfo(message: "", for: .api)
+        case .resetPassword:
             toggleLoadingIndicator()
-            authService.signin(with: email, password: password) { _ in
+            authService.initiateRestPassword(for: email) { _ in
                 toggleLoadingIndicator()
-                shouldPresentSignupForm.toggle()
+                alertInfoMessage = "Please check your email inbox for password reset instructions"
+                shouldShowAlert.toggle()
             } failureBlock: { error in
-                print(error)
                 toggleLoadingIndicator()
-                setInfo(message: error.localizedDescription, for: .api)
+                setInfo(message: error?.localizedDescription ?? kCommonErrorMessage, for: .api)
             }
         }
     }
@@ -147,7 +156,23 @@ struct FMSignupView: View {
 extension FMSignupView {
     
     enum FormType {
-        case login, signup
+        case login, signup, resetPassword
+        
+        var screenTitle: String {
+            switch self {
+            case .login: return "Login"
+            case .signup: return "Registration"
+            case .resetPassword: return "Reset Password"
+            }
+        }
+        
+        var actionButtonTitle: String {
+            switch self {
+            case .login: return "Login"
+            case .signup: return "Signup"
+            case .resetPassword: return "Submit"
+            }
+        }
     }
     
     enum InfoMessageType {
