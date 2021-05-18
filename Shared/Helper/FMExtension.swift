@@ -122,12 +122,14 @@ extension View {
             if start {
                 ZStack {
                     self
-                    Circle()
+                    RoundedRectangle(cornerRadius: AppSettings.appCornerRadius)
                         .fill(AppSettings.appPrimaryColour)
-                        .frame(width: 50, height: 50, alignment: .center)
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                        .scaleEffect(1)
+                        .frame(width: 100, height: 75, alignment: .center)
+                        .overlay(
+                            ProgressView("Loading...")
+                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        )
+                        .foregroundColor(.white)
                 }
             } else {
                 self

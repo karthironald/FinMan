@@ -10,6 +10,10 @@ import SwiftUI
 
 class FMLoadingHelper: ObservableObject {
     
+    static let shared = FMLoadingHelper()
+    
     @Published var shouldShowLoading = false
     
+    // MARK: - Init Methods
+    private init() { }
 }

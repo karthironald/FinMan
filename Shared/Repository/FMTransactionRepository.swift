@@ -53,7 +53,7 @@ class FMTransactionRepository: ObservableObject {
             .assign(to: \.accountId, on: self)
             .store(in: &cancellables)
         accountRepository.$selectedAccount
-            .debounce(for: 0.85, scheduler: RunLoop.main) // Delay the network request
+            .debounce(for: 0.25, scheduler: RunLoop.main) // Delay the network request
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 print("🟢🔴 \(String(describing: self?.accountId))")
@@ -97,21 +97,21 @@ class FMTransactionRepository: ObservableObject {
             .whereField("accountId", isEqualTo: accountId)
             .limit(to: kPaginationCount)
         transactionQuery?.addSnapshotListener { [weak self] (querySnapshot, error) in
-                print("🔵🔵")
-                guard let self = self else { return }
-                if let error = error {
-                    print(error.localizedDescription)
-                    self.isFetching = false
-                    return
-                }
-                let docs = querySnapshot?.documents
-                self.lastDocument = docs?.last
-            
-                self.transactions = docs?.compactMap({ document in
-                    try? document.data(as: FMTransaction.self)
-                }) ?? []
+            print("🔵🔵")
+            guard let self = self else { return }
+            if let error = error {
+                print(error.localizedDescription)
                 self.isFetching = false
+                return
             }
+            let docs = querySnapshot?.documents
+            self.lastDocument = docs?.last
+            
+            self.transactions = docs?.compactMap({ document in
+                try? document.data(as: FMTransaction.self)
+            }) ?? []
+            self.isFetching = false
+        }
     }
     
     func fetchNextPage() {

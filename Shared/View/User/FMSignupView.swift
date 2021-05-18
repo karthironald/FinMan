@@ -9,7 +9,6 @@ import SwiftUI
 
 struct FMSignupView: View {
     
-    @StateObject private var loadingHelper = FMLoadingHelper()
     @StateObject private var authService = FMAuthenticationService.shared
     
     @State private var email = ""
@@ -68,7 +67,7 @@ struct FMSignupView: View {
                     shouldPresentSignupForm.toggle()
                 }))
             })
-            .startLoading(start: loadingHelper.shouldShowLoading)
+            .startLoading(start: FMLoadingHelper.shared.shouldShowLoading)
         }
     }
     
@@ -127,7 +126,7 @@ struct FMSignupView: View {
     
     func toggleLoadingIndicator() {
         withAnimation {
-            loadingHelper.shouldShowLoading.toggle()
+            FMLoadingHelper.shared.shouldShowLoading.toggle()
         }
     }
     

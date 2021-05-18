@@ -10,6 +10,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 struct FMAddTransactionView: View {
+    
     @State var value: String = ""
     @State var frequency: FMTransaction.IncomeFrequency = .onetime
     @State var source: FMTransaction.IncomeSource = .earned
@@ -77,6 +78,7 @@ struct FMAddTransactionView: View {
                     }
                 }
             }
+            .startLoading(start: FMLoadingHelper.shared.shouldShowLoading)
             .alert(isPresented: $shouldShowAlert, content: {
                 Alert(title: Text(alertInfoMessage), message: nil, dismissButton: Alert.Button.default(Text(kOkay), action: {
                     shouldPresentAddTransactionView.toggle()
@@ -105,7 +107,10 @@ struct FMAddTransactionView: View {
             transaction.transactionType = transactionType.rawValue
             transaction.comments = comments
             transaction.transactionDate = Timestamp(date: transactionDate)
+            
+            FMLoadingHelper.shared.shouldShowLoading.toggle()
             viewModel?.addNew(transaction: transaction, resultBlock: { error in
+                FMLoadingHelper.shared.shouldShowLoading.toggle()
                 if let error = error {
                     alertInfoMessage = error.localizedDescription
                     shouldShowAlert.toggle()
@@ -127,7 +132,9 @@ struct FMAddTransactionView: View {
                 updatedTransaction.transactionDate = Timestamp(date: transactionDate)
                 updatedTransaction.comments = comments
                 
+                FMLoadingHelper.shared.shouldShowLoading.toggle()
                 transactionRowViewModel?.update(transaction: updatedTransaction, resultBlock: { error in
+                    FMLoadingHelper.shared.shouldShowLoading.toggle()
                     if let error = error {
                         alertInfoMessage = error.localizedDescription
                         shouldShowAlert.toggle()
