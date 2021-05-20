@@ -15,7 +15,7 @@ class FMAccountRepository: ObservableObject {
     private let path: String = "Account"
     private let store = Firestore.firestore()
     
-    var userId = ""
+    var userId: String?
     private let authenticationService = FMAuthenticationService.shared
     private var cancellables: Set<AnyCancellable> = []
     
@@ -25,7 +25,7 @@ class FMAccountRepository: ObservableObject {
     
     private init() {
         authenticationService.$user
-            .compactMap { user in
+            .map { user in
                 user?.uid
             }
             .assign(to: \.userId, on: self)
@@ -34,7 +34,11 @@ class FMAccountRepository: ObservableObject {
         authenticationService.$user
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.getAccounts()
+                if let userId = self?.userId, !userId.isEmpty {
+                    self?.getAccounts()
+                } else {
+                    self?.resetAllData()
+                }
             }
             .store(in: &cancellables)
     }

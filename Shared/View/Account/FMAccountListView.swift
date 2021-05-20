@@ -20,17 +20,17 @@ struct FMAccountListView: View {
                     Text(viewModel.accountRowViewModel[index].account.name)
                         .tag(index)
                 }
-                Section {
-                    Button(action: {
-                        shouldPresentAddAccountView.toggle()
-                    }, label: {
-                        Label("Add Account", systemImage: "person.crop.circle.fill.badge.plus")
-                    })
-                }
             })
             .onChange(of: selectedTab, perform: { value in
                 FMAccountRepository.shared.selectedAccount = viewModel.accountRowViewModel[value].account
             })
+            Section {
+                Button(action: {
+                    shouldPresentAddAccountView.toggle()
+                }, label: {
+                    Label("Add Account", systemImage: "person.crop.circle.fill.badge.plus")
+                })
+            }
         } label: {
             let containsAccount = (viewModel.accountRowViewModel.count > 0)
             Label(containsAccount ? viewModel.accountRowViewModel[selectedTab].account.name : "Add Account", systemImage: containsAccount ? "person.circle.fill" : "person.crop.circle.fill.badge.plus")
