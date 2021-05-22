@@ -12,18 +12,37 @@ struct FMAccountListView: View {
     @StateObject var viewModel = FMAccountListViewModel()
     @State private var selectedTab = 0
     @State private var shouldPresentAddAccountView = false
+    @State private var alertInfoMessage = ""
+    @State private var shouldShowAlert = false
     
     var body: some View {
         NavigationView {
             ZStack(alignment: .bottomTrailing) {
-                List(viewModel.accountRowViewModel, id: \.id) { accountViewModel in
-                    Section {
-                        NavigationLink(
-                            destination: FMTransactionListView(accountViewModel: accountViewModel)) {
-                            FMAccountRowView(accountRowViewModel: accountViewModel)
+                List {
+                    ForEach(viewModel.accountRowViewModel, id: \.id) { accountViewModel in
+                        Section {
+                            NavigationLink(
+                                destination: FMTransactionListView(accountViewModel: accountViewModel)) {
+                                FMAccountRowView(accountRowViewModel: accountViewModel)
+                            }
+                        }
+                    }
+                    .onDelete { (indexSet) in
+                        if let index = indexSet.first {
+                            viewModel.accountRowViewModel[index].delete { error in
+                                if let error = error {
+                                    alertInfoMessage = error.localizedDescription
+                                    shouldShowAlert = true
+                                }
+                            }
                         }
                     }
                 }
+                .alert(isPresented: $shouldShowAlert, content: {
+                    Alert(title: Text(alertInfoMessage), message: nil, dismissButton: Alert.Button.default(Text(kOkay), action: {
+                        // Do nothing
+                    }))
+                })
                 .listStyle(InsetGroupedListStyle())
                 addAccountView()
             }

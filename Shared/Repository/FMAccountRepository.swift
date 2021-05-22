@@ -44,13 +44,15 @@ class FMAccountRepository: ObservableObject {
     }
     
     
-    func add(_ account: FMAccount) {
+    func add(_ account: FMAccount, resultBlock: @escaping (Error?) -> Void) {
         do {
             var newAccount = account
             newAccount.userId = userId
-            _ = try store.collection(path).addDocument(from: newAccount)
+            _ = try store.collection(path).addDocument(from: newAccount) { error in
+                resultBlock(error)
+            }
         } catch {
-            fatalError("Unable to add card: \(error.localizedDescription).")
+            resultBlock(error)
         }
     }
     
@@ -87,21 +89,22 @@ class FMAccountRepository: ObservableObject {
             }
     }
     
-    func update(account: FMAccount) {
+    func update(account: FMAccount, resultBlock: @escaping (Error?) -> Void) {
         guard let id = account.id else { return }
         do {
-            try store.collection(path).document(id).setData(from: account)
+            try store.collection(path).document(id).setData(from: account, completion: { error in
+                resultBlock(error)
+            })
         } catch {
-            print("Unable to update card")
+            resultBlock(error)
         }
     }
     
-    func delete(account: FMAccount) {
+    func delete(account: FMAccount, resultBlock: @escaping (Error?) -> Void) {
         guard let id = account.id else { return }
+        #warning("We need to delete all the transaction of the accounts")
         store.collection(path).document(id).delete(completion: { (error) in
-            if let error = error {
-                print(error.localizedDescription)
-            }
+            resultBlock(error)
         })
     }
     

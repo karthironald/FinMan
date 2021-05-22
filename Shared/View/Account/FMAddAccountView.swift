@@ -11,8 +11,11 @@ struct FMAddAccountView: View {
     @State var name: String = ""
     @State var comments: String = ""
     @Binding var shouldPresentAddAccountView: Bool
+    @State private var alertInfoMessage = ""
+    @State private var shouldShowAlert = false
     
-    @ObservedObject var viewModel: FMAccountListViewModel
+    var viewModel: FMAccountListViewModel? = nil
+    var accountRowViewModel: FMAccountRowViewModel? = nil
     
     var body: some View {
         NavigationView {
@@ -34,6 +37,11 @@ struct FMAddAccountView: View {
                     }
                 }
             }
+            .alert(isPresented: $shouldShowAlert, content: {
+                Alert(title: Text(alertInfoMessage), message: nil, dismissButton: Alert.Button.default(Text(kOkay), action: {
+                    // Do nothing
+                }))
+            })
             .navigationBarTitle(Text("Add Account"), displayMode: .inline)
             .navigationBarItems(trailing: saveButtonView())
         }
@@ -42,24 +50,36 @@ struct FMAddAccountView: View {
     func saveButtonView() -> some View {
         Button("Save") {
             saveButtonTapped()
-            shouldPresentAddAccountView.toggle()
         }
         .disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
     }
+    
     func saveButtonTapped() {
-        let account = FMAccount(name: name, comments: comments)
-        viewModel.addNew(account: account)
-//        if accountRowViewModel?.id == nil && viewModel != nil {
-//            let account = FMAccount(name: name, comments: comments)
-//            viewModel.addNew(account: account)
-//        } else {
-//            if let account = accountRowViewModel?.account {
-//                var updatedAccount = account
-//                updatedAccount.name = name
-//                updatedAccount.comments = comments
-//                accountRowViewModel?.update(account: updatedAccount)
-//            }
-//        }
+        if accountRowViewModel?.id == nil && viewModel != nil {
+            let account = FMAccount(name: name, comments: comments)
+            viewModel?.addNew(account: account, resultBlock: { error in
+                if let error = error {
+                    alertInfoMessage = error.localizedDescription
+                    shouldShowAlert = true
+                } else {
+                    shouldPresentAddAccountView.toggle()
+                }
+            })
+        } else {
+            if let account = accountRowViewModel?.account {
+                var updatedAccount = account
+                updatedAccount.name = name
+                updatedAccount.comments = comments
+                accountRowViewModel?.update(account: updatedAccount, resultBlock: { error in
+                    if let error = error {
+                        alertInfoMessage = error.localizedDescription
+                        shouldShowAlert = true
+                    } else {
+                        shouldPresentAddAccountView.toggle()
+                    }
+                })
+            }
+        }
     }
     
 }
