@@ -20,11 +20,9 @@ struct FMAccountListView: View {
             ZStack(alignment: .bottomTrailing) {
                 List {
                     ForEach(viewModel.accountRowViewModel, id: \.id) { accountViewModel in
-                        Section {
-                            NavigationLink(
-                                destination: FMTransactionListView(accountViewModel: accountViewModel)) {
-                                FMAccountRowView(accountRowViewModel: accountViewModel)
-                            }
+                        NavigationLink(
+                            destination: FMTransactionListView(accountViewModel: accountViewModel)) {
+                            FMAccountRowView(accountRowViewModel: accountViewModel)
                         }
                     }
                     .onDelete { (indexSet) in

@@ -92,7 +92,7 @@ struct FMAccountRowView: View {
                 Text("Edit Account")
             }
         }
-        .frame(height: 80)
+        .frame(height: 90)
     }
 }
 
