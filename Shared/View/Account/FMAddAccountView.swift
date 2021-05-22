@@ -37,12 +37,13 @@ struct FMAddAccountView: View {
                     }
                 }
             }
+            .startLoading(start: FMLoadingHelper.shared.shouldShowLoading)
             .alert(isPresented: $shouldShowAlert, content: {
                 Alert(title: Text(alertInfoMessage), message: nil, dismissButton: Alert.Button.default(Text(kOkay), action: {
                     // Do nothing
                 }))
             })
-            .navigationBarTitle(Text("Add Account"), displayMode: .inline)
+            .navigationBarTitle(Text(accountRowViewModel == nil ? "Add Account" : "Edit Account"), displayMode: .inline)
             .navigationBarItems(trailing: saveButtonView())
         }
     }
@@ -57,7 +58,9 @@ struct FMAddAccountView: View {
     func saveButtonTapped() {
         if accountRowViewModel?.id == nil && viewModel != nil {
             let account = FMAccount(name: name, comments: comments)
+            FMLoadingHelper.shared.shouldShowLoading.toggle()
             viewModel?.addNew(account: account, resultBlock: { error in
+                FMLoadingHelper.shared.shouldShowLoading.toggle()
                 if let error = error {
                     alertInfoMessage = error.localizedDescription
                     shouldShowAlert = true
@@ -70,7 +73,9 @@ struct FMAddAccountView: View {
                 var updatedAccount = account
                 updatedAccount.name = name
                 updatedAccount.comments = comments
+                FMLoadingHelper.shared.shouldShowLoading.toggle()
                 accountRowViewModel?.update(account: updatedAccount, resultBlock: { error in
+                    FMLoadingHelper.shared.shouldShowLoading.toggle()
                     if let error = error {
                         alertInfoMessage = error.localizedDescription
                         shouldShowAlert = true

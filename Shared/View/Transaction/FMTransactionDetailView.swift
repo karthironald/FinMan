@@ -81,6 +81,7 @@ struct FMTransactionDetailView: View {
         }))
         .sheet(isPresented: $shouldPresentEditScreen) {
             FMAddTransactionView(value: String(transactionRowViewModel.transaction.value), frequency: FMTransaction.IncomeFrequency(rawValue: transactionRowViewModel.transaction.frequency ?? "") ?? .onetime, source: FMTransaction.IncomeSource(rawValue: transactionRowViewModel.transaction.source ?? "") ?? .earned, comments: transactionRowViewModel.transaction.comments ?? " ", transactionType: FMTransaction.TransactionType(rawValue: transactionRowViewModel.transaction.transactionType ) ?? .income, expenseCategory: FMTransaction.ExpenseCategory(rawValue: transactionRowViewModel.transaction.expenseCategory ?? "") ?? .housing, transactionDate: transactionRowViewModel.transaction.transactionDate?.dateValue() ?? Date(), transactionRowViewModel: transactionRowViewModel, shouldPresentAddTransactionView: $shouldPresentEditScreen)
+                .accentColor(AppSettings.appPrimaryColour)
         }
     }
 }

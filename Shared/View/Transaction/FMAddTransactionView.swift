@@ -84,7 +84,7 @@ struct FMAddTransactionView: View {
                     shouldPresentAddTransactionView.toggle()
                 }))
             })
-            .navigationBarTitle(Text("Add Transaction"), displayMode: .inline)
+            .navigationBarTitle(Text(transactionRowViewModel == nil ? "Add Transaction" : "Edit Transaction"), displayMode: .inline)
             .navigationBarItems(trailing:
                                     Button("Save") {
                                         saveButtonTapped()
