@@ -10,9 +10,9 @@ import SwiftUI
 struct FMTabView: View {
     var body: some View {
         TabView {
-            FMTransactionListView()
+            FMAccountListView()
                 .tabItem {
-                    Label("Dashboard", systemImage: "dollarsign.circle")
+                    Label("Accounts", systemImage: "person.2.circle.fill")
                 }
             FMProfileView()
                 .tabItem {

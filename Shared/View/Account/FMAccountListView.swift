@@ -9,42 +9,59 @@ import SwiftUI
 
 struct FMAccountListView: View {
     
-    @ObservedObject var viewModel: FMAccountListViewModel
+    @StateObject var viewModel = FMAccountListViewModel()
     @State private var selectedTab = 0
     @State private var shouldPresentAddAccountView = false
     
     var body: some View {
-        Menu {
-            Picker(selection: $selectedTab, label: Text("Acc"), content: {
-                ForEach(0..<viewModel.accountRowViewModel.count, id: \.self) { index in
-                    Text(viewModel.accountRowViewModel[index].account.name)
-                        .tag(index)
-                }
-            })
-            .onChange(of: selectedTab, perform: { value in
-                FMAccountRepository.shared.selectedAccount = viewModel.accountRowViewModel[value].account
-            })
-            Section {
-                Button(action: {
-                    shouldPresentAddAccountView.toggle()
-                }, label: {
-                    Label("Add Account", systemImage: "person.crop.circle.fill.badge.plus")
-                })
-            }
-        } label: {
-            let containsAccount = (viewModel.accountRowViewModel.count > 0)
-            Label(containsAccount ? viewModel.accountRowViewModel[selectedTab].account.name : "Add Account", systemImage: containsAccount ? "person.circle.fill" : "person.crop.circle.fill.badge.plus")
-                .frame(width: 150, alignment: .trailing)
-                .onTapGesture {
-                    if containsAccount {
-                        shouldPresentAddAccountView.toggle()
+        NavigationView {
+            ZStack(alignment: .bottomTrailing) {
+                List(viewModel.accountRowViewModel, id: \.id) { accountViewModel in
+                    Section {
+                        NavigationLink(
+                            destination: FMTransactionListView(accountViewModel: accountViewModel)) {
+                            FMAccountRowView(accountRowViewModel: accountViewModel)
+                        }
                     }
                 }
+                .listStyle(InsetGroupedListStyle())
+                addAccountView()
+            }
+            .navigationTitle("Accounts")
         }
         .sheet(isPresented: $shouldPresentAddAccountView, content: {
             FMAddAccountView(shouldPresentAddAccountView: $shouldPresentAddAccountView, viewModel: viewModel)
                 .accentColor(AppSettings.appPrimaryColour)
         })
+        
+        #warning("We don't need menu style account selection for now")
+//        Menu {
+//            Picker(selection: $selectedTab, label: Text("Acc"), content: {
+//                ForEach(0..<viewModel.accountRowViewModel.count, id: \.self) { index in
+//                    Text(viewModel.accountRowViewModel[index].account.name)
+//                        .tag(index)
+//                }
+//            })
+//            .onChange(of: selectedTab, perform: { value in
+//                FMAccountRepository.shared.selectedAccount = viewModel.accountRowViewModel[value].account
+//            })
+//            Section {
+//                Button(action: {
+//                    shouldPresentAddAccountView.toggle()
+//                }, label: {
+//                    Label("Add Account", systemImage: "person.crop.circle.fill.badge.plus")
+//                })
+//            }
+//        } label: {
+//            let containsAccount = (viewModel.accountRowViewModel.count > 0)
+//            Label(containsAccount ? viewModel.accountRowViewModel[selectedTab].account.name : "Add Account", systemImage: containsAccount ? "person.circle.fill" : "person.crop.circle.fill.badge.plus")
+//                .frame(width: 150, alignment: .trailing)
+//                .onTapGesture {
+//                    if containsAccount {
+//                        shouldPresentAddAccountView.toggle()
+//                    }
+//                }
+//        }
                 
         
         // We are facing list deselection and hanging issue when having tab based swipable view. So went for menu based approach.
@@ -76,6 +93,21 @@ struct FMAccountListView: View {
 //        .cornerRadius(20)
         
     }
+    
+    func addAccountView() -> some View {
+        Button(action: {
+            shouldPresentAddAccountView.toggle()
+        }, label: {
+            Image(systemName: "plus.circle.fill")
+                .resizable()
+        })
+        .foregroundColor(AppSettings.appPrimaryColour)
+        .frame(width: 44, height: 44)
+        .background(Color.white)
+        .clipShape(Circle())
+        .padding()
+    }
+    
 }
 
 struct FMAccountListView_Previews: PreviewProvider {

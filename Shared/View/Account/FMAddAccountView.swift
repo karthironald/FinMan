@@ -35,15 +35,17 @@ struct FMAddAccountView: View {
                 }
             }
             .navigationBarTitle(Text("Add Account"), displayMode: .inline)
-            .navigationBarItems(trailing:
-                                    Button("Save") {
-                                        saveButtonTapped()
-                                        shouldPresentAddAccountView.toggle()
-                                    }
-            )
+            .navigationBarItems(trailing: saveButtonView())
         }
     }
     
+    func saveButtonView() -> some View {
+        Button("Save") {
+            saveButtonTapped()
+            shouldPresentAddAccountView.toggle()
+        }
+        .disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+    }
     func saveButtonTapped() {
         let account = FMAccount(name: name, comments: comments)
         viewModel.addNew(account: account)

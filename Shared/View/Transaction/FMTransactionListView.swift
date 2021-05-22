@@ -11,71 +11,70 @@ import SwiftUI
 struct FMTransactionListView: View {
     
     @StateObject var viewModel = FMTransactionListViewModel()
-    @StateObject var accountViewModel = FMAccountListViewModel()
     
     @State var shouldPresentAddTransactionView: Bool = false
     @State var shouldPresentAddAccountView: Bool = false
     @State private var alertInfoMessage = ""
     @State private var shouldShowAlert = false
+    @ObservedObject var accountViewModel: FMAccountRowViewModel
     
     var body: some View {
-        NavigationView {
-            ZStack(alignment: .bottomTrailing) {
-                VStack(spacing: 0) {
-                    List {
-                        ForEach(Array(viewModel.groupedTransactionRowViewModel.keys.sorted(by: >)), id: \.self) { (key) in
-                            Section(header: Text("\(key) (\(viewModel.groupedTransactionRowViewModel[key]!.count))")) {
-                                ForEach(viewModel.groupedTransactionRowViewModel[key]!, id: \.id) { transactionRowViewModel in
-                                    NavigationLink(
-                                        destination: FMTransactionDetailView(transactionRowViewModel: transactionRowViewModel),
-                                        label: {
-                                            FMTransactionRowView(transactionRowViewModel: transactionRowViewModel)
-                                        }
-                                    )
-                                }
-                                .onDelete { (indexSet) in
-                                    if let index = indexSet.first {
-                                        viewModel.transactionRowViewModel[index].delete(resultBlock: { error in
-                                            if let error = error {
-                                                alertInfoMessage = error.localizedDescription
-                                                shouldShowAlert = true
-                                            }
-                                        })
+        ZStack(alignment: .bottomTrailing) {
+            VStack(spacing: 0) {
+                List {
+                    ForEach(Array(viewModel.groupedTransactionRowViewModel.keys.sorted(by: >)), id: \.self) { (key) in
+                        Section(header: Text("\(key) (\(viewModel.groupedTransactionRowViewModel[key]!.count))")) {
+                            ForEach(viewModel.groupedTransactionRowViewModel[key]!, id: \.id) { transactionRowViewModel in
+                                NavigationLink(
+                                    destination: FMTransactionDetailView(transactionRowViewModel: transactionRowViewModel),
+                                    label: {
+                                        FMTransactionRowView(transactionRowViewModel: transactionRowViewModel)
                                     }
+                                )
+                            }
+                            .onDelete { (indexSet) in
+                                if let index = indexSet.first {
+                                    viewModel.transactionRowViewModel[index].delete(resultBlock: { error in
+                                        if let error = error {
+                                            alertInfoMessage = error.localizedDescription
+                                            shouldShowAlert = true
+                                        }
+                                    })
                                 }
                             }
-                        }
-                        Section {
-                            Button("Load More...") {
-                                viewModel.fetchNextBadge()
-                            }
-                            .disabled(!viewModel.shouldEnableLoadMore())
-                            
                         }
                     }
-                    .alert(isPresented: $shouldShowAlert, content: {
-                        Alert(title: Text(alertInfoMessage), message: nil, dismissButton: Alert.Button.default(Text(kOkay), action: {
-                            // Do nothing
-                        }))
-                    })
-                    .padding(0)
-                    .frame(minWidth: 250)
-                    .listStyle(InsetGroupedListStyle())
+                    Section {
+                        Button(viewModel.isFetching ? "Loading..." : "Load More...") {
+                            viewModel.fetchNextBadge()
+                        }
+                        .disabled(!viewModel.shouldEnableLoadMore())
+                    }
                 }
-                .startLoading(start: FMLoadingHelper.shared.shouldShowLoading)
-                addTransactionView()
+                .alert(isPresented: $shouldShowAlert, content: {
+                    Alert(title: Text(alertInfoMessage), message: nil, dismissButton: Alert.Button.default(Text(kOkay), action: {
+                        // Do nothing
+                    }))
+                })
+                .padding(0)
+                .frame(minWidth: 250)
+                .listStyle(InsetGroupedListStyle())
             }
-            .navigationTitle("Dashboard")
-            .navigationBarItems(trailing: accountsView())
-            .sheet(isPresented: $shouldPresentAddTransactionView, content: {
-                FMAddTransactionView(viewModel: viewModel, shouldPresentAddTransactionView: $shouldPresentAddTransactionView)
-                    .accentColor(AppSettings.appPrimaryColour)
-            })
+            .startLoading(start: FMLoadingHelper.shared.shouldShowLoading)
+            addTransactionView()
         }
-    }
-    
-    func accountsView() -> some View {
-        FMAccountListView(viewModel: accountViewModel)
+        .onAppear(perform: {
+            FMAccountRepository.shared.selectedAccount = accountViewModel.account
+        })
+        .onDisappear(perform: {
+            FMAccountRepository.shared.selectedAccount = nil
+        })
+        .navigationBarTitle("\(accountViewModel.account.name.capitalized)", displayMode: .inline)
+        .sheet(isPresented: $shouldPresentAddTransactionView, content: {
+            FMAddTransactionView(viewModel: viewModel, shouldPresentAddTransactionView: $shouldPresentAddTransactionView)
+                .accentColor(AppSettings.appPrimaryColour)
+        })
+
     }
     
     func addTransactionView() -> some View {
@@ -100,7 +99,7 @@ struct FMTransactionListView_Previews: PreviewProvider {
         let viewModel = FMTransactionListViewModel()
         let rowViewModel = FMTransactionRowViewModel(transaction: FMTransaction.sampleData.first!)
         viewModel.transactionRowViewModel = [rowViewModel]
-        return FMTransactionListView(viewModel: viewModel, shouldPresentAddTransactionView: false)
+        return FMTransactionListView(viewModel: viewModel, shouldPresentAddTransactionView: false, accountViewModel: FMAccountRowViewModel(account: FMAccount.sampleData.first!))
     }
     
 }
