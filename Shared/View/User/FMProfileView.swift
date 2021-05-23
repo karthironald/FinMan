@@ -20,18 +20,7 @@ struct FMProfileView: View {
                         .foregroundColor(.secondary)
                     Text(authService.user?.email ?? "-")
                 }
-                VStack(alignment: .leading) {
-                    Text("Anonymous")
-                        .font(.footnote)
-                        .foregroundColor(.secondary)
-                    Text((authService.user?.isAnonymous == true) ? "Yes" : "No")
-                }
-                VStack(alignment: .leading) {
-                    Text("Email Verification Status")
-                        .font(.footnote)
-                        .foregroundColor(.secondary)
-                    Text((authService.user?.isEmailVerified == true) ? "Verified" : "Not Verified")
-                }
+                .padding([.top, .bottom], 5)
                 Section {
                     Button("Logout") {
                         authService.signOut()
