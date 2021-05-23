@@ -13,13 +13,11 @@ struct FinManApp: App {
     
     init() {
         FirebaseApp.configure()
-        FMAuthenticationService.shared.signIn()
     }
     
     var body: some Scene {
         WindowGroup {
-            FMTabView()
-                .accentColor(.orange)
+            FMLandingView()
         }
     }
 }

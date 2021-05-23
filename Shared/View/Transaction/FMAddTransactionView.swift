@@ -10,6 +10,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 struct FMAddTransactionView: View {
+    
     @State var value: String = ""
     @State var frequency: FMTransaction.IncomeFrequency = .onetime
     @State var source: FMTransaction.IncomeSource = .earned
@@ -17,6 +18,9 @@ struct FMAddTransactionView: View {
     @State var transactionType: FMTransaction.TransactionType = .income
     @State var expenseCategory: FMTransaction.ExpenseCategory = .housing
     @State var transactionDate: Date = Date()
+    
+    @State private var alertInfoMessage = ""
+    @State private var shouldShowAlert = false
     
     var viewModel: FMTransactionListViewModel? = nil
     var transactionRowViewModel: FMTransactionRowViewModel? = nil
@@ -74,12 +78,19 @@ struct FMAddTransactionView: View {
                     }
                 }
             }
-            .navigationBarTitle(Text("Add Transaction"), displayMode: .inline)
+            .startLoading(start: FMLoadingHelper.shared.shouldShowLoading)
+            .alert(isPresented: $shouldShowAlert, content: {
+                Alert(title: Text(alertInfoMessage), message: nil, dismissButton: Alert.Button.default(Text(kOkay), action: {
+                    shouldPresentAddTransactionView.toggle()
+                }))
+            })
+            .navigationBarTitle(Text(transactionRowViewModel == nil ? "Add Transaction" : "Edit Transaction"), displayMode: .inline)
             .navigationBarItems(trailing:
                                     Button("Save") {
                                         saveButtonTapped()
-                                        shouldPresentAddTransactionView.toggle()
+                                        
                                     }
+                                    .disabled((Double(value) ?? 0.0) > 0.0 ? false : true)
             )
         }
     }
@@ -96,7 +107,17 @@ struct FMAddTransactionView: View {
             transaction.transactionType = transactionType.rawValue
             transaction.comments = comments
             transaction.transactionDate = Timestamp(date: transactionDate)
-            viewModel?.addNew(transaction: transaction)
+            
+            FMLoadingHelper.shared.shouldShowLoading.toggle()
+            viewModel?.addNew(transaction: transaction, resultBlock: { error in
+                FMLoadingHelper.shared.shouldShowLoading.toggle()
+                if let error = error {
+                    alertInfoMessage = error.localizedDescription
+                    shouldShowAlert.toggle()
+                } else {
+                    shouldPresentAddTransactionView.toggle()
+                }
+            })
         } else {
             if let transaction = transactionRowViewModel?.transaction {
                 var updatedTransaction = transaction
@@ -110,7 +131,17 @@ struct FMAddTransactionView: View {
                 updatedTransaction.transactionType = transactionType.rawValue
                 updatedTransaction.transactionDate = Timestamp(date: transactionDate)
                 updatedTransaction.comments = comments
-                transactionRowViewModel?.update(transaction: updatedTransaction)
+                
+                FMLoadingHelper.shared.shouldShowLoading.toggle()
+                transactionRowViewModel?.update(transaction: updatedTransaction, resultBlock: { error in
+                    FMLoadingHelper.shared.shouldShowLoading.toggle()
+                    if let error = error {
+                        alertInfoMessage = error.localizedDescription
+                        shouldShowAlert.toggle()
+                    } else {
+                        shouldPresentAddTransactionView.toggle()
+                    }
+                })
             }
         }
     }

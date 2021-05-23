@@ -31,13 +31,13 @@ class FMAccountRowViewModel: ObservableObject {
     
     // MARK: - Custom methods
     
-    func update(account: FMAccount) {
+    func update(account: FMAccount, resultBlock: @escaping (Error?) -> Void) {
         self.account = account
-        accountRepository.update(account: account)
+        accountRepository.update(account: account, resultBlock: resultBlock)
     }
     
-    func delete() {
-        accountRepository.delete(account: account)
+    func delete(resultBlock: @escaping (Error?) -> Void) {
+        accountRepository.delete(account: account, resultBlock: resultBlock)
     }
     
     func total() -> Double {

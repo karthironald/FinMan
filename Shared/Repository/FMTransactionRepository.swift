@@ -17,8 +17,8 @@ class FMTransactionRepository: ObservableObject {
     private let path: String = "Transaction"
     private let store = Firestore.firestore()
     
-    var userId = ""
-    var accountId = ""
+    var userId: String?
+    var accountId: String?
     private let authenticationService = FMAuthenticationService.shared
     private let accountRepository = FMAccountRepository.shared
     private var cancellables: Set<AnyCancellable> = []
@@ -32,38 +32,34 @@ class FMTransactionRepository: ObservableObject {
     
     private init() {
         authenticationService.$user
-            .compactMap { user in
+            .map { user in
                 user?.uid
             }
             .assign(to: \.userId, on: self)
             .store(in: &cancellables)
-        
-        authenticationService.$user
-            .debounce(for: 0.85, scheduler: RunLoop.main) // Delay the network request
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                self?.getTransactions()
-            }
-            .store(in: &cancellables)
         accountRepository.$selectedAccount
-            .compactMap {
+            .map {
                 print("🟢 \(String(describing: $0?.name)): \(String(describing: $0?.id))")
                 return $0?.id
             }
             .assign(to: \.accountId, on: self)
             .store(in: &cancellables)
         accountRepository.$selectedAccount
-            .debounce(for: 0.85, scheduler: RunLoop.main) // Delay the network request
+            .debounce(for: 0.25, scheduler: RunLoop.main) // Delay the network request
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 print("🟢🔴 \(String(describing: self?.accountId))")
-                self?.getTransactions()
+                if let accountId = self?.accountId, !accountId.isEmpty  {
+                    self?.getTransactions()
+                } else {
+                    self?.resetAllData()
+                }
             }
             .store(in: &cancellables)
     }
     
     
-    func add(_ transaction: FMTransaction) {
+    func add(_ transaction: FMTransaction, resultBlock: @escaping (Error?) -> Void) {
         do {
             var newTransaction = transaction
             newTransaction.userId = userId
@@ -82,11 +78,7 @@ class FMTransactionRepository: ObservableObject {
             try batch.setData(from: newTransaction, forDocument: newTransactionRef)
             
             batch.commit { error in
-                if let error = error {
-                    print(error)
-                } else {
-                    print("Success")
-                }
+                resultBlock(error)
             }
         } catch {
             fatalError("Unable to add card: \(error.localizedDescription).")
@@ -97,25 +89,25 @@ class FMTransactionRepository: ObservableObject {
         isFetching = true
         transactionQuery = store.collection(path)
             .order(by: "transactionDate", descending: true)
-            .whereField("userId", isEqualTo: userId)
-            .whereField("accountId", isEqualTo: accountId)
+            .whereField("userId", isEqualTo: userId ?? "")
+            .whereField("accountId", isEqualTo: accountId ?? "")
             .limit(to: kPaginationCount)
         transactionQuery?.addSnapshotListener { [weak self] (querySnapshot, error) in
-                print("🔵🔵")
-                guard let self = self else { return }
-                if let error = error {
-                    print(error.localizedDescription)
-                    self.isFetching = false
-                    return
-                }
-                let docs = querySnapshot?.documents
-                self.lastDocument = docs?.last
-            
-                self.transactions = docs?.compactMap({ document in
-                    try? document.data(as: FMTransaction.self)
-                }) ?? []
+            print("🔵🔵")
+            guard let self = self else { return }
+            if let error = error {
+                print(error.localizedDescription)
                 self.isFetching = false
+                return
             }
+            let docs = querySnapshot?.documents
+            self.lastDocument = docs?.last
+            
+            self.transactions = docs?.compactMap({ document in
+                try? document.data(as: FMTransaction.self)
+            }) ?? []
+            self.isFetching = false
+        }
     }
     
     func fetchNextPage() {
@@ -143,7 +135,7 @@ class FMTransactionRepository: ObservableObject {
         }
     }
     
-    func update(transaction: FMTransaction, oldTransaction: FMTransaction) {
+    func update(transaction: FMTransaction, oldTransaction: FMTransaction, resultBlock: @escaping (Error?) -> Void) {
         guard let id = transaction.id else { return }
         do {
             let batch = store.batch()
@@ -172,18 +164,14 @@ class FMTransactionRepository: ObservableObject {
             try batch.setData(from: transaction, forDocument: updateIncomeRef)
             
             batch.commit { error in
-                if let error = error {
-                    print(error)
-                } else {
-                    print("Success")
-                }
+                resultBlock(error)
             }
         } catch {
             print("Unable to update card")
         }
     }
     
-    func delete(transaction: FMTransaction) {
+    func delete(transaction: FMTransaction, resultBlock: @escaping (Error?) -> Void) {
         guard let id = transaction.id else { return }
         
         let batch = store.batch()
@@ -208,12 +196,12 @@ class FMTransactionRepository: ObservableObject {
         batch.deleteDocument(deleteIncomeDocRef)
         
         batch.commit { error in
-            if let error = error {
-                print(error)
-            } else {
-                print("Success")
-            }
+            resultBlock(error)
         }
+    }
+    
+    func resetAllData() {
+        transactions = []
     }
     
 }

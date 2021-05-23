@@ -28,13 +28,13 @@ class FMTransactionRowViewModel: ObservableObject, Dated {
             .store(in: &cancellables)
     }
     
-    func update(transaction: FMTransaction) {
-        transactionRepository.update(transaction: transaction, oldTransaction: self.transaction)
+    func update(transaction: FMTransaction, resultBlock: @escaping (Error?) -> Void) {
+        transactionRepository.update(transaction: transaction, oldTransaction: self.transaction, resultBlock: resultBlock)
         self.transaction = transaction
     }
     
-    func delete() {
-        transactionRepository.delete(transaction: transaction)
+    func delete(resultBlock: @escaping (Error?) -> Void) {
+        transactionRepository.delete(transaction: transaction, resultBlock: resultBlock)
     }
     
     func imageName() -> String {
