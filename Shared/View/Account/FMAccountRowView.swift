@@ -66,7 +66,7 @@ struct FMAccountRowView: View {
                     }
                 }
                 .opacity(shouldShowInfo ? 0.1 : 1)
-                .padding([.bottom, .top], 15)
+                .padding([.bottom, .top], 10)
                 if let comments = accountRowViewModel.account.comments?.trimmingCharacters(in: .whitespacesAndNewlines), !comments.isEmpty, shouldShowInfo {
                     Text("(\(comments))")
                         .font(.footnote)
