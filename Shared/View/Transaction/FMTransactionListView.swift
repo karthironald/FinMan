@@ -60,14 +60,12 @@ struct FMTransactionListView: View {
                 .frame(minWidth: 250)
                 .listStyle(InsetGroupedListStyle())
             }
-            .startLoading(start: FMLoadingHelper.shared.shouldShowLoading)
             addTransactionView()
         }
         .onAppear(perform: {
-            FMAccountRepository.shared.selectedAccount = accountViewModel.account
-        })
-        .onDisappear(perform: {
-            FMAccountRepository.shared.selectedAccount = nil
+            if FMAccountRepository.shared.selectedAccount?.id != accountViewModel.account.id {            
+                FMAccountRepository.shared.selectedAccount = accountViewModel.account
+            }
         })
         .navigationBarTitle("\(accountViewModel.account.name.capitalized)", displayMode: .inline)
         .sheet(isPresented: $shouldPresentAddTransactionView, content: {

@@ -76,14 +76,11 @@ class FMAccountRepository: ObservableObject {
                     try? document.data(as: FMAccount.self)
                 }) ?? []
                 if selectedAccount == nil || shouldSelectFirstAccount {
-                    #warning("We don't need to set default account for now.")
-//                    self.selectedAccount = self.accounts.first
+                    self.selectedAccount = self.accounts.first
                 } else {
-                    
-                    #warning("We don't need to set default account for now.")
-//                    if let account = self.accounts.filter({ $0.id == selectedAccount?.id }).first {
-//                        self.selectedAccount = account
-//                    }
+                    if let account = self.accounts.filter({ $0.id == selectedAccount?.id }).first {
+                        self.selectedAccount = account
+                    }
                 }
                 isFetching = false
             }
