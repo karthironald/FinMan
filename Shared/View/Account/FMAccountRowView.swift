@@ -11,58 +11,88 @@ struct FMAccountRowView: View {
     
     @ObservedObject var accountRowViewModel: FMAccountRowViewModel
     @State private var shouldShowInfo = false
+    @Namespace private var animation
+    @State private var shouldShowEditAccount = false
     
     var body: some View {
-        ZStack(alignment: .topTrailing) {
-            VStack(alignment: .center, spacing: 5) {
-                Text(accountRowViewModel.account.name)
-                    .font(.footnote)
-                    .bold()
-                    .foregroundColor(.secondary)
-                HStack(spacing: 10) {
-                    Spacer()
-                    VStack {
-                        Text("Income")
-                            .font(.footnote)
-                        Text("\(accountRowViewModel.account.income, specifier: "%0.2f")")
-                            .font(.title2)
-                            .bold()
-                            .foregroundColor(.green)
+        GeometryReader { geo in
+            ZStack {
+                HStack(alignment: .center, spacing: 5) {
+                    VStack(alignment: .leading, spacing: 10) {
+                        HStack {
+                            Text(accountRowViewModel.account.name)
+                                .font(.footnote)
+                                .bold()
+                            if let comments = accountRowViewModel.account.comments?.trimmingCharacters(in: .whitespacesAndNewlines), !comments.isEmpty, !shouldShowInfo {
+                                Image(systemName: "info.circle")
+                                    .resizable()
+                                    .frame(width: 15, height: 15, alignment: .center)
+                                    .foregroundColor(.secondary)
+                                    .onTapGesture {
+                                        withAnimation {
+                                            shouldShowInfo.toggle()
+                                        }
+                                    }
+                            }
+                            Spacer()
+                        }
+                        HStack {
+                            VStack(alignment: .leading, spacing: 0) {
+                                Text("Income")
+                                    .foregroundColor(.secondary)
+                                Text("\(accountRowViewModel.account.income, specifier: "%0.2f")")
+                                    .bold()
+                                    .foregroundColor(.green)
+                            }
+                            .frame(width: geo.size.width / 3, alignment: .leading)
+                            VStack(alignment: .leading, spacing: 0) {
+                                Text("Expense")
+                                    .foregroundColor(.secondary)
+                                Text("\(accountRowViewModel.account.expense, specifier: "%0.2f")")
+                                    .bold()
+                                    .foregroundColor(.red)
+                            }
+                            .frame(width: geo.size.width / 3, alignment: .leading)
+                            VStack(alignment: .leading, spacing: 0) {
+                                Text("Total")
+                                    .foregroundColor(.secondary)
+                                Text("\(accountRowViewModel.total(), specifier: "%0.2f")")
+                                    .bold()
+                                    .foregroundColor(.blue)
+                            }
+                            .frame(width: geo.size.width / 3, alignment: .leading)
+                        }
+                        .font(.footnote)
                     }
-                    Spacer()
-                    VStack {
-                        Text("Expense")
-                            .font(.footnote)
-                        Text("\(accountRowViewModel.account.expense, specifier: "%0.2f")")
-                            .font(.title2)
-                            .bold()
-                            .foregroundColor(.red)
-                    }
-                    Spacer()
+                }
+                .opacity(shouldShowInfo ? 0.1 : 1)
+                .padding([.bottom, .top], 15)
+                if let comments = accountRowViewModel.account.comments?.trimmingCharacters(in: .whitespacesAndNewlines), !comments.isEmpty, shouldShowInfo {
+                    Text("(\(comments))")
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                        .matchedGeometryEffect(id: "InfoText", in: animation)
+                        .onTapGesture {
+                            withAnimation {
+                                shouldShowInfo.toggle()
+                            }
+                        }
                 }
             }
-            .opacity(shouldShowInfo ? 0.1 : 1)
-            if let comments = accountRowViewModel.account.comments {
-                Text(comments)
-                    .font(.footnote)
-                    .foregroundColor(.primary)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                    .opacity(shouldShowInfo ? 1 : 0.0)
-            }
-            Button(action: {
-                withAnimation {
-                    shouldShowInfo.toggle()
-                }
-            }, label: {
-                Image(systemName: shouldShowInfo ? "xmark.circle" : "info.circle" )
-                    .resizable()
-                    .frame(width: 20, height: 20, alignment: .center)
+            .sheet(isPresented: $shouldShowEditAccount, content: {
+                FMAddAccountView(name: accountRowViewModel.account.name, comments: accountRowViewModel.account.comments ?? "", shouldPresentAddAccountView: $shouldShowEditAccount, accountRowViewModel: accountRowViewModel)
+                    .accentColor(AppSettings.appPrimaryColour)
             })
-            .foregroundColor(.secondary)
-            .opacity(0.8)
         }
-        .frame(maxHeight: .infinity, alignment: .center)
-        .padding()
+        .contextMenu {
+            Button(action: {
+                self.shouldShowEditAccount.toggle()
+            }) {
+                Image(systemName: "pencil.circle")
+                Text("Edit Account")
+            }
+        }
+        .frame(height: 90)
     }
 }
 

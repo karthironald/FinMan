@@ -15,7 +15,7 @@ class FMAccountRepository: ObservableObject {
     private let path: String = "Account"
     private let store = Firestore.firestore()
     
-    var userId = ""
+    var userId: String?
     private let authenticationService = FMAuthenticationService.shared
     private var cancellables: Set<AnyCancellable> = []
     
@@ -25,7 +25,7 @@ class FMAccountRepository: ObservableObject {
     
     private init() {
         authenticationService.$user
-            .compactMap { user in
+            .map { user in
                 user?.uid
             }
             .assign(to: \.userId, on: self)
@@ -34,19 +34,25 @@ class FMAccountRepository: ObservableObject {
         authenticationService.$user
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.getAccounts()
+                if let userId = self?.userId, !userId.isEmpty {
+                    self?.getAccounts()
+                } else {
+                    self?.resetAllData()
+                }
             }
             .store(in: &cancellables)
     }
     
     
-    func add(_ account: FMAccount) {
+    func add(_ account: FMAccount, resultBlock: @escaping (Error?) -> Void) {
         do {
             var newAccount = account
             newAccount.userId = userId
-            _ = try store.collection(path).addDocument(from: newAccount)
+            _ = try store.collection(path).addDocument(from: newAccount) { error in
+                resultBlock(error)
+            }
         } catch {
-            fatalError("Unable to add card: \(error.localizedDescription).")
+            resultBlock(error)
         }
     }
     
@@ -70,32 +76,46 @@ class FMAccountRepository: ObservableObject {
                     try? document.data(as: FMAccount.self)
                 }) ?? []
                 if selectedAccount == nil || shouldSelectFirstAccount {
-                    self.selectedAccount = self.accounts.first
+                    #warning("We don't need to set default account for now.")
+//                    self.selectedAccount = self.accounts.first
                 } else {
-                    if let account = self.accounts.filter({ $0.id == selectedAccount?.id }).first {
-                        self.selectedAccount = account
-                    }
+                    
+                    #warning("We don't need to set default account for now.")
+//                    if let account = self.accounts.filter({ $0.id == selectedAccount?.id }).first {
+//                        self.selectedAccount = account
+//                    }
                 }
                 isFetching = false
             }
     }
     
-    func update(account: FMAccount) {
+    func update(account: FMAccount, resultBlock: @escaping (Error?) -> Void) {
         guard let id = account.id else { return }
         do {
-            try store.collection(path).document(id).setData(from: account)
+            try store.collection(path).document(id).setData(from: account, completion: { error in
+                resultBlock(error)
+            })
         } catch {
-            print("Unable to update card")
+            resultBlock(error)
         }
     }
     
-    func delete(account: FMAccount) {
+    func delete(account: FMAccount, resultBlock: @escaping (Error?) -> Void) {
         guard let id = account.id else { return }
+        #warning("We need to delete all the transaction of the accounts")
         store.collection(path).document(id).delete(completion: { (error) in
-            if let error = error {
-                print(error.localizedDescription)
-            }
+            resultBlock(error)
         })
+    }
+    
+    func totalRecordsCount() -> Int64 {
+        let total = (selectedAccount?.incomeCount ?? 0) + (selectedAccount?.expenseCount ?? 0)
+        return total
+    }
+    
+    func resetAllData() {
+        accounts = []
+        selectedAccount = nil
     }
     
 }

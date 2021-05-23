@@ -13,11 +13,12 @@ class FMAccountRowViewModel: ObservableObject {
     @Published var account: FMAccount
     
     private let accountRepository = FMAccountRepository.shared
-    private let incomeRepository = FMIncomeRepository.shared
+    private let transactionRepository = FMTransactionRepository.shared
     var id: String?
     
     private var cancellables: Set<AnyCancellable> = []
     
+    //MARK: - Init methods
     init(account: FMAccount) {
         self.account = account
         
@@ -27,13 +28,20 @@ class FMAccountRowViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    func update(account: FMAccount) {
+    
+    // MARK: - Custom methods
+    
+    func update(account: FMAccount, resultBlock: @escaping (Error?) -> Void) {
         self.account = account
-        accountRepository.update(account: account)
+        accountRepository.update(account: account, resultBlock: resultBlock)
     }
     
-    func delete() {
-        accountRepository.delete(account: account)
+    func delete(resultBlock: @escaping (Error?) -> Void) {
+        accountRepository.delete(account: account, resultBlock: resultBlock)
+    }
+    
+    func total() -> Double {
+        account.income - account.expense
     }
     
 }
