@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		571165E17AFFF4F098559E8A /* Pods_FinMan__macOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E0256DFA6C71A756F2C6C2A /* Pods_FinMan__macOS_.framework */; };
+		770D6AA4265D6D210086182E /* FMHud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770D6AA3265D6D210086182E /* FMHud.swift */; };
 		7717777E2650F0CD00F5F28D /* FMLoadingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7717777D2650F0CD00F5F28D /* FMLoadingHelper.swift */; };
 		77342755264F8A4400632949 /* FMSignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77342754264F8A4400632949 /* FMSignupView.swift */; };
 		77342757264F8A6100632949 /* FMProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77342756264F8A6100632949 /* FMProfileView.swift */; };
@@ -82,6 +83,7 @@
 /* Begin PBXFileReference section */
 		06EA067A2BD20ACF388C0B7C /* Pods-FinMan (iOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FinMan (iOS).debug.xcconfig"; path = "Target Support Files/Pods-FinMan (iOS)/Pods-FinMan (iOS).debug.xcconfig"; sourceTree = "<group>"; };
 		0722921A7EFE7562C77A1452 /* Pods-FinMan (macOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FinMan (macOS).release.xcconfig"; path = "Target Support Files/Pods-FinMan (macOS)/Pods-FinMan (macOS).release.xcconfig"; sourceTree = "<group>"; };
+		770D6AA3265D6D210086182E /* FMHud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMHud.swift; sourceTree = "<group>"; };
 		7717777D2650F0CD00F5F28D /* FMLoadingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMLoadingHelper.swift; sourceTree = "<group>"; };
 		77342754264F8A4400632949 /* FMSignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMSignupView.swift; sourceTree = "<group>"; };
 		77342756264F8A6100632949 /* FMProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMProfileView.swift; sourceTree = "<group>"; };
@@ -329,6 +331,7 @@
 				7734275A264FA64C00632949 /* FMConstant.swift */,
 				7734275C264FE01100632949 /* FMHelper.swift */,
 				7717777D2650F0CD00F5F28D /* FMLoadingHelper.swift */,
+				770D6AA3265D6D210086182E /* FMHud.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -626,6 +629,7 @@
 				776155B226372500000382B4 /* FMTransactionRepository.swift in Sources */,
 				77C3ADE2263E3BAF00FAEF88 /* FMAccountRowViewModel.swift in Sources */,
 				77A22F2B2621A8C900AE2F4F /* FMTransactionRowView.swift in Sources */,
+				770D6AA4265D6D210086182E /* FMHud.swift in Sources */,
 				77A22F322621A8E400AE2F4F /* FMTabView.swift in Sources */,
 				7717777E2650F0CD00F5F28D /* FMLoadingHelper.swift in Sources */,
 				77C3ADD7263E3B5500FAEF88 /* FMAccountListViewModel.swift in Sources */,

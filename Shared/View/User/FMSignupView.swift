@@ -26,49 +26,87 @@ struct FMSignupView: View {
     var type: FMSignupView.FormType = .signup
     
     var body: some View {
-        NavigationView {
-            VStack(spacing: 20) {
+        VStack(spacing: 20) {
+            VStack(alignment: .leading, spacing: 5) {
+                FMTextField(title: "Email", keyboardType: .emailAddress, value: $email, infoMessage: $emailInfoMessage)
+            }
+            
+            if (type == .login || type == .signup) {
                 VStack(alignment: .leading, spacing: 5) {
-                    FMTextField(title: "Email", keyboardType: .emailAddress, value: $email, infoMessage: $emailInfoMessage)
-                }
-                
-                if (type == .login || type == .signup) {
-                    VStack(alignment: .leading, spacing: 5) {
-                        SecureField("Password", text: $password)
-                            .modifier(FMTextFieldThemeModifier(keyboardType: .default))
-                        if !passwordInfoMessage.isEmpty {
-                            Text(passwordInfoMessage)
-                                .font(.footnote)
-                                .foregroundColor(.red)
-                        }
-                    }
-                }
-                
-                
-                Spacer()
-                    .frame(height: 10, alignment: .center)
-                VStack(alignment: .leading, spacing: 5) {
-                    FMButton(title: type.actionButtonTitle, type: .primary) {
-                        actionButtonTapped()
-                    }
-                    if !apiInfoMessage.isEmpty {
-                        Text(apiInfoMessage)
+                    SecureField("Password", text: $password)
+                        .modifier(FMTextFieldThemeModifier(keyboardType: .default))
+                    if !passwordInfoMessage.isEmpty {
+                        Text(passwordInfoMessage)
                             .font(.footnote)
                             .foregroundColor(.red)
                     }
                 }
-                .padding(.bottom)
-                Spacer()
             }
-            .padding()
-            .navigationBarTitle(type.screenTitle, displayMode: .inline)
-            .alert(isPresented: $shouldShowAlert, content: {
-                Alert(title: Text(alertInfoMessage), message: nil, dismissButton: Alert.Button.default(Text(kOkay), action: {
-                    shouldPresentSignupForm.toggle()
-                }))
-            })
-            .startLoading(start: FMLoadingHelper.shared.shouldShowLoading)
+            
+            
+            Spacer()
+                .frame(height: 10, alignment: .center)
+            VStack(alignment: .leading, spacing: 5) {
+                FMButton(title: type.actionButtonTitle, type: .primary) {
+                    actionButtonTapped()
+                }
+                if !apiInfoMessage.isEmpty {
+                    Text(apiInfoMessage)
+                        .font(.footnote)
+                        .foregroundColor(.red)
+                }
+            }
+            .padding(.bottom)
         }
+        .startLoading(start: FMLoadingHelper.shared.shouldShowLoading)
+        .padding()
+        .background(Color.white)
+        
+        
+        
+//        NavigationView {
+//            VStack(spacing: 20) {
+//                VStack(alignment: .leading, spacing: 5) {
+//                    FMTextField(title: "Email", keyboardType: .emailAddress, value: $email, infoMessage: $emailInfoMessage)
+//                }
+//
+//                if (type == .login || type == .signup) {
+//                    VStack(alignment: .leading, spacing: 5) {
+//                        SecureField("Password", text: $password)
+//                            .modifier(FMTextFieldThemeModifier(keyboardType: .default))
+//                        if !passwordInfoMessage.isEmpty {
+//                            Text(passwordInfoMessage)
+//                                .font(.footnote)
+//                                .foregroundColor(.red)
+//                        }
+//                    }
+//                }
+//
+//
+//                Spacer()
+//                    .frame(height: 10, alignment: .center)
+//                VStack(alignment: .leading, spacing: 5) {
+//                    FMButton(title: type.actionButtonTitle, type: .primary) {
+//                        actionButtonTapped()
+//                    }
+//                    if !apiInfoMessage.isEmpty {
+//                        Text(apiInfoMessage)
+//                            .font(.footnote)
+//                            .foregroundColor(.red)
+//                    }
+//                }
+//                .padding(.bottom)
+//                Spacer()
+//            }
+//            .padding()
+//            .navigationBarTitle(type.screenTitle, displayMode: .inline)
+//            .alert(isPresented: $shouldShowAlert, content: {
+//                Alert(title: Text(alertInfoMessage), message: nil, dismissButton: Alert.Button.default(Text(kOkay), action: {
+//                    shouldPresentSignupForm.toggle()
+//                }))
+//            })
+//            .startLoading(start: FMLoadingHelper.shared.shouldShowLoading)
+//        }
     }
     
     func actionButtonTapped() {
