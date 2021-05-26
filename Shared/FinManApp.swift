@@ -10,7 +10,9 @@ import Firebase
 
 @main
 struct FinManApp: App {
+    
     @StateObject var hudState = FMHudState()
+    
     init() {
         FirebaseApp.configure()
     }
@@ -19,8 +21,9 @@ struct FinManApp: App {
         WindowGroup {
             FMLandingView()
                 .environmentObject(hudState)
-                .hud(isPresented: $hudState.isPresented) {
+                .hud(isPresented: $hudState.isPresented, type: hudState.hudType) {
                     Label(hudState.title, systemImage: hudState.systemImage)
+                        .labelStyle(CustomLabelStyle())
                 }
         }
     }

@@ -72,7 +72,6 @@ struct FMTransactionListView: View {
             FMAddTransactionView(viewModel: viewModel, shouldPresentAddTransactionView: $shouldPresentAddTransactionView)
                 .accentColor(AppSettings.appPrimaryColour)
         })
-
     }
     
     func addTransactionView() -> some View {

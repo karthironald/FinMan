@@ -45,27 +45,16 @@ struct FMLandingView: View {
                         .frame(width: geo.size.width - 30, height: geo.size.height * 0.5, alignment: .center)
                         Spacer()
                         FMButton(title: "Login", type: .secondary) {
-//                            shouldPresentLoginForm.toggle()
-                            hud.show(title: "Click Login if you have account already, else click Register to create new account", systemImage: "heart.circle.fill")
+                            shouldPresentLoginForm.toggle()
                         }
-//                        .sheet(isPresented: $shouldPresentLoginForm, content: {
-//                            FMSignupView(shouldPresentSignupForm: $shouldPresentLoginForm, type: .login)
-//                        })
                         FMButton(title: "Register", type: .primary) {
                             shouldPresentSignupForm.toggle()
                         }
-//                        .sheet(isPresented: $shouldPresentSignupForm, content: {
-//                            FMSignupView(shouldPresentSignupForm: $shouldPresentSignupForm, type: .signup)
-//                        })
                         Button("Forgot Password?") {
                             shouldPresentForgotPasswordForm.toggle()
                         }
                         .padding()
                         .foregroundColor(.secondary)
-//                        .sheet(isPresented: $shouldPresentForgotPasswordForm, content: {
-//                            FMSignupView(shouldPresentSignupForm: $shouldPresentForgotPasswordForm, type: .resetPassword)
-//                        })
-                        
                     }
                     .padding()
                 }
@@ -121,7 +110,6 @@ extension View {
                                   blurAnimation: Animation? = .linear,
                                   @ViewBuilder overlayView: @escaping () -> OverlayView) -> some View {
         blur(radius: isPresented.wrappedValue ? blurRadius : 0)
-            
             .animation(blurAnimation)
             .allowsHitTesting(!isPresented.wrappedValue)
             .modifier(OverlayModifier(isPresented: isPresented, overlayView: overlayView))
@@ -154,6 +142,7 @@ struct BottomPopupView<Content: View>: View {
                             Image(systemName: "xmark.circle")
                                 .resizable()
                                 .frame(width: 25, height: 25, alignment: .center)
+                                .foregroundColor(AppSettings.appSecondaryColour)
                         }
 
                     }
