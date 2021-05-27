@@ -8,48 +8,72 @@
 import SwiftUI
 
 struct FMAddAccountView: View {
+    
+    @EnvironmentObject private var hud: FMHudState
+    
     @State var name: String = ""
     @State var comments: String = ""
     @Binding var shouldPresentAddAccountView: Bool
-    @State private var alertInfoMessage = ""
-    @State private var shouldShowAlert = false
+    @State var nameInfoMessage = ""
     
     var viewModel: FMAccountListViewModel? = nil
     var accountRowViewModel: FMAccountRowViewModel? = nil
     
     var body: some View {
-        NavigationView {
-            Form {
-                Section {
-                    TextField("Enter account name", text: $name)
-                        .keyboardType(.default)
+        
+        VStack {
+            FMTextField(title: "Enter account name", value: $name, infoMessage: $nameInfoMessage)
+            ZStack(alignment: .topLeading) {
+                if comments.isEmpty {
+                    Text("Enter additional comments (if any)")
+                        .foregroundColor(.secondary)
+                        .opacity(0.5)
+                        .padding([.top, .leading], 20)
                 }
-                Section {
-                    ZStack(alignment: .topLeading) {
-                        if comments.isEmpty {
-                            Text("Enter additional comments(if any)")
-                                .foregroundColor(.secondary)
-                                .opacity(0.5)
-                                .padding([.top, .leading], 5)
-                        }
-                        TextEditor(text: $comments)
-                            .frame(height: 100, alignment: .center)
-                    }
-                }
+                TextEditor(text: $comments)
+                    .modifier(FMTextEditorThemeModifier(keyboardType: .default))
             }
-            .startLoading(start: FMLoadingHelper.shared.shouldShowLoading)
-            .alert(isPresented: $shouldShowAlert, content: {
-                Alert(title: Text(alertInfoMessage), message: nil, dismissButton: Alert.Button.default(Text(kOkay), action: {
-                    // Do nothing
-                }))
-            })
-            .navigationBarTitle(Text(accountRowViewModel == nil ? "Add Account" : "Edit Account"), displayMode: .inline)
-            .navigationBarItems(trailing: saveButtonView())
+            .padding(.bottom)
+            saveButtonView()
         }
+        .onAppear(perform: {
+            UITextView.appearance().backgroundColor = .clear
+        })
+        .startLoading(start: FMLoadingHelper.shared.shouldShowLoading)
+        .padding()
+//        NavigationView {
+//            Form {
+//                Section {
+//                    TextField("Enter account name", text: $name)
+//                        .keyboardType(.default)
+//                }
+//                Section {
+//                    ZStack(alignment: .topLeading) {
+//                        if comments.isEmpty {
+//                            Text("Enter additional comments(if any)")
+//                                .foregroundColor(.secondary)
+//                                .opacity(0.5)
+//                                .padding([.top, .leading], 5)
+//                        }
+//                        TextEditor(text: $comments)
+//                            .frame(height: 100, alignment: .center)
+//                    }
+//                }
+//                saveButtonView()
+//            }
+//            .startLoading(start: FMLoadingHelper.shared.shouldShowLoading)
+//            .alert(isPresented: $shouldShowAlert, content: {
+//                Alert(title: Text(alertInfoMessage), message: nil, dismissButton: Alert.Button.default(Text(kOkay), action: {
+//                    // Do nothing
+//                }))
+//            })
+//            .navigationBarTitle(Text(accountRowViewModel == nil ? "Add Account" : "Edit Account"), displayMode: .inline)
+//            .navigationBarItems(trailing: saveButtonView())
+//        }
     }
     
     func saveButtonView() -> some View {
-        Button("Save") {
+        FMButton(title: "Save", type: .primary) {
             saveButtonTapped()
         }
         .disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
@@ -62,8 +86,7 @@ struct FMAddAccountView: View {
             viewModel?.addNew(account: account, resultBlock: { error in
                 FMLoadingHelper.shared.shouldShowLoading.toggle()
                 if let error = error {
-                    alertInfoMessage = error.localizedDescription
-                    shouldShowAlert = true
+                    hud.show(title: error.localizedDescription, type: .error)
                 } else {
                     shouldPresentAddAccountView.toggle()
                 }
@@ -77,8 +100,7 @@ struct FMAddAccountView: View {
                 accountRowViewModel?.update(account: updatedAccount, resultBlock: { error in
                     FMLoadingHelper.shared.shouldShowLoading.toggle()
                     if let error = error {
-                        alertInfoMessage = error.localizedDescription
-                        shouldShowAlert = true
+                        hud.show(title: error.localizedDescription, type: .error)
                     } else {
                         shouldPresentAddAccountView.toggle()
                     }

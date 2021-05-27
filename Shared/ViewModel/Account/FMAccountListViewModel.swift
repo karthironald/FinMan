@@ -13,6 +13,7 @@ class FMAccountListViewModel: ObservableObject {
     @Published var accountRepository = FMAccountRepository.shared
     @Published var accountRowViewModel: [FMAccountRowViewModel] = []
     @Published var isFetching: Bool = true
+    @Published var selectedAccountRowViewModel: FMAccountRowViewModel?
     
     var selectedAccount: FMAccount?
     private var cancellables: Set<AnyCancellable> = []

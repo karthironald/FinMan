@@ -46,10 +46,13 @@ struct FMAccountListView: View {
             }
             .navigationTitle("Accounts")
         }
-        .sheet(isPresented: $shouldPresentAddAccountView, content: {
-            FMAddAccountView(shouldPresentAddAccountView: $shouldPresentAddAccountView, viewModel: viewModel)
-                .accentColor(AppSettings.appPrimaryColour)
-        })
+        .popup(isPresented: $shouldPresentAddAccountView) {
+            BottomPopupView(title: "Add Account", shouldDismiss: $shouldPresentAddAccountView) {
+                FMAddAccountView(shouldPresentAddAccountView: $shouldPresentAddAccountView, viewModel: viewModel)
+                    .accentColor(AppSettings.appPrimaryColour)
+            }
+        }
+        
         
         #warning("We don't need menu style account selection for now")
 //        Menu {

@@ -1,53 +1,12 @@
 //
-//  FMHud.swift
-//  FinMan (iOS)
+//  FMHudView.swift
+//  FinMan
 //
-//  Created by Karthick Selvaraj on 25/05/21.
+//  Created by Karthick Selvaraj on 27/05/21.
 //
 
+import Foundation
 import SwiftUI
-
-final class FMHudState: ObservableObject {
-    
-    @Published var isPresented: Bool = false
-    private(set) var title: String = ""
-    private(set) var systemImage: String = ""
-    private(set) var hudType: HudType = .info
-    
-    func show(title: String, systemImage: String? = nil, type: HudType = .info) {
-        self.title = title
-        self.systemImage = (systemImage != nil) ? systemImage! : type.defaultIconName
-        self.hudType = type
-        withAnimation {
-            isPresented = true
-        }
-    }
-    
-}
-
-extension FMHudState {
-    
-    enum HudType {
-        case success, info, error
-        
-        var backgroundColor: Color {
-            switch self {
-            case .success: return Color.green
-            case .info: return Color.orange
-            case .error: return Color.red
-            }
-        }
-        
-        var defaultIconName: String {
-            switch self {
-            case .success: return "checkmark.circle"
-            case .info: return "info.circle"
-            case .error: return "xmark.circle"
-            }
-        }
-    }
-    
-}
 
 struct FMHud<Content: View>: View {
     
@@ -57,7 +16,7 @@ struct FMHud<Content: View>: View {
     var body: some View {
         content
             .foregroundColor(.white)
-            .padding(.horizontal, 10)
+            .padding(10)
             .background(
                 RoundedRectangle(cornerRadius: AppSettings.appCornerRadius)
                     .foregroundColor(hudType.backgroundColor)
@@ -99,12 +58,14 @@ extension View {
 }
 
 struct CustomLabelStyle: LabelStyle {
+    
     func makeBody(configuration: Configuration) -> some View {
         HStack {
             configuration
                 .icon
-                .font(.title)
+                .font(.title3)
             configuration.title
         }
     }
+    
 }

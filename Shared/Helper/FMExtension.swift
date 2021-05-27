@@ -105,6 +105,22 @@ struct FMTextFieldThemeModifier: ViewModifier {
     }
 }
 
+struct FMTextEditorThemeModifier: ViewModifier {
+    var keyboardType: UIKeyboardType
+    
+    func body(content: Content) -> some View {
+        content
+            .font(.body)
+            .padding()
+            .frame(height: 100, alignment: .center)
+            .background(AppSettings.appSecondaryColour)
+            .cornerRadius(AppSettings.appCornerRadius)
+            .disableAutocorrection(true)
+            .autocapitalization(.none)
+            .keyboardType(keyboardType)
+    }
+}
+
 extension View {
     
     func closeButtonView(actionBlock: @escaping () -> ()) -> some View {
