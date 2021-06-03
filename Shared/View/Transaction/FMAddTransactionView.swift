@@ -19,6 +19,10 @@ struct FMAddTransactionView: View {
     @State var expenseCategory: FMTransaction.ExpenseCategory = .housing
     @State var transactionDate: Date = Date()
     
+    @State var shouldShowIncomeFrequency = false
+    @State var shouldShowIncomeSource = false
+    @State var shouldShowExpenseCategory = false
+    
     @State private var alertInfoMessage = ""
     @State private var shouldShowAlert = false
     
@@ -27,72 +31,66 @@ struct FMAddTransactionView: View {
     @Binding var shouldPresentAddTransactionView: Bool
     
     var body: some View {
-        NavigationView {
-            Form {
-                Section {
-                    TextField("Enter amount value", text: $value)
-                        .keyboardType(.decimalPad)
-                }
-                Section {
-                    Picker("Type", selection: $transactionType) {
+        ZStack {
+            VStack(spacing: 15) {
+                FMTextField(title: "Enter amount value", value: $value, infoMessage: .constant(""))
+                    .keyboardType(.decimalPad)
+                HStack {
+                    Text("Type")
+                    Spacer()
+                    Picker("Type", selection: $transactionType.animation()) {
                         ForEach(FMTransaction.TransactionType.allCases, id: \.self) { transType in
                             Text("\(transType.rawValue.capitalized)")
                         }
                     }
                     .pickerStyle(SegmentedPickerStyle())
-                    if transactionType == .income {
-                        Picker("Frequency", selection: $frequency) {
-                            ForEach(FMTransaction.IncomeFrequency.allCases, id: \.self) { freq in
-                                Text("\(freq.title)")
+                    .frame(width: 200, alignment: .center)
+                }
+                if transactionType == .income {
+                    HStack {
+                        Text("Frequency")
+                        Spacer()
+                        Button("\(frequency.rawValue.capitalized)") {
+                            withAnimation {
+                                shouldShowIncomeFrequency.toggle()
                             }
                         }
-                        .pickerStyle(DefaultPickerStyle())
-                        Picker("Source", selection: $source) {
-                            ForEach(FMTransaction.IncomeSource.allCases, id: \.self) { source in
-                                Text("\(source.title)")
+                    }
+                    HStack {
+                        Text("Source")
+                        Spacer()
+                        Button("\(source.rawValue.capitalized)") {
+                            withAnimation {
+                                shouldShowIncomeSource.toggle()
                             }
                         }
-                        .pickerStyle(DefaultPickerStyle())
-                    } else {
-                        Picker("Category", selection: $expenseCategory) {
-                            ForEach(FMTransaction.ExpenseCategory.allCases, id: \.self) { expCategory in
-                                Text("\(expCategory.rawValue.capitalized)")
+                    }
+                } else {
+                    HStack {
+                        Text("Category")
+                        Spacer()
+                        Button("\(expenseCategory.rawValue.capitalized)") {
+                            withAnimation {
+                                shouldShowExpenseCategory.toggle()
                             }
                         }
-                        .pickerStyle(DefaultPickerStyle())
                     }
                 }
-                
-                DatePicker("Date", selection: $transactionDate)
-                
-                Section {
-                    ZStack(alignment: .topLeading) {
-                        if comments.isEmpty {
-                            Text("Enter additional comments(if any)")
-                                .foregroundColor(.secondary)
-                                .opacity(0.5)
-                                .padding([.top, .leading], 5)
-                        }
-                        TextEditor(text: $comments)
-                            .frame(height: 100, alignment: .center)
-                    }
+                FMButton(title: "Save", type: .primary) {
+                    saveButtonTapped()
                 }
+                .padding(.top)
             }
-            .startLoading(start: FMLoadingHelper.shared.shouldShowLoading)
-            .alert(isPresented: $shouldShowAlert, content: {
-                Alert(title: Text(alertInfoMessage), message: nil, dismissButton: Alert.Button.default(Text(kOkay), action: {
-                    shouldPresentAddTransactionView.toggle()
-                }))
-            })
-            .navigationBarTitle(Text(transactionRowViewModel == nil ? "Add Transaction" : "Edit Transaction"), displayMode: .inline)
-            .navigationBarItems(trailing:
-                                    Button("Save") {
-                                        saveButtonTapped()
-                                        
-                                    }
-                                    .disabled((Double(value) ?? 0.0) > 0.0 ? false : true)
-            )
+            .overlay((shouldShowIncomeFrequency || shouldShowIncomeSource || shouldShowExpenseCategory) ? Color.white : nil)
+            if shouldShowIncomeFrequency {
+                FMGridView<FMTransaction.IncomeFrequency>(items: FMTransaction.IncomeFrequency.allCases, selectedItem: $frequency, shouldDismiss: $shouldShowIncomeFrequency)
+            } else if shouldShowIncomeSource {
+                FMGridView<FMTransaction.IncomeSource>(items: FMTransaction.IncomeSource.allCases, selectedItem: $source, shouldDismiss: $shouldShowIncomeSource)
+            } else if shouldShowExpenseCategory {
+                FMGridView<FMTransaction.ExpenseCategory>(items: FMTransaction.ExpenseCategory.allCases, selectedItem: $expenseCategory, shouldDismiss: $shouldShowExpenseCategory)
+            }
         }
+        .padding()
     }
     
     private func saveButtonTapped() {

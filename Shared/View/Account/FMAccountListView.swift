@@ -12,6 +12,7 @@ struct FMAccountListView: View {
     @StateObject var viewModel = FMAccountListViewModel()
     @State private var selectedTab = 0
     @State private var shouldPresentAddAccountView = false
+    @State private var shouldPresentProfileView = false
     @State private var alertInfoMessage = ""
     @State private var shouldShowAlert = false
     
@@ -45,14 +46,19 @@ struct FMAccountListView: View {
                 addAccountView()
             }
             .navigationTitle("Accounts")
+            .navigationBarItems(trailing: profileButtonview())
         }
+        .popup(isPresented: $shouldPresentProfileView, overlayView: {
+            BottomPopupView(title: "Profile", shouldDismiss: $shouldPresentProfileView) {
+                FMProfileView()
+            }
+        })
         .popup(isPresented: $shouldPresentAddAccountView) {
             BottomPopupView(title: "Add Account", shouldDismiss: $shouldPresentAddAccountView) {
                 FMAddAccountView(shouldPresentAddAccountView: $shouldPresentAddAccountView, viewModel: viewModel)
                     .accentColor(AppSettings.appPrimaryColour)
             }
         }
-        
         
         #warning("We don't need menu style account selection for now")
 //        Menu {
@@ -112,6 +118,15 @@ struct FMAccountListView: View {
 //        .background(Color.secondary.opacity(0.3))
 //        .cornerRadius(20)
         
+    }
+    
+    func profileButtonview() -> some View {
+        Button(action: {
+            shouldPresentProfileView.toggle()
+        }, label: {
+            Image(systemName: "person.circle")
+                .font(.title)
+        })
     }
     
     func addAccountView() -> some View {

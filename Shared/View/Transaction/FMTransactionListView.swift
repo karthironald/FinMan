@@ -68,9 +68,11 @@ struct FMTransactionListView: View {
             }
         })
         .navigationBarTitle("\(accountViewModel.account.name.capitalized)", displayMode: .inline)
-        .sheet(isPresented: $shouldPresentAddTransactionView, content: {
-            FMAddTransactionView(viewModel: viewModel, shouldPresentAddTransactionView: $shouldPresentAddTransactionView)
-                .accentColor(AppSettings.appPrimaryColour)
+        .popup(isPresented: $shouldPresentAddTransactionView, overlayView: {
+            BottomPopupView(title: "Add Transaction", shouldDismiss: $shouldPresentAddTransactionView) {
+                FMAddTransactionView(viewModel: viewModel, shouldPresentAddTransactionView: $shouldPresentAddTransactionView)
+                    .accentColor(AppSettings.appPrimaryColour)
+            }
         })
     }
     

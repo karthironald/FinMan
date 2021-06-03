@@ -12,25 +12,23 @@ struct FMProfileView: View {
     @StateObject private var authService = FMAuthenticationService.shared
     
     var body: some View {
-        NavigationView {
-            List {
-                VStack(alignment: .leading) {
-                    Text("Email")
-                        .font(.footnote)
-                        .foregroundColor(.secondary)
-                    Text(authService.user?.email ?? "-")
-                }
-                .padding([.top, .bottom], 5)
-                Section {
-                    Button("Logout") {
-                        authService.signOut()
-                    }
-                    .foregroundColor(.red)
-                }
+        List {
+            VStack(alignment: .leading) {
+                Text("Email")
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+                Text(authService.user?.email ?? "-")
             }
-            .listStyle(InsetGroupedListStyle())
-            .navigationTitle("Profile")
+            .padding([.top, .bottom], 5)
+            Section {
+                Button("Logout") {
+                    authService.signOut()
+                }
+                .foregroundColor(.red)
+            }
         }
+        .listStyle(InsetGroupedListStyle())
+        .frame(height: 200, alignment: .center)
     }
     
 }
