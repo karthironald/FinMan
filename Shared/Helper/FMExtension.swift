@@ -58,12 +58,13 @@ struct FMButton: View {
 
 struct FMButtonThemeModifier: ViewModifier {
     var type: FMButton.ButtonType
+    @Environment(\.isEnabled) var isEnabled
     
     func body(content: Content) -> some View {
         content
             .frame(height: 50, alignment: .center)
-            .background((type == .primary) ? AppSettings.appPrimaryColour : AppSettings.appSecondaryColour)
-            .foregroundColor((type == .primary) ? .white : AppSettings.appPrimaryColour)
+            .background(!isEnabled ? Color.gray.opacity(0.5) : (type == .primary) ? AppSettings.appPrimaryColour : AppSettings.appSecondaryColour)
+            .foregroundColor(!isEnabled ? Color.secondary : (type == .primary) ? .white : AppSettings.appPrimaryColour)
             .cornerRadius(AppSettings.appCornerRadius)
     }
 }
@@ -71,6 +72,7 @@ struct FMButtonThemeModifier: ViewModifier {
 struct FMTextField: View {
     var title: String
     var keyboardType: UIKeyboardType = .default
+    var height: CGFloat = 50
     
     @Binding var value: String
     @Binding var infoMessage: String
@@ -78,7 +80,7 @@ struct FMTextField: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 5) {
             TextField(title, text: $value)
-                .modifier(FMTextFieldThemeModifier(keyboardType: keyboardType))
+                .modifier(FMTextFieldThemeModifier(keyboardType: keyboardType, height: height))
             if !infoMessage.isEmpty {
                 Text(infoMessage)
                     .font(.footnote)
@@ -91,12 +93,13 @@ struct FMTextField: View {
 
 struct FMTextFieldThemeModifier: ViewModifier {
     var keyboardType: UIKeyboardType
+    var height: CGFloat = 50
     
     func body(content: Content) -> some View {
         content
             .font(.body)
             .padding()
-            .frame(height: 50, alignment: .center)
+            .frame(height: height, alignment: .center)
             .background(Color.secondary.opacity(0.12))
             .cornerRadius(AppSettings.appCornerRadius)
             .disableAutocorrection(true)

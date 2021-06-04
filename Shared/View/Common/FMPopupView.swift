@@ -10,6 +10,7 @@ import SwiftUI
 
 struct BottomPopupView<Content: View>: View {
     
+    @Environment(\.colorScheme) var colorScheme
     let title: String
     @Binding var shouldDismiss: Bool
     @ViewBuilder var content: () -> Content
@@ -41,9 +42,9 @@ struct BottomPopupView<Content: View>: View {
                     content()
                 }
                 .padding(.bottom, geometry.safeAreaInsets.bottom)
-                .background(Color.white)
+                .background(colorScheme == .dark ? Color.black : Color.white)
                 .cornerRadius(radius: 16, corners: [.topLeft, .topRight])
-                .shadow(radius: 10)
+                .shadow(color: .secondary.opacity(0.5), radius: 10)
             }
             .edgesIgnoringSafeArea([.bottom])
         }
@@ -94,11 +95,13 @@ extension View {
     
     func popup<OverlayView: View>(isPresented: Binding<Bool>,
                                   blurRadius: CGFloat = 3,
-                                  blurAnimation: Animation? = .linear,
+                                  blurAnimation: Animation? = nil,
                                   @ViewBuilder overlayView: @escaping () -> OverlayView) -> some View {
-        blur(radius: isPresented.wrappedValue ? blurRadius : 0)
+        disabled(isPresented.wrappedValue) // Disable user interaction when the bottom popup is active
+            .blur(radius: isPresented.wrappedValue ? blurRadius : 0)
             .animation(blurAnimation)
             .allowsHitTesting(!isPresented.wrappedValue)
+            .disabled(false)
             .modifier(OverlayModifier(isPresented: isPresented, overlayView: overlayView))
     }
     

@@ -11,6 +11,7 @@ import FirebaseFirestoreSwift
 
 struct FMAddTransactionView: View {
     
+    @Namespace private var animation
     @State var value: String = ""
     @State var frequency: FMTransaction.IncomeFrequency = .onetime
     @State var source: FMTransaction.IncomeSource = .earned
@@ -33,10 +34,15 @@ struct FMAddTransactionView: View {
     var body: some View {
         ZStack {
             VStack(spacing: 15) {
-                FMTextField(title: "Enter amount value", value: $value, infoMessage: .constant(""))
-                    .keyboardType(.decimalPad)
                 HStack {
-                    Text("Type")
+                    Text("Amount").foregroundColor(.secondary)
+                    Spacer()
+                    FMTextField(title: "Enter amount", keyboardType: .decimalPad, height: 40, value: $value, infoMessage: .constant(""))
+                        .frame(width: 200, alignment: .center)
+                }
+                
+                HStack {
+                    Text("Type").foregroundColor(.secondary)
                     Spacer()
                     Picker("Type", selection: $transactionType.animation()) {
                         ForEach(FMTransaction.TransactionType.allCases, id: \.self) { transType in
@@ -48,46 +54,56 @@ struct FMAddTransactionView: View {
                 }
                 if transactionType == .income {
                     HStack {
-                        Text("Frequency")
+                        Text("Frequency").foregroundColor(.secondary)
                         Spacer()
                         Button("\(frequency.rawValue.capitalized)") {
                             withAnimation {
                                 shouldShowIncomeFrequency.toggle()
                             }
                         }
+                        .modifier(TagStyledButton())
+                        .matchedGeometryEffect(id: "incomeFreq", in: animation, properties: .position)
                     }
                     HStack {
-                        Text("Source")
+                        Text("Source").foregroundColor(.secondary)
                         Spacer()
                         Button("\(source.rawValue.capitalized)") {
                             withAnimation {
                                 shouldShowIncomeSource.toggle()
                             }
                         }
+                        .modifier(TagStyledButton())
+                        .matchedGeometryEffect(id: "incomeSource", in: animation, properties: .position)
                     }
                 } else {
                     HStack {
-                        Text("Category")
+                        Text("Category").foregroundColor(.secondary)
                         Spacer()
                         Button("\(expenseCategory.rawValue.capitalized)") {
-                            withAnimation {
+                            withAnimation(Animation.spring()) {
                                 shouldShowExpenseCategory.toggle()
                             }
                         }
+                        .modifier(TagStyledButton())
+                        .matchedGeometryEffect(id: "expenseCategory", in: animation, properties: .position)
                     }
                 }
                 FMButton(title: "Save", type: .primary) {
                     saveButtonTapped()
                 }
+                .disabled(Double(value) ?? 0.0 <= 0.0)
                 .padding(.top)
             }
             .overlay((shouldShowIncomeFrequency || shouldShowIncomeSource || shouldShowExpenseCategory) ? Color.white : nil)
             if shouldShowIncomeFrequency {
                 FMGridView<FMTransaction.IncomeFrequency>(items: FMTransaction.IncomeFrequency.allCases, selectedItem: $frequency, shouldDismiss: $shouldShowIncomeFrequency)
+                    .matchedGeometryEffect(id: "incomeFreq", in: animation, properties: .position)
             } else if shouldShowIncomeSource {
                 FMGridView<FMTransaction.IncomeSource>(items: FMTransaction.IncomeSource.allCases, selectedItem: $source, shouldDismiss: $shouldShowIncomeSource)
+                    .matchedGeometryEffect(id: "incomeSource", in: animation, properties: .position)
             } else if shouldShowExpenseCategory {
                 FMGridView<FMTransaction.ExpenseCategory>(items: FMTransaction.ExpenseCategory.allCases, selectedItem: $expenseCategory, shouldDismiss: $shouldShowExpenseCategory)
+                    .matchedGeometryEffect(id: "expenseCategory", in: animation, properties: .position)
             }
         }
         .padding()
@@ -148,5 +164,16 @@ struct FMAddTransactionView: View {
 struct FMAddTransactionView_Previews: PreviewProvider {
     static var previews: some View {
         FMAddTransactionView(viewModel: FMTransactionListViewModel(), shouldPresentAddTransactionView: .constant(false))
+    }
+}
+
+struct TagStyledButton: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .frame(height: 30)
+            .padding(.horizontal)
+            .background(AppSettings.appPrimaryColour.opacity(0.2))
+            .foregroundColor(AppSettings.appPrimaryColour)
+            .clipShape(Capsule())
     }
 }

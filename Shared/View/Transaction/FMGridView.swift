@@ -23,11 +23,11 @@ struct FMGridView<Item: RawRepresentable>: View where Item.RawValue == String {
                     .padding(10)
                     .frame(minWidth: 0, maxWidth: .infinity, maxHeight: 50, alignment: .center)
                     .background(selectedItem.rawValue == items[index].rawValue ? AppSettings.appPrimaryColour : AppSettings.appSecondaryColour)
-                    .cornerRadius(AppSettings.appCornerRadius)
+                    .clipShape(Capsule())
                     .foregroundColor(selectedItem.rawValue == items[index].rawValue ? .white : .black)
                     .onTapGesture {
                         selectedItem = items[index]
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                             withAnimation {
                                 shouldDismiss.toggle()
                             }

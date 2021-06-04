@@ -71,7 +71,7 @@ struct FMAccountRowView: View {
                     Text("(\(comments))")
                         .font(.footnote)
                         .foregroundColor(.secondary)
-                        .matchedGeometryEffect(id: "InfoText", in: animation)
+                        .matchedGeometryEffect(id: "InfoText", in: animation, properties: .size)
                         .onTapGesture {
                             withAnimation {
                                 shouldShowInfo.toggle()
