@@ -41,7 +41,6 @@ struct FMSignupView: View {
                 }
             }
             
-            
             Spacer()
                 .frame(height: 10, alignment: .center)
             VStack(alignment: .leading, spacing: 5) {
@@ -58,7 +57,6 @@ struct FMSignupView: View {
         }
         .startLoading(start: FMLoadingHelper.shared.shouldShowLoading)
         .padding()
-        .background(Color.white)
     }
     
     func actionButtonTapped() {

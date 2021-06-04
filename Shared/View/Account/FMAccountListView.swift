@@ -124,8 +124,8 @@ struct FMAccountListView: View {
         Button(action: {
             shouldPresentProfileView.toggle()
         }, label: {
-            Image(systemName: "person.circle")
-                .font(.title)
+            Image(systemName: "person.circle.fill")
+                .font(.title2)
         })
     }
     

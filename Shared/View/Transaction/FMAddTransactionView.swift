@@ -91,7 +91,7 @@ struct FMAddTransactionView: View {
                 FMButton(title: "Save", type: .primary) {
                     saveButtonTapped()
                 }
-                .disabled(Double(value) ?? 0.0 <= 0.0)
+                .disabled(!shouldEnableSaveButton())
                 .padding(.top)
             }
             .overlay((shouldShowIncomeFrequency || shouldShowIncomeSource || shouldShowExpenseCategory) ? Color.white : nil)
@@ -157,6 +157,15 @@ struct FMAddTransactionView: View {
                     }
                 })
             }
+        }
+    }
+    
+    func shouldEnableSaveButton() -> Bool {
+        if transactionRowViewModel?.id == nil && viewModel != nil {
+            return Double(value) ?? 0.0 > 0.0
+        } else {
+            let value = Double(value) ?? 0.0
+            return (value > 0.0) && value != transactionRowViewModel?.transaction.value
         }
     }
 }

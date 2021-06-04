@@ -101,7 +101,6 @@ extension View {
             .blur(radius: isPresented.wrappedValue ? blurRadius : 0)
             .animation(blurAnimation)
             .allowsHitTesting(!isPresented.wrappedValue)
-            .disabled(false)
             .modifier(OverlayModifier(isPresented: isPresented, overlayView: overlayView))
     }
     
