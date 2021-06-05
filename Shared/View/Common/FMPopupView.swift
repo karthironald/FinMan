@@ -15,6 +15,8 @@ struct BottomPopupView<Content: View>: View {
     @Binding var shouldDismiss: Bool
     @ViewBuilder var content: () -> Content
     
+    @State private var childSize: CGSize = .zero
+    
     var body: some View {
         GeometryReader { geometry in
             VStack {
@@ -39,7 +41,13 @@ struct BottomPopupView<Content: View>: View {
 
                     }
                     .padding([.top, .horizontal])
-                    content()
+                    ScrollView {
+                        content()
+                            .childSize { size in
+                                childSize = size
+                            }
+                    }
+                    .frame(height: min(childSize.height, UIScreen.main.bounds.height * 0.60), alignment: .center)
                 }
                 .padding(.bottom, geometry.safeAreaInsets.bottom)
                 .background(colorScheme == .dark ? Color.black : Color.white)

@@ -27,6 +27,10 @@ struct FMAddTransactionView: View {
     @State private var alertInfoMessage = ""
     @State private var shouldShowAlert = false
     
+    @State private var keyboardWillShow = NotificationCenter.default.publisher(for: UIApplication.keyboardDidShowNotification, object: nil)
+    @State private var keyboardWillHide = NotificationCenter.default.publisher(for: UIApplication.keyboardWillHideNotification, object: nil)
+    @State private var bottomPadding: CGFloat = 0
+    
     var viewModel: FMTransactionListViewModel? = nil
     var transactionRowViewModel: FMTransactionRowViewModel? = nil
     @Binding var shouldPresentAddTransactionView: Bool
@@ -88,6 +92,17 @@ struct FMAddTransactionView: View {
                         .matchedGeometryEffect(id: "expenseCategory", in: animation, properties: .position)
                     }
                 }
+                HStack {
+                    Text("Date").foregroundColor(.secondary)
+                    Spacer()
+                    DatePicker("", selection: $transactionDate)
+                }
+                HStack {
+                    Text("Comments").foregroundColor(.secondary)
+                    Spacer()
+                    FMTextField(title: "Enter comments", keyboardType: .default, height: 40, value: $comments, infoMessage: .constant(""))
+                        .frame(width: 200, alignment: .center)
+                }
                 FMButton(title: "Save", type: .primary) {
                     saveButtonTapped()
                 }
@@ -106,7 +121,15 @@ struct FMAddTransactionView: View {
                     .matchedGeometryEffect(id: "expenseCategory", in: animation, properties: .position)
             }
         }
+        .onReceive(keyboardWillShow) { _ in
+            bottomPadding = 100
+        }
+        .onReceive(keyboardWillHide) { _ in
+            bottomPadding = 0
+        }
+        .accentColor(AppSettings.appPrimaryColour)
         .padding()
+        .padding(.bottom, bottomPadding) // To make the save button visisble when keyboard is presented
     }
     
     private func saveButtonTapped() {

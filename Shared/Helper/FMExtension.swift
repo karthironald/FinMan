@@ -110,12 +110,13 @@ struct FMTextFieldThemeModifier: ViewModifier {
 
 struct FMTextEditorThemeModifier: ViewModifier {
     var keyboardType: UIKeyboardType
+    var height: CGFloat = 100
     
     func body(content: Content) -> some View {
         content
             .font(.body)
             .padding()
-            .frame(height: 100, alignment: .center)
+            .frame(height: height, alignment: .center)
             .background(Color.secondary.opacity(0.12))
             .cornerRadius(AppSettings.appCornerRadius)
             .disableAutocorrection(true)
@@ -156,6 +157,24 @@ extension View {
         }
     }
     
+}
+
+struct SizePreferenceKey: PreferenceKey {
+    static var defaultValue: CGSize = .zero
+    static func reduce(value: inout CGSize, nextValue: () -> CGSize) { }
+}
+
+extension View {
+    
+    func childSize(onChange: @escaping (CGSize) -> Void) -> some View {
+        background(
+            GeometryReader { geoProxy in
+                Color.clear
+                    .preference(key: SizePreferenceKey.self, value: geoProxy.size)
+            }
+        )
+        .onPreferenceChange(SizePreferenceKey.self, perform: onChange)
+    }
 }
 
 #if canImport(UIKit)
