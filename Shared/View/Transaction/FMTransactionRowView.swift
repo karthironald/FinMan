@@ -47,6 +47,7 @@ struct FMTransactionRowView: View {
                     .clipShape(Capsule())
             }
         }
+        .animation(nil)
     }
 }
 

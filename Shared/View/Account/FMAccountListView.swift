@@ -45,6 +45,9 @@ struct FMAccountListView: View {
                 .listStyle(InsetGroupedListStyle())
                 addAccountView()
             }
+            .onAppear(perform: {
+                FMAccountRepository.shared.selectedAccount = nil
+            })
             .navigationTitle("Accounts")
             .navigationBarItems(trailing: profileButtonview())
         }
