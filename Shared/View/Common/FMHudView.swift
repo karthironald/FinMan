@@ -10,7 +10,7 @@ import SwiftUI
 
 struct FMHud<Content: View>: View {
     
-    var hudType: FMHudState.HudType
+    var hudType: FMLoadingInfoState.HudType
     @ViewBuilder let content: Content
     
     var body: some View {
@@ -35,7 +35,7 @@ struct FMHud_Previews: PreviewProvider {
 
 extension View {
     
-    func hud<Content: View>(isPresented: Binding<Bool>, type: FMHudState.HudType = .info, @ViewBuilder content: () -> Content) -> some View {
+    func hud<Content: View>(isPresented: Binding<Bool>, type: FMLoadingInfoState.HudType = .info, @ViewBuilder content: () -> Content) -> some View {
         ZStack(alignment: .top) {
             self
             

@@ -11,7 +11,9 @@ import FirebaseFirestoreSwift
 
 struct FMAddTransactionView: View {
     
+    @EnvironmentObject private var hud: FMLoadingInfoState
     @Namespace private var animation
+    
     @State var value: String = ""
     @State var frequency: FMTransaction.IncomeFrequency = .onetime
     @State var source: FMTransaction.IncomeSource = .earned
@@ -103,7 +105,7 @@ struct FMAddTransactionView: View {
                     FMTextField(title: "Enter comments", keyboardType: .default, height: 40, value: $comments, infoMessage: .constant(""))
                         .frame(width: 200, alignment: .center)
                 }
-                FMButton(title: "Save", type: .primary) {
+                FMButton(title: "Save", type: .primary, shouldShowLoading: hud.shouldShowLoading) {
                     saveButtonTapped()
                 }
                 .disabled(!shouldEnableSaveButton())
@@ -145,9 +147,9 @@ struct FMAddTransactionView: View {
             transaction.comments = comments
             transaction.transactionDate = Timestamp(date: transactionDate)
             
-            FMLoadingHelper.shared.shouldShowLoading.toggle()
+            hud.startLoading()
             viewModel?.addNew(transaction: transaction, resultBlock: { error in
-                FMLoadingHelper.shared.shouldShowLoading.toggle()
+                hud.stopLoading()
                 if let error = error {
                     alertInfoMessage = error.localizedDescription
                     shouldShowAlert.toggle()
@@ -169,9 +171,9 @@ struct FMAddTransactionView: View {
                 updatedTransaction.transactionDate = Timestamp(date: transactionDate)
                 updatedTransaction.comments = comments
                 
-                FMLoadingHelper.shared.shouldShowLoading.toggle()
+                hud.startLoading()
                 transactionRowViewModel?.update(transaction: updatedTransaction, resultBlock: { error in
-                    FMLoadingHelper.shared.shouldShowLoading.toggle()
+                    hud.stopLoading()
                     if let error = error {
                         alertInfoMessage = error.localizedDescription
                         shouldShowAlert.toggle()

@@ -31,7 +31,6 @@ struct FMTransactionListView: View {
                                         FMTransactionRowView(transactionRowViewModel: transactionRowViewModel)
                                     }
                                 )
-                                .animation(nil)
                             }
                             .onDelete { (indexSet) in
                                 if let index = indexSet.first {
@@ -52,7 +51,6 @@ struct FMTransactionListView: View {
                         .disabled(!viewModel.shouldEnableLoadMore())
                     }
                 }
-                .animation(.linear)
                 .alert(isPresented: $shouldShowAlert, content: {
                     Alert(title: Text(alertInfoMessage), message: nil, dismissButton: Alert.Button.default(Text(kOkay), action: {
                         // Do nothing

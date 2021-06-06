@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FMLandingView: View {
     
-    @EnvironmentObject private var hud: FMHudState
+    @EnvironmentObject private var hud: FMLoadingInfoState
 
     @StateObject private var authenticationService = FMAuthenticationService.shared
     @State private var shouldPresentSignupForm = false

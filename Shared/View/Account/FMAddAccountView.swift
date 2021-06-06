@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FMAddAccountView: View {
     
-    @EnvironmentObject private var hud: FMHudState
+    @EnvironmentObject private var hud: FMLoadingInfoState
     
     @State var name: String = ""
     @State var comments: String = ""
@@ -39,41 +39,11 @@ struct FMAddAccountView: View {
         .onAppear(perform: {
             UITextView.appearance().backgroundColor = .clear
         })
-        .startLoading(start: FMLoadingHelper.shared.shouldShowLoading)
         .padding()
-//        NavigationView {
-//            Form {
-//                Section {
-//                    TextField("Enter account name", text: $name)
-//                        .keyboardType(.default)
-//                }
-//                Section {
-//                    ZStack(alignment: .topLeading) {
-//                        if comments.isEmpty {
-//                            Text("Enter additional comments(if any)")
-//                                .foregroundColor(.secondary)
-//                                .opacity(0.5)
-//                                .padding([.top, .leading], 5)
-//                        }
-//                        TextEditor(text: $comments)
-//                            .frame(height: 100, alignment: .center)
-//                    }
-//                }
-//                saveButtonView()
-//            }
-//            .startLoading(start: FMLoadingHelper.shared.shouldShowLoading)
-//            .alert(isPresented: $shouldShowAlert, content: {
-//                Alert(title: Text(alertInfoMessage), message: nil, dismissButton: Alert.Button.default(Text(kOkay), action: {
-//                    // Do nothing
-//                }))
-//            })
-//            .navigationBarTitle(Text(accountRowViewModel == nil ? "Add Account" : "Edit Account"), displayMode: .inline)
-//            .navigationBarItems(trailing: saveButtonView())
-//        }
     }
     
     func saveButtonView() -> some View {
-        FMButton(title: "Save", type: .primary) {
+        FMButton(title: "Save", type: .primary, shouldShowLoading: hud.shouldShowLoading) {
             saveButtonTapped()
         }
         .disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
@@ -82,9 +52,9 @@ struct FMAddAccountView: View {
     func saveButtonTapped() {
         if accountRowViewModel?.id == nil && viewModel != nil {
             let account = FMAccount(name: name, comments: comments)
-            FMLoadingHelper.shared.shouldShowLoading.toggle()
+            hud.startLoading()
             viewModel?.addNew(account: account, resultBlock: { error in
-                FMLoadingHelper.shared.shouldShowLoading.toggle()
+                hud.stopLoading()
                 if let error = error {
                     hud.show(title: error.localizedDescription, type: .error)
                 } else {
@@ -96,9 +66,9 @@ struct FMAddAccountView: View {
                 var updatedAccount = account
                 updatedAccount.name = name
                 updatedAccount.comments = comments
-                FMLoadingHelper.shared.shouldShowLoading.toggle()
+                hud.startLoading()
                 accountRowViewModel?.update(account: updatedAccount, resultBlock: { error in
-                    FMLoadingHelper.shared.shouldShowLoading.toggle()
+                    hud.stopLoading()
                     if let error = error {
                         hud.show(title: error.localizedDescription, type: .error)
                     } else {

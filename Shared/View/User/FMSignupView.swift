@@ -9,11 +9,11 @@ import SwiftUI
 
 struct FMSignupView: View {
     
-    @EnvironmentObject private var hud: FMHudState
+    @EnvironmentObject private var hud: FMLoadingInfoState
     @StateObject private var authService = FMAuthenticationService.shared
     
-    @State private var email = ""
-    @State private var password = ""
+    @State private var email = "karthick3@gmail.com"
+    @State private var password = "Password123"
     
     @State private var emailInfoMessage = ""
     @State private var passwordInfoMessage = ""
@@ -44,7 +44,7 @@ struct FMSignupView: View {
             Spacer()
                 .frame(height: 10, alignment: .center)
             VStack(alignment: .leading, spacing: 5) {
-                FMButton(title: type.actionButtonTitle, type: .primary) {
+                FMButton(title: type.actionButtonTitle, type: .primary, shouldShowLoading: hud.shouldShowLoading) {
                     actionButtonTapped()
                 }
                 if !apiInfoMessage.isEmpty {
@@ -55,7 +55,6 @@ struct FMSignupView: View {
             }
             .padding(.bottom)
         }
-        .startLoading(start: FMLoadingHelper.shared.shouldShowLoading)
         .padding()
     }
     
@@ -81,39 +80,45 @@ struct FMSignupView: View {
         switch type {
         case .login:
             setInfo(message: "", for: .api)
-            toggleLoadingIndicator()
+            startLoadingIndicator()
             authService.signin(with: email, password: password) { _ in
-                toggleLoadingIndicator()
+                stopLoadingIndicator()
                 shouldPresentSignupForm.toggle()
             } failureBlock: { error in
-                toggleLoadingIndicator()
+                stopLoadingIndicator()
                 setInfo(message: error?.localizedDescription ?? kCommonErrorMessage, for: .api)
             }
         case .signup:
             setInfo(message: "", for: .api)
-            toggleLoadingIndicator()
+            startLoadingIndicator()
             authService.signup(with: email, password: password) { _ in
-                toggleLoadingIndicator()
+                stopLoadingIndicator()
                 shouldPresentSignupForm.toggle()
             } failureBlock: { error in
-                toggleLoadingIndicator()
+                stopLoadingIndicator()
                 setInfo(message: error?.localizedDescription ?? kCommonErrorMessage, for: .api)
             }
         case .resetPassword:
-            toggleLoadingIndicator()
+            startLoadingIndicator()
             authService.initiateRestPassword(for: email) { _ in
-                toggleLoadingIndicator()
+                stopLoadingIndicator()
                 hud.show(title: "Please check your email inbox for password reset instructions", type: .info)
             } failureBlock: { error in
-                toggleLoadingIndicator()
+                stopLoadingIndicator()
                 setInfo(message: error?.localizedDescription ?? kCommonErrorMessage, for: .api)
             }
         }
     }
     
-    func toggleLoadingIndicator() {
+    func startLoadingIndicator() {
         withAnimation {
-            FMLoadingHelper.shared.shouldShowLoading.toggle()
+            hud.startLoading()
+        }
+    }
+    
+    func stopLoadingIndicator() {
+        withAnimation {
+            hud.stopLoading()
         }
     }
     

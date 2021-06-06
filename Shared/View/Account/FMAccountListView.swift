@@ -15,6 +15,7 @@ struct FMAccountListView: View {
     @State private var shouldPresentProfileView = false
     @State private var alertInfoMessage = ""
     @State private var shouldShowAlert = false
+    @State private var shouldShowEditAccount = false
     
     var body: some View {
         NavigationView {
@@ -24,6 +25,15 @@ struct FMAccountListView: View {
                         NavigationLink(
                             destination: FMTransactionListView(accountViewModel: accountViewModel)) {
                             FMAccountRowView(accountRowViewModel: accountViewModel)
+                                .contextMenu {
+                                    Button(action: {
+                                        viewModel.selectedAccountRowViewModel = accountViewModel
+                                        self.shouldShowEditAccount.toggle()
+                                    }) {
+                                        Image(systemName: "pencil.circle")
+                                        Text("Edit Account")
+                                    }
+                                }
                         }
                     }
                     .onDelete { (indexSet) in
@@ -51,6 +61,14 @@ struct FMAccountListView: View {
             .navigationTitle("Accounts")
             .navigationBarItems(trailing: profileButtonview())
         }
+        .popup(isPresented: $shouldShowEditAccount, overlayView: {
+            BottomPopupView(title: "Edit Account", shouldDismiss: $shouldShowEditAccount) {
+                if let selectedAccountRowViewModel = viewModel.selectedAccountRowViewModel {
+                    FMAddAccountView(name: selectedAccountRowViewModel.account.name, comments: selectedAccountRowViewModel.account.comments ?? "", shouldPresentAddAccountView: $shouldShowEditAccount, accountRowViewModel: selectedAccountRowViewModel)
+                        .accentColor(AppSettings.appPrimaryColour)
+                }
+            }
+        })
         .popup(isPresented: $shouldPresentProfileView, overlayView: {
             BottomPopupView(title: "Profile", shouldDismiss: $shouldPresentProfileView) {
                 FMProfileView()

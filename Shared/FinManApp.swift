@@ -11,7 +11,7 @@ import Firebase
 @main
 struct FinManApp: App {
     
-    @StateObject var hudState = FMHudState()
+    @StateObject var hudState = FMLoadingInfoState()
     
     init() {
         FirebaseApp.configure()

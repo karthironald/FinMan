@@ -12,7 +12,6 @@ struct FMAccountRowView: View {
     @ObservedObject var accountRowViewModel: FMAccountRowViewModel
     @State private var shouldShowInfo = false
     @Namespace private var animation
-    @State private var shouldShowEditAccount = false
     
     var body: some View {
         GeometryReader { geo in
@@ -79,18 +78,6 @@ struct FMAccountRowView: View {
                             }
                         }
                 }
-            }
-            .sheet(isPresented: $shouldShowEditAccount, content: {
-                FMAddAccountView(name: accountRowViewModel.account.name, comments: accountRowViewModel.account.comments ?? "", shouldPresentAddAccountView: $shouldShowEditAccount, accountRowViewModel: accountRowViewModel)
-                    .accentColor(AppSettings.appPrimaryColour)
-            })
-        }
-        .contextMenu {
-            Button(action: {
-                self.shouldShowEditAccount.toggle()
-            }) {
-                Image(systemName: "pencil.circle")
-                Text("Edit Account")
             }
         }
         .frame(height: 80)

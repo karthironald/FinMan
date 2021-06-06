@@ -1,5 +1,5 @@
 //
-//  FMHudState.swift
+//  FMLoadingInfoState.swift
 //  FinMan (iOS)
 //
 //  Created by Karthick Selvaraj on 25/05/21.
@@ -7,9 +7,11 @@
 
 import SwiftUI
 
-final class FMHudState: ObservableObject {
+final class FMLoadingInfoState: ObservableObject {
     
     @Published var isPresented: Bool = false
+    @Published private(set) var shouldShowLoading: Bool = false
+    
     private(set) var title: String = ""
     private(set) var systemImage: String = ""
     private(set) var hudType: HudType = .info
@@ -23,9 +25,16 @@ final class FMHudState: ObservableObject {
         }
     }
     
+    func startLoading() {
+        shouldShowLoading = true
+    }
+    
+    func stopLoading() {
+        shouldShowLoading = false
+    }
 }
 
-extension FMHudState {
+extension FMLoadingInfoState {
     
     enum HudType {
         case success, info, error

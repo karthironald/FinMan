@@ -36,19 +36,28 @@ extension Array where Element: Dated {
 struct FMButton: View {
     var title: String
     var type: ButtonType = .primary
+    var shouldShowLoading: Bool = false
+    
     var action: () -> ()
     
     var body: some View {
-        Button(action: {
-            action()
-        }, label: {
-            HStack {
-                Spacer()
-                Text(title)
-                Spacer()
+        ZStack {
+            Button(action: {
+                hideKeyboard()
+                action()
+            }, label: {
+                HStack {
+                    Spacer()
+                    Text(title)
+                    Spacer()
+                }
+                .opacity(shouldShowLoading ? 0 : 1)
+            })
+            .modifier(FMButtonThemeModifier(type: type))
+            if shouldShowLoading {
+                FMDotsLoading()
             }
-        })
-        .modifier(FMButtonThemeModifier(type: type))
+        }
     }
     
     enum ButtonType {
@@ -125,40 +134,6 @@ struct FMTextEditorThemeModifier: ViewModifier {
     }
 }
 
-extension View {
-    
-    func closeButtonView(actionBlock: @escaping () -> ()) -> some View {
-        Button(action: {
-            actionBlock()
-        }, label: {
-            Image(systemName: "xmark.circle.fill")
-                .font(.title3)
-        })
-        .foregroundColor(.secondary)
-    }
-    
-    func startLoading(start: Bool) -> some View {
-        Group {        
-            if start {
-                ZStack {
-                    self
-                    RoundedRectangle(cornerRadius: AppSettings.appCornerRadius)
-                        .fill(AppSettings.appPrimaryColour)
-                        .frame(width: 100, height: 75, alignment: .center)
-                        .overlay(
-                            ProgressView("Loading...")
-                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                        )
-                        .foregroundColor(.white)
-                }
-            } else {
-                self
-            }
-        }
-    }
-    
-}
-
 struct SizePreferenceKey: PreferenceKey {
     static var defaultValue: CGSize = .zero
     static func reduce(value: inout CGSize, nextValue: () -> CGSize) { }
@@ -186,3 +161,33 @@ extension View {
     
 }
 #endif
+
+struct FMDotsLoading: View {
+    
+    @State private var shouldAnimate = false
+    let size: CGFloat = 10
+    
+    var body: some View {
+        HStack {
+            Circle()
+                .fill(Color.white)
+                .frame(width: size, height: size)
+                .scaleEffect(shouldAnimate ? 1.0 : 0.5)
+                .animation(Animation.easeInOut(duration: 0.5).repeatForever())
+            Circle()
+                .fill(Color.white)
+                .frame(width: size, height: size)
+                .scaleEffect(shouldAnimate ? 1.0 : 0.5)
+                .animation(Animation.easeInOut(duration: 0.5).repeatForever().delay(0.3))
+            Circle()
+                .fill(Color.white)
+                .frame(width: size, height: size)
+                .scaleEffect(shouldAnimate ? 1.0 : 0.5)
+                .animation(Animation.easeInOut(duration: 0.5).repeatForever().delay(0.6))
+        }
+        .onAppear {
+            self.shouldAnimate = true
+        }
+    }
+    
+}
