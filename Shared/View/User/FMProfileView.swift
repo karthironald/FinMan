@@ -9,26 +9,51 @@ import SwiftUI
 
 struct FMProfileView: View {
     
+    @EnvironmentObject var loadingInfoState: FMLoadingInfoState
     @StateObject private var authService = FMAuthenticationService.shared
     
     var body: some View {
-        List {
-            VStack(alignment: .leading) {
-                Text("Email")
-                    .font(.footnote)
-                    .foregroundColor(.secondary)
-                Text(authService.user?.email ?? "-")
-            }
-            .padding([.top, .bottom], 5)
-            Section {
-                Button("Logout") {
-                    authService.signOut()
+        HStack {
+            VStack(alignment: .leading, spacing: AppSettings.vStackSpacing) {
+                viewFor(title: "Email", and: authService.user?.email ?? "-")
+                viewFor(title: "Email verified", and: (authService.user?.isEmailVerified == true) ? "Yes" : "No")
+                if let createdAt = authService.user?.metadata.creationDate {
+
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text("Account created on")
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
+                        Text("\(createdAt, style: .date) \(createdAt, style: .time)")
+                    }
                 }
-                .foregroundColor(.red)
+                if let lastSignInDate = authService.user?.metadata.lastSignInDate {
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text("Last signed in")
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
+                        Text("\(lastSignInDate, style: .date) \(lastSignInDate, style: .time)")
+                    }
+                }
+                FMButton(title: "Logout", type: .logout, shouldShowLoading: loadingInfoState.shouldShowLoading) {
+                    loadingInfoState.startLoading()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        authService.signOut()
+                        loadingInfoState.stopLoading()
+                    }
+                }
             }
+            Spacer()
         }
-        .listStyle(InsetGroupedListStyle())
-        .frame(height: 200, alignment: .center)
+        .padding([.horizontal, .bottom])
+    }
+ 
+    func viewFor(title: String, and value: String) -> some View {
+        VStack(alignment: .leading, spacing: 5) {
+            Text(title)
+                .font(.footnote)
+                .foregroundColor(.secondary)
+            Text(value)
+        }
     }
     
 }

@@ -39,7 +39,7 @@ struct FMAddTransactionView: View {
     
     var body: some View {
         ZStack {
-            VStack(spacing: 15) {
+            VStack(spacing: AppSettings.vStackSpacing) {
                 HStack {
                     Text("Amount").foregroundColor(.secondary)
                     Spacer()
@@ -124,13 +124,13 @@ struct FMAddTransactionView: View {
             }
         }
         .onReceive(keyboardWillShow) { _ in
-            bottomPadding = 100
+            bottomPadding = 80
         }
         .onReceive(keyboardWillHide) { _ in
             bottomPadding = 0
         }
         .accentColor(AppSettings.appPrimaryColour)
-        .padding()
+        .padding(.horizontal) // We are not setting `top` padding as we have padding in the BottomPopup title's bottom.
         .padding(.bottom, bottomPadding) // To make the save button visisble when keyboard is presented
     }
     

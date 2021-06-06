@@ -14,6 +14,7 @@ enum AppSettings {
     static let appCloseButtonColour = Color.secondary.opacity(0.5)
     static let appCornerRadius: CGFloat = 10
     static let appShadowColour = Color.secondary.opacity(0.7)
+    static let vStackSpacing: CGFloat = 15
 }
 
 let kCommonErrorMessage = "Something went wrong"

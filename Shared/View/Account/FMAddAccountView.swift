@@ -20,8 +20,7 @@ struct FMAddAccountView: View {
     var accountRowViewModel: FMAccountRowViewModel? = nil
     
     var body: some View {
-        
-        VStack {
+        VStack(spacing: AppSettings.vStackSpacing) {
             FMTextField(title: "Enter account name", value: $name, infoMessage: $nameInfoMessage)
             ZStack(alignment: .topLeading) {
                 if comments.isEmpty {
@@ -39,7 +38,7 @@ struct FMAddAccountView: View {
         .onAppear(perform: {
             UITextView.appearance().backgroundColor = .clear
         })
-        .padding()
+        .padding([.horizontal, .bottom]) // We are not setting `top` padding as we have padding in the BottomPopup title's bottom.
     }
     
     func saveButtonView() -> some View {

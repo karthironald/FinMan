@@ -61,7 +61,23 @@ struct FMButton: View {
     }
     
     enum ButtonType {
-        case primary, secondary
+        case primary, secondary, logout
+        
+        var backgroundColor: Color {
+            switch self {
+            case .primary: return AppSettings.appPrimaryColour
+            case .secondary: return AppSettings.appSecondaryColour
+            case .logout: return Color.red.opacity(0.1)
+            }
+        }
+        
+        var foregroundColor: Color {
+            switch self {
+            case .primary: return .white
+            case .secondary: return AppSettings.appPrimaryColour
+            case .logout: return Color.red
+            }
+        }
     }
 }
 
@@ -72,10 +88,11 @@ struct FMButtonThemeModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .frame(height: 50, alignment: .center)
-            .background(!isEnabled ? Color.gray.opacity(0.5) : (type == .primary) ? AppSettings.appPrimaryColour : AppSettings.appSecondaryColour)
-            .foregroundColor(!isEnabled ? Color.secondary : (type == .primary) ? .white : AppSettings.appPrimaryColour)
+            .background(!isEnabled ? Color.gray.opacity(0.5) : type.backgroundColor)
+            .foregroundColor(!isEnabled ? Color.secondary : type.foregroundColor)
             .cornerRadius(AppSettings.appCornerRadius)
     }
+    
 }
 
 struct FMTextField: View {

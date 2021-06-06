@@ -12,8 +12,8 @@ struct FMSignupView: View {
     @EnvironmentObject private var hud: FMLoadingInfoState
     @StateObject private var authService = FMAuthenticationService.shared
     
-    @State private var email = "karthick3@gmail.com"
-    @State private var password = "Password123"
+    @State private var email = ""
+    @State private var password = ""
     
     @State private var emailInfoMessage = ""
     @State private var passwordInfoMessage = ""
@@ -24,7 +24,7 @@ struct FMSignupView: View {
     var type: FMSignupView.FormType = .signup
     
     var body: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: AppSettings.vStackSpacing) {
             VStack(alignment: .leading, spacing: 5) {
                 FMTextField(title: "Email", keyboardType: .emailAddress, value: $email, infoMessage: $emailInfoMessage)
             }
@@ -41,8 +41,6 @@ struct FMSignupView: View {
                 }
             }
             
-            Spacer()
-                .frame(height: 10, alignment: .center)
             VStack(alignment: .leading, spacing: 5) {
                 FMButton(title: type.actionButtonTitle, type: .primary, shouldShowLoading: hud.shouldShowLoading) {
                     actionButtonTapped()
@@ -53,9 +51,9 @@ struct FMSignupView: View {
                         .foregroundColor(.red)
                 }
             }
-            .padding(.bottom)
+            .padding(.top)
         }
-        .padding()
+        .padding([.horizontal, .bottom]) // We are not setting `top` padding as we have padding in the BottomPopup title's bottom.
     }
     
     func actionButtonTapped() {

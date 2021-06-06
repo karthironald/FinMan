@@ -25,7 +25,7 @@ struct BottomPopupView<Content: View>: View {
                     HStack {
                         Text(title)
                             .bold()
-                            .font(.title)
+                            .font(.title3)
                         Spacer()
                         Button {
                             hideKeyboard()

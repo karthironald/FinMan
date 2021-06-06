@@ -59,7 +59,7 @@ struct FMAccountListView: View {
                 FMAccountRepository.shared.selectedAccount = nil
             })
             .navigationTitle("Accounts")
-            .navigationBarItems(trailing: profileButtonview())
+            .navigationBarItems(leading: profileButtonview())
         }
         .popup(isPresented: $shouldShowEditAccount, overlayView: {
             BottomPopupView(title: "Edit Account", shouldDismiss: $shouldShowEditAccount) {
@@ -146,7 +146,7 @@ struct FMAccountListView: View {
             shouldPresentProfileView.toggle()
         }, label: {
             Image(systemName: "person.circle.fill")
-                .font(.title2)
+                .font(.title)
         })
     }
     
