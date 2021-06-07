@@ -127,10 +127,11 @@ struct FMAddTransactionView: View {
             bottomPadding = 80
         }
         .onReceive(keyboardWillHide) { _ in
-            bottomPadding = 0
+            bottomPadding = 20
         }
         .accentColor(AppSettings.appPrimaryColour)
         .padding(.horizontal) // We are not setting `top` padding as we have padding in the BottomPopup title's bottom.
+        .padding(.bottom)
         .padding(.bottom, bottomPadding) // To make the save button visisble when keyboard is presented
     }
     
@@ -189,8 +190,17 @@ struct FMAddTransactionView: View {
         if transactionRowViewModel?.id == nil && viewModel != nil {
             return Double(value) ?? 0.0 > 0.0
         } else {
+            if let originalSource = transactionRowViewModel?.transaction.source, !originalSource.isEmpty, (source.rawValue.lowercased() != originalSource.lowercased()) {
+                return true 
+            }
+            if let originalFreq = transactionRowViewModel?.transaction.frequency, !originalFreq.isEmpty, (frequency.rawValue.lowercased() != originalFreq.lowercased()) {
+                return true
+            }
+            if let originalExpenseCategory = transactionRowViewModel?.transaction.expenseCategory, !originalExpenseCategory.isEmpty, (expenseCategory.rawValue.lowercased() != originalExpenseCategory.lowercased()) {
+                return true
+            }
             let value = Double(value) ?? 0.0
-            return (value > 0.0) && value != transactionRowViewModel?.transaction.value
+            return ((value > 0.0) && value != transactionRowViewModel?.transaction.value) || (transactionType.rawValue.lowercased() != transactionRowViewModel?.transaction.transactionType.lowercased()) || (transactionDate != transactionRowViewModel?.transaction.transactionDate?.dateValue()) || (comments.lowercased() != transactionRowViewModel?.transaction.comments?.lowercased())
         }
     }
 }

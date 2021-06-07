@@ -30,7 +30,7 @@ struct FMTransactionDetailView: View {
                 Text("Transaction Date")
                     .font(.footnote)
                     .foregroundColor(.secondary)
-                Text("\(transactionRowViewModel.transaction.transactionDate?.dateValue() ?? Date(), formatter: dateFormatter)")
+                Text("\(transactionRowViewModel.transaction.transactionDate?.dateValue() ?? Date(), formatter: dateFormatter) \(transactionRowViewModel.transaction.transactionDate?.dateValue() ?? Date(), style: .time)")
             }
             if transactionRowViewModel.transaction.transactionType == FMTransaction.TransactionType.income.rawValue {
                 VStack(alignment: .leading) {
