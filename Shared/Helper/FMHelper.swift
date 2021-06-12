@@ -16,4 +16,9 @@ class FMHelper {
         return emailPred.evaluate(with: email)
     }
     
+    static func percentage(of value: Double, in total: Double) -> Double {
+        let percentage = (value * 100) / total
+        return percentage
+    }
+    
 }
