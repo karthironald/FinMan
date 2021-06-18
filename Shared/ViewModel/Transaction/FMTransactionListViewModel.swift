@@ -62,4 +62,15 @@ class FMTransactionListViewModel: ObservableObject {
         transactionRowViewModel.count < FMAccountRepository.shared.totalRecordsCount()
     }
     
+    func fetchTransaction(for timePeriod: FMTimePeriod = .all) {
+        if timePeriod == .all {
+            transactionRepository.getTransactions()
+        } else {
+            let dates = FMHelper.startDate(type: timePeriod)
+            if let sDate = dates.startDate, let eDate = dates.endDate {
+                transactionRepository.filterTransaction(startDate: sDate, endDate: eDate)
+            }
+        }
+    }
+    
 }

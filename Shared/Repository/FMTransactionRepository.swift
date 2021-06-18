@@ -200,6 +200,42 @@ class FMTransactionRepository: ObservableObject {
         }
     }
     
+    func log(startDate: Date, endDate: Date) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone.current
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .medium
+        print("🔵⭐️ \(dateFormatter.string(from: startDate)) to \(dateFormatter.string(from: endDate))")
+    }
+    
+    func filterTransaction(startDate: Date, endDate: Date) {
+        log(startDate: startDate, endDate: endDate)
+        isFetching = true
+        transactionQuery = store.collection(path)
+            .order(by: "transactionDate", descending: true)
+            .whereField("userId", isEqualTo: userId ?? "")
+            .whereField("accountId", isEqualTo: accountId ?? "")
+            .whereField("transactionDate", isGreaterThanOrEqualTo: startDate)
+            .whereField("transactionDate", isLessThanOrEqualTo: endDate)
+            .limit(to: kPaginationCount)
+
+        transactionQuery?.getDocuments { [weak self] (querySnapshot, error) in
+            guard let self = self else { return }
+            if let error = error {
+                print(error.localizedDescription)
+                self.isFetching = false
+                return
+            }
+            let docs = querySnapshot?.documents
+            self.lastDocument = docs?.last
+            print("🔵⭐️ \(docs?.count ?? 0)")
+            self.transactions = docs?.compactMap({ document in
+                try? document.data(as: FMTransaction.self)
+            }) ?? []
+            self.isFetching = false
+        }
+    }
+    
     func resetAllData() {
         transactions = []
     }

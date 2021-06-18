@@ -17,6 +17,7 @@ struct FMTransactionListView: View {
     @State private var alertInfoMessage = ""
     @State private var shouldShowAlert = false
     @ObservedObject var accountViewModel: FMAccountRowViewModel
+    @State private var selectedTimePeriod = FMTimePeriod.all
     
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
@@ -62,6 +63,7 @@ struct FMTransactionListView: View {
             }
             addTransactionView()
         }
+        .navigationBarItems(trailing: filterMenu())
         .onAppear(perform: {
             if FMAccountRepository.shared.selectedAccount?.id != accountViewModel.account.id {            
                 FMAccountRepository.shared.selectedAccount = accountViewModel.account
@@ -88,6 +90,20 @@ struct FMTransactionListView: View {
         .background(Color.white)
         .clipShape(Circle())
         .padding()
+    }
+    
+    func filterMenu() -> some View {
+        Menu {
+            ForEach(0..<FMTimePeriod.allCases.count, id: \.self) { index in
+                Button("\(FMTimePeriod.allCases[index].title())") {
+                    selectedTimePeriod = FMTimePeriod.allCases[index]
+                    viewModel.fetchTransaction(for: selectedTimePeriod)
+                }
+            }
+        } label: {
+            Text(selectedTimePeriod.title())
+                .frame(width: 100, height: 30, alignment: .trailing)
+        }
     }
     
 }
