@@ -72,5 +72,20 @@ class FMTransactionListViewModel: ObservableObject {
             }
         }
     }
+
+    func incomeTotal() -> Double {
+        let incomeTrans = transactionRowViewModel.filter({ $0.transaction.transactionType.lowercased() == FMTransaction.TransactionType.income.rawValue.lowercased() })
+        return incomeTrans.reduce(0) { result, rowViewModel in
+            result + rowViewModel.transaction.value
+        }
+    }
+    
+    func expenseTotal() -> Double {
+        let expenseTrans = transactionRowViewModel.filter({ $0.transaction.transactionType.lowercased() == FMTransaction.TransactionType.expense.rawValue.lowercased() })
+        
+        return expenseTrans.reduce(0) { result, rowViewModel in
+            result + rowViewModel.transaction.value
+        }
+    }
     
 }

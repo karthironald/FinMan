@@ -22,6 +22,44 @@ struct FMTransactionListView: View {
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             VStack(spacing: 0) {
+                HStack {
+                    Spacer()
+                    Text("\(viewModel.incomeTotal(), specifier: "%0.2f")")
+                        .foregroundColor(.green)
+                        .padding(.vertical, 5)
+                        .padding(.horizontal, 10)
+                        .background(Color.green.opacity(0.1))
+                        .clipShape(Capsule())
+                    Spacer()
+                    Image(systemName: "minus")
+                        .font(.caption2)
+                        .foregroundColor(.secondary)
+                    Spacer()
+                    Text("\(viewModel.expenseTotal(), specifier: "%0.2f")")
+                        .foregroundColor(.red)
+                        .padding(.vertical, 5)
+                        .padding(.horizontal, 10)
+                        .background(Color.red.opacity(0.1))
+                        .clipShape(Capsule())
+                    Group {
+                        Spacer()
+                        Image(systemName: "equal")
+                            .font(.caption2)
+                            .foregroundColor(.secondary)
+                        Spacer()
+                    }
+                    Text("\(viewModel.incomeTotal() - viewModel.expenseTotal(), specifier: "%0.2f")")
+                        .foregroundColor(.blue)
+                        .padding(.vertical, 5)
+                        .padding(.horizontal, 10)
+                        .background(Color.blue.opacity(0.1))
+                        .clipShape(Capsule())
+                    Spacer()
+                }
+                .font(.caption)
+                .padding()
+                .background(AppSettings.appSecondaryColour.opacity(0.2))
+                
                 List {
                     ForEach(Array(viewModel.groupedTransactionRowViewModel.keys.sorted(by: >)), id: \.self) { (key) in
                         Section(header: Text("\(key) (\(viewModel.groupedTransactionRowViewModel[key]!.count))")) {
