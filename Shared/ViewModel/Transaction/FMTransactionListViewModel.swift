@@ -15,6 +15,8 @@ class FMTransactionListViewModel: ObservableObject {
     @Published var groupedTransactionRowViewModel: [String: [FMTransactionRowViewModel]] = [:]
     @Published var isFetching: Bool = true
     @Published var isPaginating: Bool = false
+    @Published var totalIncome: Double = 0.0
+    @Published var totalExpense: Double = 0.0
     
     private var cancellables: Set<AnyCancellable> = []
      
@@ -44,6 +46,7 @@ class FMTransactionListViewModel: ObservableObject {
                 if let groupdTransaction = self?.transactionRowViewModel.groupedBy(dateComponents: [.month, .year]) {
                     self?.groupedTransactionRowViewModel = groupdTransaction
                 }
+                self?.calculateTotal()
             }
             .store(in: &cancellables)
     }
@@ -62,28 +65,25 @@ class FMTransactionListViewModel: ObservableObject {
         transactionRowViewModel.count < FMAccountRepository.shared.totalRecordsCount()
     }
     
-    func fetchTransaction(for timePeriod: FMTimePeriod = .all) {
+    func fetchTransaction(for timePeriod: FMTimePeriod = .all, incomeSource: FMTransaction.IncomeSource? = nil, transactionType: FMTransaction.TransactionType? = nil) {
         if timePeriod == .all {
             transactionRepository.getTransactions()
         } else {
             let dates = FMHelper.startDate(type: timePeriod)
             if let sDate = dates.startDate, let eDate = dates.endDate {
-                transactionRepository.filterTransaction(startDate: sDate, endDate: eDate)
+                transactionRepository.filterTransaction(startDate: sDate, endDate: eDate, incomeSource: incomeSource, transactionType: transactionType)
             }
         }
     }
 
-    func incomeTotal() -> Double {
+    private func calculateTotal() {
         let incomeTrans = transactionRowViewModel.filter({ $0.transaction.transactionType.lowercased() == FMTransaction.TransactionType.income.rawValue.lowercased() })
-        return incomeTrans.reduce(0) { result, rowViewModel in
-            result + rowViewModel.transaction.value
-        }
-    }
-    
-    func expenseTotal() -> Double {
         let expenseTrans = transactionRowViewModel.filter({ $0.transaction.transactionType.lowercased() == FMTransaction.TransactionType.expense.rawValue.lowercased() })
         
-        return expenseTrans.reduce(0) { result, rowViewModel in
+        totalIncome = incomeTrans.reduce(0) { result, rowViewModel in
+            result + rowViewModel.transaction.value
+        }
+        totalExpense = expenseTrans.reduce(0) { result, rowViewModel in
             result + rowViewModel.transaction.value
         }
     }

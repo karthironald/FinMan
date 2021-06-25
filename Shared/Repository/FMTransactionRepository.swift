@@ -50,7 +50,8 @@ class FMTransactionRepository: ObservableObject {
             .sink { [weak self] _ in
                 print("🟢🔴 \(String(describing: self?.accountId))")
                 if let accountId = self?.accountId, !accountId.isEmpty  {
-                    self?.getTransactions()
+                    #warning("No need to fetch transactions when account is selected")
+                    // self?.getTransactions()
                 } else {
                     self?.resetAllData()
                 }
@@ -208,7 +209,7 @@ class FMTransactionRepository: ObservableObject {
         print("🔵⭐️ \(dateFormatter.string(from: startDate)) to \(dateFormatter.string(from: endDate))")
     }
     
-    func filterTransaction(startDate: Date, endDate: Date) {
+    func filterTransaction(startDate: Date, endDate: Date, incomeSource: FMTransaction.IncomeSource? = nil, transactionType: FMTransaction.TransactionType? = nil) {
         log(startDate: startDate, endDate: endDate)
         isFetching = true
         transactionQuery = store.collection(path)
@@ -219,6 +220,14 @@ class FMTransactionRepository: ObservableObject {
             .whereField("transactionDate", isLessThanOrEqualTo: endDate)
             .limit(to: kPaginationCount)
 
+        if let source = incomeSource {
+            transactionQuery = transactionQuery?.whereField("source", isEqualTo: source.rawValue)
+        }
+        
+        if let transactionType = transactionType {
+            transactionQuery = transactionQuery?.whereField("transactionType", isEqualTo: transactionType.rawValue)
+        }
+        
         transactionQuery?.getDocuments { [weak self] (querySnapshot, error) in
             guard let self = self else { return }
             if let error = error {

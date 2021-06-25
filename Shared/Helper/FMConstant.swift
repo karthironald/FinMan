@@ -20,6 +20,7 @@ enum AppSettings {
 let kCommonErrorMessage = "Something went wrong"
 let kOkay = "Okay"
 let kTimePeriodAllOptionValue = 999
+let kCommonIndex = 99999
 
 enum FMTimePeriod: String, CaseIterable {
     case today

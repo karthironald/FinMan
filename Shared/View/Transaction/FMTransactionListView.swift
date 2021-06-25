@@ -17,14 +17,16 @@ struct FMTransactionListView: View {
     @State private var alertInfoMessage = ""
     @State private var shouldShowAlert = false
     @ObservedObject var accountViewModel: FMAccountRowViewModel
-    @State private var selectedTimePeriod = FMTimePeriod.all
+    @State private var selectedTimePeriod = FMTimePeriod.thisWeek
+    @State private var selectedIncomeSourceIndex = kCommonIndex
+    @State private var transactionTypeIndex = kCommonIndex
     
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             VStack(spacing: 0) {
                 HStack {
                     Spacer()
-                    Text("\(viewModel.incomeTotal(), specifier: "%0.2f")")
+                    Text("\(viewModel.totalIncome, specifier: "%0.2f")")
                         .foregroundColor(.green)
                         .padding(.vertical, 5)
                         .padding(.horizontal, 10)
@@ -35,7 +37,7 @@ struct FMTransactionListView: View {
                         .font(.caption2)
                         .foregroundColor(.secondary)
                     Spacer()
-                    Text("\(viewModel.expenseTotal(), specifier: "%0.2f")")
+                    Text("\(viewModel.totalExpense, specifier: "%0.2f")")
                         .foregroundColor(.red)
                         .padding(.vertical, 5)
                         .padding(.horizontal, 10)
@@ -48,7 +50,7 @@ struct FMTransactionListView: View {
                             .foregroundColor(.secondary)
                         Spacer()
                     }
-                    Text("\(viewModel.incomeTotal() - viewModel.expenseTotal(), specifier: "%0.2f")")
+                    Text("\(viewModel.totalIncome - viewModel.totalExpense, specifier: "%0.2f")")
                         .foregroundColor(.blue)
                         .padding(.vertical, 5)
                         .padding(.horizontal, 10)
@@ -101,11 +103,10 @@ struct FMTransactionListView: View {
             }
             addTransactionView()
         }
-        .navigationBarItems(trailing: filterMenu())
+        .navigationBarItems(trailing: trainingViews())
         .onAppear(perform: {
-            if FMAccountRepository.shared.selectedAccount?.id != accountViewModel.account.id {            
-                FMAccountRepository.shared.selectedAccount = accountViewModel.account
-            }
+            FMAccountRepository.shared.selectedAccount = accountViewModel.account
+            fetchTransaction()
         })
         .navigationBarTitle("\(accountViewModel.account.name.capitalized)", displayMode: .inline)
         .popup(isPresented: $shouldPresentAddTransactionView, overlayView: {
@@ -114,6 +115,12 @@ struct FMTransactionListView: View {
                     .accentColor(AppSettings.appPrimaryColour)
             }
         })
+    }
+    
+    func fetchTransaction() {
+        let source = (selectedIncomeSourceIndex > (FMTransaction.IncomeSource.allCases.count - 1)) ? nil : FMTransaction.IncomeSource.allCases[selectedIncomeSourceIndex]
+        let transactionType = (transactionTypeIndex > (FMTransaction.TransactionType.allCases.count - 1)) ? nil : FMTransaction.TransactionType.allCases[transactionTypeIndex]
+        viewModel.fetchTransaction(for: selectedTimePeriod, incomeSource: source, transactionType: transactionType)
     }
     
     func addTransactionView() -> some View {
@@ -130,16 +137,56 @@ struct FMTransactionListView: View {
         .padding()
     }
     
+    func trainingViews() -> some View {
+        Menu {
+            transactionTypeFilter()
+            filterMenu()
+            filterSourceView()
+        } label: {
+            Image(systemName: "magnifyingglass.circle")
+                .resizable()
+                .font(.title2)
+        }
+    }
+    
+    func transactionTypeFilter() -> some View {
+        Menu {
+            ForEach(0...FMTransaction.TransactionType.allCases.count, id: \.self) { index in
+                Button("\(index == FMTransaction.TransactionType.allCases.count ? "Both" : FMTransaction.TransactionType.allCases[index].rawValue.capitalized)") {
+                    transactionTypeIndex = index
+                    fetchTransaction()
+                }
+            }
+        } label: {
+            Text("Transaction Type:  \((transactionTypeIndex > (FMTransaction.TransactionType.allCases.count - 1)) ? "Both" : FMTransaction.TransactionType.allCases[transactionTypeIndex].rawValue.capitalized)")
+                .frame(width: 100, height: 30, alignment: .trailing)
+        }
+    }
+    
     func filterMenu() -> some View {
         Menu {
             ForEach(0..<FMTimePeriod.allCases.count, id: \.self) { index in
                 Button("\(FMTimePeriod.allCases[index].title())") {
                     selectedTimePeriod = FMTimePeriod.allCases[index]
-                    viewModel.fetchTransaction(for: selectedTimePeriod)
+                    fetchTransaction()
                 }
             }
         } label: {
-            Text(selectedTimePeriod.title())
+            Text("Period:  \(selectedTimePeriod.title())")
+                .frame(width: 100, height: 30, alignment: .trailing)
+        }
+    }
+    
+    func filterSourceView() -> some View {
+        Menu {
+            ForEach(0...FMTransaction.IncomeSource.allCases.count, id: \.self) { index in
+                Button("\(index == FMTransaction.IncomeSource.allCases.count ? "Any" : FMTransaction.IncomeSource.allCases[index].title)") {
+                    selectedIncomeSourceIndex = index
+                    fetchTransaction()
+                }
+            }
+        } label: {
+            Text("Income Source:  \((selectedIncomeSourceIndex > (FMTransaction.IncomeSource.allCases.count - 1)) ? "Any" : FMTransaction.IncomeSource.allCases[selectedIncomeSourceIndex].title)")
                 .frame(width: 100, height: 30, alignment: .trailing)
         }
     }
@@ -152,7 +199,9 @@ struct FMTransactionListView_Previews: PreviewProvider {
         let viewModel = FMTransactionListViewModel()
         let rowViewModel = FMTransactionRowViewModel(transaction: FMTransaction.sampleData.first!)
         viewModel.transactionRowViewModel = [rowViewModel]
-        return FMTransactionListView(viewModel: viewModel, shouldPresentAddTransactionView: false, accountViewModel: FMAccountRowViewModel(account: FMAccount.sampleData.first!))
+        return NavigationView {
+            FMTransactionListView(viewModel: viewModel, shouldPresentAddTransactionView: false, accountViewModel: FMAccountRowViewModel(account: FMAccount.sampleData.first!))
+        }
     }
     
 }
