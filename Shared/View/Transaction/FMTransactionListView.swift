@@ -158,7 +158,7 @@ struct FMTransactionListView: View {
     }
     
     func trainingViews() -> some View {
-        HStack(spacing: 10) {
+        HStack(spacing: 20) {
             chartButtonView()
             Menu {
                 transactionTypeFilter()
@@ -271,7 +271,7 @@ struct FMChartView: View {
         .onAppear {
             
         }
-        .frame(height: 300, alignment: .center)
+        .frame(height: CGFloat(40 * points.count), alignment: .center)
         .padding()
     }
     
