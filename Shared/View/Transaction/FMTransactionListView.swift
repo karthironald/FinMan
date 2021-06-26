@@ -14,6 +14,7 @@ struct FMTransactionListView: View {
     
     @State var shouldPresentAddTransactionView: Bool = false
     @State var shouldPresentAddAccountView: Bool = false
+    @State var shouldSourceShowChart: Bool = false
     @State private var alertInfoMessage = ""
     @State private var shouldShowAlert = false
     @ObservedObject var accountViewModel: FMAccountRowViewModel
@@ -115,6 +116,13 @@ struct FMTransactionListView: View {
                     .accentColor(AppSettings.appPrimaryColour)
             }
         })
+        .popup(isPresented: $shouldSourceShowChart, overlayView: {
+            BottomPopupView(title: "Chart", shouldDismiss: $shouldSourceShowChart) {
+                let transactionType = (transactionTypeIndex > (FMTransaction.TransactionType.allCases.count - 1)) ? nil : FMTransaction.TransactionType.allCases[transactionTypeIndex]
+                FMChartView(points: viewModel.chartPoints(transactionType: transactionType))
+                    .accentColor(AppSettings.appPrimaryColour)
+            }
+        })
     }
     
     func fetchTransaction() {
@@ -137,16 +145,32 @@ struct FMTransactionListView: View {
         .padding()
     }
     
-    func trainingViews() -> some View {
-        Menu {
-            transactionTypeFilter()
-            filterMenu()
-            filterSourceView()
-        } label: {
-            Image(systemName: "magnifyingglass.circle")
+    func chartButtonView() -> some View {
+        Button(action: {
+            shouldSourceShowChart.toggle()
+        }, label: {
+            Image(systemName: "chart.bar.doc.horizontal")
                 .resizable()
                 .font(.title2)
+        })
+        .foregroundColor((transactionTypeIndex > (FMTransaction.TransactionType.allCases.count - 1)) ? .secondary.opacity(0.5) : AppSettings.appPrimaryColour)
+        .disabled((transactionTypeIndex > (FMTransaction.TransactionType.allCases.count - 1))) // Disable buttonw when 'Both' transaction type is selected
+    }
+    
+    func trainingViews() -> some View {
+        HStack(spacing: 10) {
+            chartButtonView()
+            Menu {
+                transactionTypeFilter()
+                filterMenu()
+                filterSourceView()
+            } label: {
+                Image(systemName: "magnifyingglass.circle")
+                    .resizable()
+                    .font(.title2)
+            }
         }
+        .frame(height: 25, alignment: .center)
     }
     
     func transactionTypeFilter() -> some View {
@@ -206,3 +230,49 @@ struct FMTransactionListView_Previews: PreviewProvider {
     
 }
 
+
+struct FMChartView: View {
+    
+    var total: Double {
+        points.reduce(0) { result, point in
+            result + point.1
+        }
+    }
+    var points: [(String, Double)]
+    
+    var body: some View {
+        VStack(spacing: 10) {
+            ForEach(0..<points.count, id: \.self) { index in
+                GeometryReader { proxy in
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text(points[index].0.capitalized)
+                            .font(.caption)
+                        HStack {
+                            ZStack(alignment: .leading) {
+                                Image("dottedLine")
+                                    .resizable()
+                                    .renderingMode(.template)
+                                    .foregroundColor(.secondary.opacity(0.2))
+                                    .frame(height: 1, alignment: .center)
+                                RoundedRectangle(cornerRadius: 10)
+                                    .foregroundColor(AppSettings.appPrimaryColour)
+                                    .frame(width: min(max((proxy.size.width * CGFloat(FMHelper.percentage(of: points[index].1, in: total)) / 100 - 80), 50), (proxy.size.width - 80)))
+                            }
+                            Spacer()
+                            Text("\(FMHelper.percentage(of: points[index].1, in: total), specifier: "%0.2f") %")
+                                .font(.caption2)
+                                .bold()
+                        }
+                        .frame(width: proxy.size.width, height: 5)
+                    }
+                }
+            }
+        }
+        .onAppear {
+            
+        }
+        .frame(height: 300, alignment: .center)
+        .padding()
+    }
+    
+}

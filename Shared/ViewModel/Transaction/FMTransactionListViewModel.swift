@@ -88,4 +88,25 @@ class FMTransactionListViewModel: ObservableObject {
         }
     }
     
+    func chartPoints(transactionType: FMTransaction.TransactionType?) -> [(String, Double)] {
+        let initial: [String: Double] = [:]
+        if transactionType == .income {
+            let groupdData = transactionRowViewModel.reduce(into: initial) { result, tran in
+                let exising = result[tran.transaction.source ?? ""] ?? 0
+                result[tran.transaction.source ?? ""] = exising + tran.transaction.value
+            }
+            var points = groupdData.map({ (String($0.key), $0.value) })
+            points.sort(by: { $0.0 < $1.0 })
+            return points
+        } else {
+            let groupdData = transactionRowViewModel.reduce(into: initial) { result, tran in
+                let exising = result[tran.transaction.expenseCategory ?? ""] ?? 0
+                result[tran.transaction.expenseCategory ?? ""] = exising + tran.transaction.value
+            }
+            var points = groupdData.map({ (String($0.key), $0.value) })
+            points.sort(by: { $0.0 < $1.0 })
+            return points
+        }
+    }
+    
 }
