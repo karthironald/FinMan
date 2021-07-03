@@ -28,6 +28,7 @@ struct FMSignupView: View {
             VStack(alignment: .leading, spacing: 5) {
                 FMTextField(title: "Email", keyboardType: .emailAddress, value: $email, infoMessage: $emailInfoMessage)
                     .disableAutocorrection(true)
+                    .autocapitalization(.none)
             }
             
             if (type == .login || type == .signup) {
