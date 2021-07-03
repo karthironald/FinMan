@@ -256,7 +256,7 @@ struct FMChartView: View {
                                     .frame(height: 1, alignment: .center)
                                 RoundedRectangle(cornerRadius: 10)
                                     .foregroundColor(AppSettings.appPrimaryColour)
-                                    .frame(width: min(max((proxy.size.width * CGFloat(FMHelper.percentage(of: points[index].1, in: total)) / 100 - 80), 50), (proxy.size.width - 80)))
+                                    .scaleEffect(CGSize(width: normalizedValue(index: index), height: 1.0), anchor: .leading)
                             }
                             Spacer()
                             Text("\(FMHelper.percentage(of: points[index].1, in: total), specifier: "%0.2f") %")
@@ -273,6 +273,24 @@ struct FMChartView: View {
         }
         .frame(height: CGFloat(40 * points.count), alignment: .center)
         .padding()
+    }
+    
+    func normalizedValue(index: Int) -> Double {
+        var allValues: [Double]    {
+            var values = [Double]()
+            for point in points {
+                values.append(point.1)
+            }
+            return values
+        }
+        guard let max = allValues.max() else {
+            return 1
+        }
+        if max != 0 {
+            return Double(points[index].1)/Double(max)
+        } else {
+            return 1
+        }
     }
     
 }

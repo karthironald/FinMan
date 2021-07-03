@@ -128,7 +128,6 @@ struct FMTextFieldThemeModifier: ViewModifier {
             .frame(height: height, alignment: .center)
             .background(Color.secondary.opacity(0.12))
             .cornerRadius(AppSettings.appCornerRadius)
-            .disableAutocorrection(true)
             .autocapitalization(.none)
             .keyboardType(keyboardType)
     }
