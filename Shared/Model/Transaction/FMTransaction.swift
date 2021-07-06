@@ -84,7 +84,7 @@ extension FMTransaction {
     }
     
     enum ExpenseCategory: String, CaseIterable {
-        case housing, transportation, food, utilities, clothing, medical, insurance, household, personal, debt, education, savings, gifts, entertainment, others
+        case housing, transportation, food, utilities, clothing, medical, insurance, household, personal, debt, education, savings, gifts, entertainment, investment, others
     }
     
 }
