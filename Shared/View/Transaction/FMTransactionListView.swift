@@ -18,9 +18,9 @@ struct FMTransactionListView: View {
     @State private var alertInfoMessage = ""
     @State private var shouldShowAlert = false
     @ObservedObject var accountViewModel: FMAccountRowViewModel
-    @State private var selectedTimePeriod = FMTimePeriod.thisWeek
+    @State private var selectedTimePeriod = FMTimePeriod.thisMonth
     @State private var selectedIncomeSourceIndex = kCommonIndex
-    @State private var transactionTypeIndex = kCommonIndex
+    @State private var transactionTypeIndex = 1 // Index of 'Expense' transaction type
     
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
