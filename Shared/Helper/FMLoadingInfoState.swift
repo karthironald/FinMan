@@ -32,6 +32,7 @@ final class FMLoadingInfoState: ObservableObject {
     func stopLoading() {
         shouldShowLoading = false
     }
+    
 }
 
 extension FMLoadingInfoState {

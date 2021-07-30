@@ -22,7 +22,7 @@ class FMHelper {
         return percentage
     }
     
-    class func startDate(type: FMTimePeriod) -> (startDate: Date?, endDate: Date?) {
+    static func startDate(type: FMTimePeriod) -> (startDate: Date?, endDate: Date?) {
         let now = Date()
         
         switch type {
@@ -109,4 +109,16 @@ class FMHelper {
     static func dateForDays(ago: Int, from date: Date) -> Date {
         date.adjust(.day, offset: -ago).dateFor(.startOfDay)
     }
+    
+    static func selectedTimePeriodDisplayString(timePeriod: FMTimePeriod) -> String? {
+        let dates = startDate(type: timePeriod)
+        if let startDate = dates.startDate, let endDate = dates.endDate {
+            let dateFormatter = DateFormatter()
+            dateFormatter.timeZone = TimeZone.current
+            dateFormatter.dateStyle = .medium
+            return "\(dateFormatter.string(from: startDate)) to \(dateFormatter.string(from: endDate))"
+        }
+        return nil
+    }
+    
 }

@@ -60,7 +60,7 @@ class FMAccountRepository: ObservableObject {
         isFetching = true
         store.collection(path)
             .order(by: "createdAt", descending: true)
-            .whereField("userId", isEqualTo: userId)
+            .whereField("userId", isEqualTo: userId ?? "")
             .addSnapshotListener { [self] (querySnapshot, error) in
                 
                 let updatedAccounts = querySnapshot?.documentChanges ?? []

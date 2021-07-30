@@ -27,8 +27,8 @@ class FMTransactionRepository: ObservableObject {
     @Published var isFetching: Bool = false
     @Published var isPaginating: Bool = false
     
-    var lastDocument: DocumentSnapshot?
-    var transactionQuery: Query?
+    private var lastDocument: DocumentSnapshot?
+    private var transactionQuery: Query?
     
     private init() {
         authenticationService.$user
@@ -201,16 +201,7 @@ class FMTransactionRepository: ObservableObject {
         }
     }
     
-    func log(startDate: Date, endDate: Date) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = TimeZone.current
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .medium
-        print("🔵⭐️ \(dateFormatter.string(from: startDate)) to \(dateFormatter.string(from: endDate))")
-    }
-    
     func filterTransaction(startDate: Date, endDate: Date, incomeSource: FMTransaction.IncomeSource? = nil, transactionType: FMTransaction.TransactionType? = nil) {
-        log(startDate: startDate, endDate: endDate)
         isFetching = true
         transactionQuery = store.collection(path)
             .order(by: "transactionDate", descending: true)
