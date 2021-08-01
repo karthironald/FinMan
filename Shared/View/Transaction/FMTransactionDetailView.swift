@@ -18,6 +18,9 @@ struct FMTransactionDetailView: View {
         return df
     }
     
+    
+    // MARK: - View Body
+    
     var body: some View {
         List {
             VStack(alignment: .leading) {
@@ -86,6 +89,7 @@ struct FMTransactionDetailView: View {
             }
         })
     }
+    
 }
 
 struct FMTransactionDetailView_Previews: PreviewProvider {

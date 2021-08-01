@@ -22,6 +22,9 @@ struct FMTransactionListView: View {
     @State private var selectedIncomeSourceIndex = kCommonIndex
     @State private var transactionTypeIndex = 1 // Index of 'Expense' transaction type
     
+    
+    // MARK: - View Body
+    
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             VStack(spacing: 0) {
@@ -128,6 +131,9 @@ struct FMTransactionListView: View {
             }
         })
     }
+    
+    
+    // MARK: - Custom methods
     
     func fetchTransaction() {
         let source = (selectedIncomeSourceIndex > (FMTransaction.IncomeSource.allCases.count - 1)) ? nil : FMTransaction.IncomeSource.allCases[selectedIncomeSourceIndex]
@@ -244,6 +250,9 @@ struct FMChartView: View {
     }
     var points: [(String, Double)]
     
+    
+    // MARK: - View Body
+    
     var body: some View {
         VStack(spacing: 10) {
             ForEach(0..<points.count, id: \.self) { index in
@@ -278,6 +287,9 @@ struct FMChartView: View {
         .frame(height: CGFloat(40 * points.count), alignment: .center)
         .padding()
     }
+    
+    
+    // MARK: - Custom methods
     
     func normalizedValue(index: Int) -> Double {
         var allValues: [Double]    {

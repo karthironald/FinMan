@@ -12,6 +12,9 @@ struct FMProfileView: View {
     @EnvironmentObject var loadingInfoState: FMLoadingInfoState
     @StateObject private var authService = FMAuthenticationService.shared
     
+    
+    // MARK: - View Body
+    
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: AppSettings.vStackSpacing) {
@@ -47,6 +50,9 @@ struct FMProfileView: View {
         .padding([.horizontal, .bottom])
     }
  
+    
+    // MARK: - Custom methods
+    
     func viewFor(title: String, and value: String) -> some View {
         VStack(alignment: .leading, spacing: 5) {
             Text(title)

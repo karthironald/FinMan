@@ -19,6 +19,7 @@ class FMTransactionRowViewModel: ObservableObject, Dated {
         transaction.transactionDate?.dateValue() ?? Date()
     }
     
+    // MARK: - Init Methods
     init(transaction: FMTransaction) {
         self.transaction = transaction
         
@@ -27,6 +28,8 @@ class FMTransactionRowViewModel: ObservableObject, Dated {
             .assign(to: \.id, on: self)
             .store(in: &cancellables)
     }
+    
+    // MARK: - Custom methods
     
     func update(transaction: FMTransaction, resultBlock: @escaping (Error?) -> Void) {
         transactionRepository.update(transaction: transaction, oldTransaction: self.transaction, resultBlock: resultBlock)

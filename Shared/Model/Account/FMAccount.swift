@@ -30,3 +30,11 @@ extension FMAccount {
     ]
     
 }
+
+extension FMAccount {
+    
+    enum Keys: String {
+        case id, name, comments, userId, income, expense, incomeCount, expenseCount, createdAt
+    }
+    
+}

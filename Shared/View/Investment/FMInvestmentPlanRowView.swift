@@ -12,6 +12,9 @@ struct FMInvestmentPlanRowView: View {
     var total: Double
     @Binding var investment: FMInvestment
     
+    
+    // MARK: - View Body
+    
     var body: some View {
         VStack(spacing: 5) {
             HStack {

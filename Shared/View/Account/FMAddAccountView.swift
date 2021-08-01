@@ -19,6 +19,9 @@ struct FMAddAccountView: View {
     var viewModel: FMAccountListViewModel? = nil
     var accountRowViewModel: FMAccountRowViewModel? = nil
     
+    
+    // MARK: - View Body
+    
     var body: some View {
         VStack(spacing: AppSettings.vStackSpacing) {
             FMTextField(title: "Enter account name", value: $name, infoMessage: $nameInfoMessage)
@@ -40,6 +43,9 @@ struct FMAddAccountView: View {
         })
         .padding([.horizontal, .bottom]) // We are not setting `top` padding as we have padding in the BottomPopup title's bottom.
     }
+    
+    
+    // MARK: - Custom methods
     
     func saveButtonView() -> some View {
         FMButton(title: "Save", type: .primary, shouldShowLoading: hud.shouldShowLoading) {

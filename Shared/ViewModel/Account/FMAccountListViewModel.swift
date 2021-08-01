@@ -18,6 +18,7 @@ class FMAccountListViewModel: ObservableObject {
     var selectedAccount: FMAccount?
     private var cancellables: Set<AnyCancellable> = []
     
+    // MARK: - Init Methods
     
     init() {
         accountRepository.$accounts.map { account in
@@ -27,10 +28,7 @@ class FMAccountListViewModel: ObservableObject {
         .store(in: &cancellables)
         
         accountRepository.$isFetching
-            .map {
-                print("🔵 Current fetching status: \($0)")
-                return $0
-            }
+            .map { $0 }
             .assign(to: \.isFetching, on: self)
             .store(in: &cancellables)
     }

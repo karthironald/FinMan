@@ -23,6 +23,7 @@ struct FMHud<Content: View>: View {
                     .shadow(color: Color(.black).opacity(0.16), radius: 12, x: 0, y: 5)
             )
     }
+    
 }
 
 struct FMHud_Previews: PreviewProvider {

@@ -14,6 +14,7 @@ struct FMInvestmentPlanView: View {
     @State var balance: Double = 0.0
     @State var shouldAddInvestment = false
     
+    // MARK: - View Body
     var body: some View {
         NavigationView {
             List {
@@ -81,6 +82,9 @@ struct FMInvestmentPlanView: View {
         }
     }
     
+    
+    // MARK: - Custom methods
+    
     func balanceValue() -> Double {
         let totalInvestments = investments.reduce(0, { $0 + $1.absoluteValue })
         return (Double(total) ?? 0.0) - totalInvestments
@@ -95,12 +99,15 @@ struct FMInvestmentPlanView: View {
     func updateBalance() {
         balance = balanceValue()
     }
+    
 }
 
 struct FMInvestmentPlanView_Previews: PreviewProvider {
+    
     static var previews: some View {
         FMInvestmentPlanView(total: "73000", investments: FMInvestment.samepleData)
     }
+    
 }
 
 class FMInvestment: Identifiable, ObservableObject, Codable {
@@ -113,6 +120,9 @@ class FMInvestment: Identifiable, ObservableObject, Codable {
         case name
         case absoluteValue
     }
+    
+    
+    // MARK: - Init Methods
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)

@@ -20,7 +20,8 @@ class FMTransactionListViewModel: ObservableObject {
     
     private var cancellables: Set<AnyCancellable> = []
      
-
+    // MARK: - Init Methods
+    
     init() {
         transactionRepository.$transactions
             .map { transaction in

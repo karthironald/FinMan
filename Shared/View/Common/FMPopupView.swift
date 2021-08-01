@@ -17,6 +17,9 @@ struct BottomPopupView<Content: View>: View {
     
     @State private var childSize: CGSize = .zero
     
+    
+    // MARK: - View Body
+    
     var body: some View {
         GeometryReader { geometry in
             VStack {
@@ -59,6 +62,7 @@ struct BottomPopupView<Content: View>: View {
         .animation(.spring())
         .transition(.move(edge: .bottom))
     }
+    
 }
 
 struct OverlayModifier<OverlayView: View>: ViewModifier {
@@ -89,6 +93,7 @@ struct RoundedCornersShape: Shape {
                                 cornerRadii: CGSize(width: radius, height: radius))
         return Path(path.cgPath)
     }
+    
 }
 
 extension View {

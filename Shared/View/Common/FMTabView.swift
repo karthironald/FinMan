@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct FMTabView: View {
+    
     var body: some View {
         TabView {
             FMAccountListView().tabItem {
@@ -18,6 +19,7 @@ struct FMTabView: View {
             }
         }
     }
+    
 }
 
 struct FMTabView_Previews: PreviewProvider {

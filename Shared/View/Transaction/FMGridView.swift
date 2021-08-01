@@ -15,6 +15,9 @@ struct FMGridView<Item: RawRepresentable>: View where Item.RawValue == String {
     
     let columns = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
     
+    
+    // MARK: - View Body
+    
     var body: some View {
         LazyVGrid(columns: columns, content: {
             ForEach(0..<items.count, id: \.self) { index in
@@ -36,6 +39,7 @@ struct FMGridView<Item: RawRepresentable>: View where Item.RawValue == String {
             }
         })
     }
+    
 }
 
 struct FMCategoryGridView_Previews: PreviewProvider {

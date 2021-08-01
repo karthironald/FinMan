@@ -11,6 +11,9 @@ struct FMTransactionRowView: View {
     
     @ObservedObject var transactionRowViewModel: FMTransactionRowViewModel
     
+    
+    // MARK: - View Body
+    
     var body: some View {
         HStack(alignment: .center) {
             Image(systemName: "\(transactionRowViewModel.imageName()).square.fill")
@@ -49,6 +52,7 @@ struct FMTransactionRowView: View {
         }
         .animation(nil)
     }
+    
 }
 
 struct FMTransactionRow_Previews: PreviewProvider {

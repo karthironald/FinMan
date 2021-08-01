@@ -16,6 +16,9 @@ struct FMLandingView: View {
     @State private var shouldPresentLoginForm = false
     @State private var shouldPresentForgotPasswordForm = false
     
+    
+    // MARK: - View Body
+    
     var body: some View {
         if authenticationService.user != nil {
             FMTabView()
@@ -78,6 +81,7 @@ struct FMLandingView: View {
             .accentColor(AppSettings.appPrimaryColour)
         }
     }
+    
 }
 
 struct FMLandingView_Previews: PreviewProvider {

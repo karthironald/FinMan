@@ -99,3 +99,11 @@ extension FMTransaction {
     ]
     
 }
+
+extension FMTransaction {
+
+    enum Keys: String {
+        case id, value, frequency, source, comments, userId, accountId, transactionType, expenseCategory, transactionDate, createdAt
+    }
+    
+}

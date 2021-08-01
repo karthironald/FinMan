@@ -37,6 +37,9 @@ struct FMAddTransactionView: View {
     var transactionRowViewModel: FMTransactionRowViewModel? = nil
     @Binding var shouldPresentAddTransactionView: Bool
     
+    
+    // MARK: - View Body
+    
     var body: some View {
         ZStack {
             VStack(spacing: AppSettings.vStackSpacing) {
@@ -135,6 +138,9 @@ struct FMAddTransactionView: View {
         .padding(.bottom, bottomPadding) // To make the save button visisble when keyboard is presented
     }
     
+    
+    // MARK: - Custom methods
+    
     private func saveButtonTapped() {
         if transactionRowViewModel?.id == nil && viewModel != nil {
             var transaction = FMTransaction(value: Double(value) ?? 0.0)
@@ -203,6 +209,7 @@ struct FMAddTransactionView: View {
             return ((value > 0.0) && value != transactionRowViewModel?.transaction.value) || (transactionType.rawValue.lowercased() != transactionRowViewModel?.transaction.transactionType.lowercased()) || (transactionDate != transactionRowViewModel?.transaction.transactionDate?.dateValue()) || (comments.lowercased() != transactionRowViewModel?.transaction.comments?.lowercased())
         }
     }
+    
 }
 
 struct FMAddTransactionView_Previews: PreviewProvider {

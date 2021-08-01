@@ -19,6 +19,7 @@ class FMAccountRowViewModel: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
     
     //MARK: - Init methods
+    
     init(account: FMAccount) {
         self.account = account
         

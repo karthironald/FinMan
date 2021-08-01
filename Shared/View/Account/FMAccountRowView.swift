@@ -13,6 +13,9 @@ struct FMAccountRowView: View {
     @State private var shouldShowInfo = false
     @Namespace private var animation
     
+    
+    // MARK: - View Body
+    
     var body: some View {
         GeometryReader { geo in
             ZStack {
@@ -82,6 +85,7 @@ struct FMAccountRowView: View {
         }
         .frame(height: 80)
     }
+    
 }
 
 struct FMAccountRow_Previews: PreviewProvider {

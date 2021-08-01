@@ -12,16 +12,18 @@ import Combine
 class FMAccountRepository: ObservableObject {
     
     static let shared = FMAccountRepository()
-    private let path: String = "Account"
+    private let path: String = FMFirestoreCollection.account.rawValue
     private let store = Firestore.firestore()
-    
-    var userId: String?
+    private var userId: String?
     private let authenticationService = FMAuthenticationService.shared
     private var cancellables: Set<AnyCancellable> = []
     
     @Published var accounts: [FMAccount] = []
     @Published var selectedAccount: FMAccount?
     @Published var isFetching: Bool = false
+    
+    
+    // MARK: - Init Methods
     
     private init() {
         authenticationService.$user
@@ -44,6 +46,8 @@ class FMAccountRepository: ObservableObject {
     }
     
     
+    // MARK: - Custom methods
+    
     func add(_ account: FMAccount, resultBlock: @escaping (Error?) -> Void) {
         do {
             var newAccount = account
@@ -59,8 +63,8 @@ class FMAccountRepository: ObservableObject {
     func getAccounts() {
         isFetching = true
         store.collection(path)
-            .order(by: "createdAt", descending: true)
-            .whereField("userId", isEqualTo: userId ?? "")
+            .order(by: FMAccount.Keys.createdAt.rawValue, descending: true)
+            .whereField(FMAccount.Keys.userId.rawValue, isEqualTo: userId ?? "")
             .addSnapshotListener { [self] (querySnapshot, error) in
                 
                 let updatedAccounts = querySnapshot?.documentChanges ?? []
@@ -116,3 +120,5 @@ class FMAccountRepository: ObservableObject {
     }
     
 }
+
+

@@ -55,3 +55,8 @@ enum FMTimePeriod: String, CaseIterable {
         }
     }
 }
+
+enum FMFirestoreCollection: String {
+    case account = "Account"
+    case transaction = "Transaction"
+}

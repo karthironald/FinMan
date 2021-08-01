@@ -13,9 +13,13 @@ struct FinManApp: App {
     
     @StateObject var hudState = FMLoadingInfoState()
     
+    // MARK: - Init Methods
+    
     init() {
         FirebaseApp.configure()
     }
+    
+    // MARK: - View Body
     
     var body: some Scene {
         WindowGroup {

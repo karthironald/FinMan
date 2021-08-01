@@ -23,6 +23,9 @@ struct FMSignupView: View {
     
     var type: FMSignupView.FormType = .signup
     
+    
+    // MARK: - View Body
+    
     var body: some View {
         VStack(spacing: AppSettings.vStackSpacing) {
             VStack(alignment: .leading, spacing: 5) {
@@ -57,6 +60,9 @@ struct FMSignupView: View {
         }
         .padding([.horizontal, .bottom]) // We are not setting `top` padding as we have padding in the BottomPopup title's bottom.
     }
+    
+    
+    // MARK: - Custom methods
     
     func actionButtonTapped() {
         email = email.trimmingCharacters(in: .whitespacesAndNewlines)
