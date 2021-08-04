@@ -84,7 +84,7 @@ extension FMTransaction {
     }
     
     enum ExpenseCategory: String, CaseIterable {
-        case housing, transportation, food, utilities, clothing, medical, insurance, household, personal, debt, education, savings, gifts, entertainment, others
+        case housing, transportation, food, utilities, clothing, medical, insurance, household, personal, debt, education, savings, gifts, entertainment, investment, others
     }
     
 }
@@ -97,5 +97,13 @@ extension FMTransaction {
         FMTransaction(id: UUID().uuidString, value: 1000, frequency: IncomeFrequency.monthly.rawValue, source: IncomeSource.capitalGain.rawValue, comments: nil, userId: nil),
         FMTransaction(id: UUID().uuidString, value: 1000, frequency: IncomeFrequency.yearly.rawValue, source: IncomeSource.interest.rawValue, comments: nil, userId: nil),
     ]
+    
+}
+
+extension FMTransaction {
+
+    enum Keys: String {
+        case id, value, frequency, source, comments, userId, accountId, transactionType, expenseCategory, transactionDate, createdAt
+    }
     
 }

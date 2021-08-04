@@ -18,6 +18,9 @@ struct FMTransactionDetailView: View {
         return df
     }
     
+    
+    // MARK: - View Body
+    
     var body: some View {
         List {
             VStack(alignment: .leading) {
@@ -30,7 +33,7 @@ struct FMTransactionDetailView: View {
                 Text("Transaction Date")
                     .font(.footnote)
                     .foregroundColor(.secondary)
-                Text("\(transactionRowViewModel.transaction.transactionDate?.dateValue() ?? Date(), formatter: dateFormatter)")
+                Text("\(transactionRowViewModel.transaction.transactionDate?.dateValue() ?? Date(), formatter: dateFormatter) \(transactionRowViewModel.transaction.transactionDate?.dateValue() ?? Date(), style: .time)")
             }
             if transactionRowViewModel.transaction.transactionType == FMTransaction.TransactionType.income.rawValue {
                 VStack(alignment: .leading) {
@@ -77,13 +80,16 @@ struct FMTransactionDetailView: View {
         }, label: {
             Image(systemName: "pencil.circle")
                 .resizable()
-                .font(.title3)
+                .font(.title2)
         }))
-        .sheet(isPresented: $shouldPresentEditScreen) {
-            FMAddTransactionView(value: String(transactionRowViewModel.transaction.value), frequency: FMTransaction.IncomeFrequency(rawValue: transactionRowViewModel.transaction.frequency ?? "") ?? .onetime, source: FMTransaction.IncomeSource(rawValue: transactionRowViewModel.transaction.source ?? "") ?? .earned, comments: transactionRowViewModel.transaction.comments ?? " ", transactionType: FMTransaction.TransactionType(rawValue: transactionRowViewModel.transaction.transactionType ) ?? .income, expenseCategory: FMTransaction.ExpenseCategory(rawValue: transactionRowViewModel.transaction.expenseCategory ?? "") ?? .housing, transactionDate: transactionRowViewModel.transaction.transactionDate?.dateValue() ?? Date(), transactionRowViewModel: transactionRowViewModel, shouldPresentAddTransactionView: $shouldPresentEditScreen)
-                .accentColor(AppSettings.appPrimaryColour)
-        }
+        .popup(isPresented: $shouldPresentEditScreen, overlayView: {
+            BottomPopupView(title: "Edit Transaction", shouldDismiss: $shouldPresentEditScreen) {
+                FMAddTransactionView(value: String(transactionRowViewModel.transaction.value), frequency: FMTransaction.IncomeFrequency(rawValue: transactionRowViewModel.transaction.frequency ?? "") ?? .onetime, source: FMTransaction.IncomeSource(rawValue: transactionRowViewModel.transaction.source ?? "") ?? .earned, comments: transactionRowViewModel.transaction.comments ?? " ", transactionType: FMTransaction.TransactionType(rawValue: transactionRowViewModel.transaction.transactionType ) ?? .income, expenseCategory: FMTransaction.ExpenseCategory(rawValue: transactionRowViewModel.transaction.expenseCategory ?? "") ?? .housing, transactionDate: transactionRowViewModel.transaction.transactionDate?.dateValue() ?? Date(), transactionRowViewModel: transactionRowViewModel, shouldPresentAddTransactionView: $shouldPresentEditScreen)
+                    .accentColor(AppSettings.appPrimaryColour)
+            }
+        })
     }
+    
 }
 
 struct FMTransactionDetailView_Previews: PreviewProvider {

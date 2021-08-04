@@ -21,7 +21,7 @@ extension Array where Element: Dated {
             let date = Calendar.current.date(from: components)!
             
             let df = DateFormatter()
-            df.dateFormat = "yyyy MMM"
+            df.dateFormat = "yyyy MM"
             
             let dString = df.string(from: date)
             let existing = acc[dString] ?? []
@@ -33,108 +33,30 @@ extension Array where Element: Dated {
     
 }
 
-struct FMButton: View {
-    var title: String
-    var type: ButtonType = .primary
-    var action: () -> ()
-    
-    var body: some View {
-        Button(action: {
-            action()
-        }, label: {
-            HStack {
-                Spacer()
-                Text(title)
-                Spacer()
-            }
-        })
-        .modifier(FMButtonThemeModifier(type: type))
-    }
-    
-    enum ButtonType {
-        case primary, secondary
-    }
-}
-
-struct FMButtonThemeModifier: ViewModifier {
-    var type: FMButton.ButtonType
-    
-    func body(content: Content) -> some View {
-        content
-            .frame(height: 50, alignment: .center)
-            .background((type == .primary) ? AppSettings.appPrimaryColour : AppSettings.appSecondaryColour)
-            .foregroundColor((type == .primary) ? .white : AppSettings.appPrimaryColour)
-            .cornerRadius(AppSettings.appCornerRadius)
-    }
-}
-
-struct FMTextField: View {
-    var title: String
-    var keyboardType: UIKeyboardType = .default
-    
-    @Binding var value: String
-    @Binding var infoMessage: String
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 5) {
-            TextField(title, text: $value)
-                .modifier(FMTextFieldThemeModifier(keyboardType: keyboardType))
-            if !infoMessage.isEmpty {
-                Text(infoMessage)
-                    .font(.footnote)
-                    .foregroundColor(.red)
-            }
-        }
-        
-    }
-}
-
-struct FMTextFieldThemeModifier: ViewModifier {
-    var keyboardType: UIKeyboardType
-    
-    func body(content: Content) -> some View {
-        content
-            .font(.body)
-            .padding()
-            .frame(height: 50, alignment: .center)
-            .background(AppSettings.appSecondaryColour)
-            .cornerRadius(AppSettings.appCornerRadius)
-            .disableAutocorrection(true)
-            .autocapitalization(.none)
-            .keyboardType(keyboardType)
-    }
+struct SizePreferenceKey: PreferenceKey {
+    static var defaultValue: CGSize = .zero
+    static func reduce(value: inout CGSize, nextValue: () -> CGSize) { }
 }
 
 extension View {
     
-    func closeButtonView(actionBlock: @escaping () -> ()) -> some View {
-        Button(action: {
-            actionBlock()
-        }, label: {
-            Image(systemName: "xmark.circle.fill")
-                .font(.title3)
-        })
-        .foregroundColor(.secondary)
-    }
-    
-    func startLoading(start: Bool) -> some View {
-        Group {        
-            if start {
-                ZStack {
-                    self
-                    RoundedRectangle(cornerRadius: AppSettings.appCornerRadius)
-                        .fill(AppSettings.appPrimaryColour)
-                        .frame(width: 100, height: 75, alignment: .center)
-                        .overlay(
-                            ProgressView("Loading...")
-                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                        )
-                        .foregroundColor(.white)
-                }
-            } else {
-                self
+    func childSize(onChange: @escaping (CGSize) -> Void) -> some View {
+        background(
+            GeometryReader { geoProxy in
+                Color.clear
+                    .preference(key: SizePreferenceKey.self, value: geoProxy.size)
             }
-        }
+        )
+        .onPreferenceChange(SizePreferenceKey.self, perform: onChange)
+    }
+}
+
+#if canImport(UIKit)
+extension View {
+    
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
     
 }
+#endif

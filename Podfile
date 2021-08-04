@@ -9,6 +9,7 @@ target 'FinMan (iOS)' do
   pod 'Firebase/Firestore'
   pod 'Firebase/Auth'
   pod 'FirebaseFirestoreSwift'
+  pod 'AFDateHelper'
 end
 
 target 'FinMan (macOS)' do

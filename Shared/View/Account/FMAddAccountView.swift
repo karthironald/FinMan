@@ -8,48 +8,47 @@
 import SwiftUI
 
 struct FMAddAccountView: View {
+    
+    @EnvironmentObject private var hud: FMLoadingInfoState
+    
     @State var name: String = ""
     @State var comments: String = ""
     @Binding var shouldPresentAddAccountView: Bool
-    @State private var alertInfoMessage = ""
-    @State private var shouldShowAlert = false
+    @State var nameInfoMessage = ""
     
     var viewModel: FMAccountListViewModel? = nil
     var accountRowViewModel: FMAccountRowViewModel? = nil
     
+    
+    // MARK: - View Body
+    
     var body: some View {
-        NavigationView {
-            Form {
-                Section {
-                    TextField("Enter account name", text: $name)
-                        .keyboardType(.default)
+        VStack(spacing: AppSettings.vStackSpacing) {
+            FMTextField(title: "Enter account name", value: $name, infoMessage: $nameInfoMessage)
+            ZStack(alignment: .topLeading) {
+                if comments.isEmpty {
+                    Text("Enter additional comments (if any)")
+                        .foregroundColor(.secondary)
+                        .opacity(0.5)
+                        .padding([.top, .leading], 20)
                 }
-                Section {
-                    ZStack(alignment: .topLeading) {
-                        if comments.isEmpty {
-                            Text("Enter additional comments(if any)")
-                                .foregroundColor(.secondary)
-                                .opacity(0.5)
-                                .padding([.top, .leading], 5)
-                        }
-                        TextEditor(text: $comments)
-                            .frame(height: 100, alignment: .center)
-                    }
-                }
+                TextEditor(text: $comments)
+                    .modifier(FMTextEditorThemeModifier(keyboardType: .default))
             }
-            .startLoading(start: FMLoadingHelper.shared.shouldShowLoading)
-            .alert(isPresented: $shouldShowAlert, content: {
-                Alert(title: Text(alertInfoMessage), message: nil, dismissButton: Alert.Button.default(Text(kOkay), action: {
-                    // Do nothing
-                }))
-            })
-            .navigationBarTitle(Text(accountRowViewModel == nil ? "Add Account" : "Edit Account"), displayMode: .inline)
-            .navigationBarItems(trailing: saveButtonView())
+            .padding(.bottom)
+            saveButtonView()
         }
+        .onAppear(perform: {
+            UITextView.appearance().backgroundColor = .clear
+        })
+        .padding([.horizontal, .bottom]) // We are not setting `top` padding as we have padding in the BottomPopup title's bottom.
     }
     
+    
+    // MARK: - Custom methods
+    
     func saveButtonView() -> some View {
-        Button("Save") {
+        FMButton(title: "Save", type: .primary, shouldShowLoading: hud.shouldShowLoading) {
             saveButtonTapped()
         }
         .disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
@@ -58,12 +57,11 @@ struct FMAddAccountView: View {
     func saveButtonTapped() {
         if accountRowViewModel?.id == nil && viewModel != nil {
             let account = FMAccount(name: name, comments: comments)
-            FMLoadingHelper.shared.shouldShowLoading.toggle()
+            hud.startLoading()
             viewModel?.addNew(account: account, resultBlock: { error in
-                FMLoadingHelper.shared.shouldShowLoading.toggle()
+                hud.stopLoading()
                 if let error = error {
-                    alertInfoMessage = error.localizedDescription
-                    shouldShowAlert = true
+                    hud.show(title: error.localizedDescription, type: .error)
                 } else {
                     shouldPresentAddAccountView.toggle()
                 }
@@ -73,12 +71,11 @@ struct FMAddAccountView: View {
                 var updatedAccount = account
                 updatedAccount.name = name
                 updatedAccount.comments = comments
-                FMLoadingHelper.shared.shouldShowLoading.toggle()
+                hud.startLoading()
                 accountRowViewModel?.update(account: updatedAccount, resultBlock: { error in
-                    FMLoadingHelper.shared.shouldShowLoading.toggle()
+                    hud.stopLoading()
                     if let error = error {
-                        alertInfoMessage = error.localizedDescription
-                        shouldShowAlert = true
+                        hud.show(title: error.localizedDescription, type: .error)
                     } else {
                         shouldPresentAddAccountView.toggle()
                     }

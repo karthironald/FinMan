@@ -9,10 +9,15 @@ import SwiftUI
 
 struct FMLandingView: View {
     
+    @EnvironmentObject private var hud: FMLoadingInfoState
+
     @StateObject private var authenticationService = FMAuthenticationService.shared
     @State private var shouldPresentSignupForm = false
     @State private var shouldPresentLoginForm = false
     @State private var shouldPresentForgotPasswordForm = false
+    
+    
+    // MARK: - View Body
     
     var body: some View {
         if authenticationService.user != nil {
@@ -45,32 +50,38 @@ struct FMLandingView: View {
                         FMButton(title: "Login", type: .secondary) {
                             shouldPresentLoginForm.toggle()
                         }
-                        .sheet(isPresented: $shouldPresentLoginForm, content: {
-                            FMSignupView(shouldPresentSignupForm: $shouldPresentLoginForm, type: .login)
-                        })
                         FMButton(title: "Register", type: .primary) {
                             shouldPresentSignupForm.toggle()
                         }
-                        .sheet(isPresented: $shouldPresentSignupForm, content: {
-                            FMSignupView(shouldPresentSignupForm: $shouldPresentSignupForm, type: .signup)
-                        })
                         Button("Forgot Password?") {
                             shouldPresentForgotPasswordForm.toggle()
                         }
                         .padding()
                         .foregroundColor(.secondary)
-                        .sheet(isPresented: $shouldPresentForgotPasswordForm, content: {
-                            FMSignupView(shouldPresentSignupForm: $shouldPresentForgotPasswordForm, type: .resetPassword)
-                        })
-                        
                     }
                     .padding()
                 }
             }
+            .ignoresSafeArea(.keyboard)
+            .popup(isPresented: $shouldPresentLoginForm, overlayView: {
+                BottomPopupView(title: "Login", shouldDismiss: $shouldPresentLoginForm) {
+                    FMSignupView(shouldPresentSignupForm: $shouldPresentLoginForm, type: .login)
+                }
+            })
+            .popup(isPresented: $shouldPresentSignupForm, overlayView: {
+                BottomPopupView(title: "Signup", shouldDismiss: $shouldPresentSignupForm) {
+                    FMSignupView(shouldPresentSignupForm: $shouldPresentSignupForm, type: .signup)
+                }
+            })
+            .popup(isPresented: $shouldPresentForgotPasswordForm, overlayView: {
+                BottomPopupView(title: "Rest Password", shouldDismiss: $shouldPresentForgotPasswordForm) {
+                    FMSignupView(shouldPresentSignupForm: $shouldPresentForgotPasswordForm, type: .resetPassword)
+                }
+            })
             .accentColor(AppSettings.appPrimaryColour)
-            
         }
     }
+    
 }
 
 struct FMLandingView_Previews: PreviewProvider {

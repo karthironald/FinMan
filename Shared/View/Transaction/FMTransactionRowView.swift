@@ -11,6 +11,9 @@ struct FMTransactionRowView: View {
     
     @ObservedObject var transactionRowViewModel: FMTransactionRowViewModel
     
+    
+    // MARK: - View Body
+    
     var body: some View {
         HStack(alignment: .center) {
             Image(systemName: "\(transactionRowViewModel.imageName()).square.fill")
@@ -36,7 +39,7 @@ struct FMTransactionRowView: View {
                     .padding([.top, .bottom], 2)
                     .padding([.leading, .trailing], 8)
                     .background(Color.green.opacity(0.2))
-                    .clipShape(RoundedRectangle(cornerRadius: 15))
+                    .clipShape(Capsule())
             } else if let expenseCategory = transactionRowViewModel.transaction.expenseCategory {
                 Text("\(FMTransaction.ExpenseCategory(rawValue: expenseCategory)?.rawValue.capitalized ?? "")")
                     .font(.footnote)
@@ -44,10 +47,12 @@ struct FMTransactionRowView: View {
                     .padding([.top, .bottom], 2)
                     .padding([.leading, .trailing], 8)
                     .background(Color.red.opacity(0.2))
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .clipShape(Capsule())
             }
         }
+        .animation(nil)
     }
+    
 }
 
 struct FMTransactionRow_Previews: PreviewProvider {

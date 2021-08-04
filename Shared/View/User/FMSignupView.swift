@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FMSignupView: View {
     
+    @EnvironmentObject private var hud: FMLoadingInfoState
     @StateObject private var authService = FMAuthenticationService.shared
     
     @State private var email = ""
@@ -18,58 +19,50 @@ struct FMSignupView: View {
     @State private var passwordInfoMessage = ""
     @State private var apiInfoMessage = ""
     
-    @State private var alertInfoMessage = ""
-    @State private var shouldShowAlert = false
-    
     @Binding var shouldPresentSignupForm: Bool
     
     var type: FMSignupView.FormType = .signup
     
+    
+    // MARK: - View Body
+    
     var body: some View {
-        NavigationView {
-            VStack(spacing: 20) {
+        VStack(spacing: AppSettings.vStackSpacing) {
+            VStack(alignment: .leading, spacing: 5) {
+                FMTextField(title: "Email", keyboardType: .emailAddress, value: $email, infoMessage: $emailInfoMessage)
+                    .disableAutocorrection(true)
+                    .autocapitalization(.none)
+            }
+            
+            if (type == .login || type == .signup) {
                 VStack(alignment: .leading, spacing: 5) {
-                    FMTextField(title: "Email", keyboardType: .emailAddress, value: $email, infoMessage: $emailInfoMessage)
-                }
-                
-                if (type == .login || type == .signup) {
-                    VStack(alignment: .leading, spacing: 5) {
-                        SecureField("Password", text: $password)
-                            .modifier(FMTextFieldThemeModifier(keyboardType: .default))
-                        if !passwordInfoMessage.isEmpty {
-                            Text(passwordInfoMessage)
-                                .font(.footnote)
-                                .foregroundColor(.red)
-                        }
-                    }
-                }
-                
-                
-                Spacer()
-                    .frame(height: 10, alignment: .center)
-                VStack(alignment: .leading, spacing: 5) {
-                    FMButton(title: type.actionButtonTitle, type: .primary) {
-                        actionButtonTapped()
-                    }
-                    if !apiInfoMessage.isEmpty {
-                        Text(apiInfoMessage)
+                    SecureField("Password", text: $password)
+                        .modifier(FMTextFieldThemeModifier(keyboardType: .default))
+                    if !passwordInfoMessage.isEmpty {
+                        Text(passwordInfoMessage)
                             .font(.footnote)
                             .foregroundColor(.red)
                     }
                 }
-                .padding(.bottom)
-                Spacer()
             }
-            .padding()
-            .navigationBarTitle(type.screenTitle, displayMode: .inline)
-            .alert(isPresented: $shouldShowAlert, content: {
-                Alert(title: Text(alertInfoMessage), message: nil, dismissButton: Alert.Button.default(Text(kOkay), action: {
-                    shouldPresentSignupForm.toggle()
-                }))
-            })
-            .startLoading(start: FMLoadingHelper.shared.shouldShowLoading)
+            
+            VStack(alignment: .leading, spacing: 5) {
+                FMButton(title: type.actionButtonTitle, type: .primary, shouldShowLoading: hud.shouldShowLoading) {
+                    actionButtonTapped()
+                }
+                if !apiInfoMessage.isEmpty {
+                    Text(apiInfoMessage)
+                        .font(.footnote)
+                        .foregroundColor(.red)
+                }
+            }
+            .padding(.top)
         }
+        .padding([.horizontal, .bottom]) // We are not setting `top` padding as we have padding in the BottomPopup title's bottom.
     }
+    
+    
+    // MARK: - Custom methods
     
     func actionButtonTapped() {
         email = email.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -93,40 +86,45 @@ struct FMSignupView: View {
         switch type {
         case .login:
             setInfo(message: "", for: .api)
-            toggleLoadingIndicator()
+            startLoadingIndicator()
             authService.signin(with: email, password: password) { _ in
-                toggleLoadingIndicator()
+                stopLoadingIndicator()
                 shouldPresentSignupForm.toggle()
             } failureBlock: { error in
-                toggleLoadingIndicator()
+                stopLoadingIndicator()
                 setInfo(message: error?.localizedDescription ?? kCommonErrorMessage, for: .api)
             }
         case .signup:
             setInfo(message: "", for: .api)
-            toggleLoadingIndicator()
+            startLoadingIndicator()
             authService.signup(with: email, password: password) { _ in
-                toggleLoadingIndicator()
+                stopLoadingIndicator()
                 shouldPresentSignupForm.toggle()
             } failureBlock: { error in
-                toggleLoadingIndicator()
+                stopLoadingIndicator()
                 setInfo(message: error?.localizedDescription ?? kCommonErrorMessage, for: .api)
             }
         case .resetPassword:
-            toggleLoadingIndicator()
+            startLoadingIndicator()
             authService.initiateRestPassword(for: email) { _ in
-                toggleLoadingIndicator()
-                alertInfoMessage = "Please check your email inbox for password reset instructions"
-                shouldShowAlert.toggle()
+                stopLoadingIndicator()
+                hud.show(title: "Please check your email inbox for password reset instructions", type: .info)
             } failureBlock: { error in
-                toggleLoadingIndicator()
+                stopLoadingIndicator()
                 setInfo(message: error?.localizedDescription ?? kCommonErrorMessage, for: .api)
             }
         }
     }
     
-    func toggleLoadingIndicator() {
+    func startLoadingIndicator() {
         withAnimation {
-            FMLoadingHelper.shared.shouldShowLoading.toggle()
+            hud.startLoading()
+        }
+    }
+    
+    func stopLoadingIndicator() {
+        withAnimation {
+            hud.stopLoading()
         }
     }
     

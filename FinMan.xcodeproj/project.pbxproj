@@ -8,18 +8,32 @@
 
 /* Begin PBXBuildFile section */
 		571165E17AFFF4F098559E8A /* Pods_FinMan__macOS_.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E0256DFA6C71A756F2C6C2A /* Pods_FinMan__macOS_.framework */; };
-		7717777E2650F0CD00F5F28D /* FMLoadingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7717777D2650F0CD00F5F28D /* FMLoadingHelper.swift */; };
+		770D6AA4265D6D210086182E /* FMLoadingInfoState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 770D6AA3265D6D210086182E /* FMLoadingInfoState.swift */; };
+		7725FA14267476950073CED6 /* FMInvestmentPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7725FA13267476950073CED6 /* FMInvestmentPlanView.swift */; };
+		7725FA16267487890073CED6 /* FMInvestmentPlanRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7725FA15267487890073CED6 /* FMInvestmentPlanRowView.swift */; };
 		77342755264F8A4400632949 /* FMSignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77342754264F8A4400632949 /* FMSignupView.swift */; };
 		77342757264F8A6100632949 /* FMProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77342756264F8A6100632949 /* FMProfileView.swift */; };
 		77342759264FA18F00632949 /* FMLandingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77342758264FA18F00632949 /* FMLandingView.swift */; };
 		7734275B264FA64C00632949 /* FMConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7734275A264FA64C00632949 /* FMConstant.swift */; };
 		7734275D264FE01200632949 /* FMHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7734275C264FE01100632949 /* FMHelper.swift */; };
+		774B375026B5227300909AC1 /* FMButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B374F26B5227300909AC1 /* FMButton.swift */; };
+		774B375126B5227300909AC1 /* FMButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B374F26B5227300909AC1 /* FMButton.swift */; };
+		774B375326B522B100909AC1 /* FMTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B375226B522B100909AC1 /* FMTextField.swift */; };
+		774B375426B522B100909AC1 /* FMTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B375226B522B100909AC1 /* FMTextField.swift */; };
+		774B375626B522DA00909AC1 /* FMDotLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B375526B522DA00909AC1 /* FMDotLoading.swift */; };
+		774B375726B522DA00909AC1 /* FMDotLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B375526B522DA00909AC1 /* FMDotLoading.swift */; };
 		7759FB152622083900F8520B /* FMAddTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7759FB142622083900F8520B /* FMAddTransactionView.swift */; };
 		7759FB162622083900F8520B /* FMAddTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7759FB142622083900F8520B /* FMAddTransactionView.swift */; };
+		775F4B23265FFC360058B068 /* FMPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775F4B22265FFC360058B068 /* FMPopupView.swift */; };
+		775F4B24265FFC360058B068 /* FMPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775F4B22265FFC360058B068 /* FMPopupView.swift */; };
+		775F4B26265FFC980058B068 /* FMHudView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775F4B25265FFC980058B068 /* FMHudView.swift */; };
+		775F4B27265FFC980058B068 /* FMHudView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775F4B25265FFC980058B068 /* FMHudView.swift */; };
 		776155AB263724D2000382B4 /* FMTransactionRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776155AA263724D2000382B4 /* FMTransactionRowViewModel.swift */; };
 		776155AC263724D2000382B4 /* FMTransactionRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776155AA263724D2000382B4 /* FMTransactionRowViewModel.swift */; };
 		776155B226372500000382B4 /* FMTransactionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776155B126372500000382B4 /* FMTransactionRepository.swift */; };
 		776155B326372500000382B4 /* FMTransactionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776155B126372500000382B4 /* FMTransactionRepository.swift */; };
+		7792D8AC26672048006F03C0 /* FMGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7792D8AB26672048006F03C0 /* FMGridView.swift */; };
+		7792D8AD26672048006F03C0 /* FMGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7792D8AB26672048006F03C0 /* FMGridView.swift */; };
 		77A22F272621A8C900AE2F4F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F232621A8C900AE2F4F /* ContentView.swift */; };
 		77A22F282621A8C900AE2F4F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F232621A8C900AE2F4F /* ContentView.swift */; };
 		77A22F292621A8C900AE2F4F /* FMTransactionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F252621A8C900AE2F4F /* FMTransactionListView.swift */; };
@@ -82,15 +96,23 @@
 /* Begin PBXFileReference section */
 		06EA067A2BD20ACF388C0B7C /* Pods-FinMan (iOS).debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FinMan (iOS).debug.xcconfig"; path = "Target Support Files/Pods-FinMan (iOS)/Pods-FinMan (iOS).debug.xcconfig"; sourceTree = "<group>"; };
 		0722921A7EFE7562C77A1452 /* Pods-FinMan (macOS).release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FinMan (macOS).release.xcconfig"; path = "Target Support Files/Pods-FinMan (macOS)/Pods-FinMan (macOS).release.xcconfig"; sourceTree = "<group>"; };
-		7717777D2650F0CD00F5F28D /* FMLoadingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMLoadingHelper.swift; sourceTree = "<group>"; };
+		770D6AA3265D6D210086182E /* FMLoadingInfoState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMLoadingInfoState.swift; sourceTree = "<group>"; };
+		7725FA13267476950073CED6 /* FMInvestmentPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMInvestmentPlanView.swift; sourceTree = "<group>"; };
+		7725FA15267487890073CED6 /* FMInvestmentPlanRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMInvestmentPlanRowView.swift; sourceTree = "<group>"; };
 		77342754264F8A4400632949 /* FMSignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMSignupView.swift; sourceTree = "<group>"; };
 		77342756264F8A6100632949 /* FMProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMProfileView.swift; sourceTree = "<group>"; };
 		77342758264FA18F00632949 /* FMLandingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMLandingView.swift; sourceTree = "<group>"; };
 		7734275A264FA64C00632949 /* FMConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMConstant.swift; sourceTree = "<group>"; };
 		7734275C264FE01100632949 /* FMHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMHelper.swift; sourceTree = "<group>"; };
+		774B374F26B5227300909AC1 /* FMButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMButton.swift; sourceTree = "<group>"; };
+		774B375226B522B100909AC1 /* FMTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMTextField.swift; sourceTree = "<group>"; };
+		774B375526B522DA00909AC1 /* FMDotLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMDotLoading.swift; sourceTree = "<group>"; };
 		7759FB142622083900F8520B /* FMAddTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMAddTransactionView.swift; sourceTree = "<group>"; };
+		775F4B22265FFC360058B068 /* FMPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMPopupView.swift; sourceTree = "<group>"; };
+		775F4B25265FFC980058B068 /* FMHudView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMHudView.swift; sourceTree = "<group>"; };
 		776155AA263724D2000382B4 /* FMTransactionRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMTransactionRowViewModel.swift; sourceTree = "<group>"; };
 		776155B126372500000382B4 /* FMTransactionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMTransactionRepository.swift; sourceTree = "<group>"; };
+		7792D8AB26672048006F03C0 /* FMGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMGridView.swift; sourceTree = "<group>"; };
 		77A22F232621A8C900AE2F4F /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		77A22F252621A8C900AE2F4F /* FMTransactionListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMTransactionListView.swift; sourceTree = "<group>"; };
 		77A22F262621A8C900AE2F4F /* FMTransactionRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMTransactionRowView.swift; sourceTree = "<group>"; };
@@ -161,6 +183,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7725FA122674767A0073CED6 /* Investment */ = {
+			isa = PBXGroup;
+			children = (
+				7725FA13267476950073CED6 /* FMInvestmentPlanView.swift */,
+				7725FA15267487890073CED6 /* FMInvestmentPlanRowView.swift */,
+			);
+			path = Investment;
+			sourceTree = "<group>";
+		};
 		77342753264F8A3000632949 /* User */ = {
 			isa = PBXGroup;
 			children = (
@@ -185,6 +216,11 @@
 			children = (
 				77A22F312621A8E400AE2F4F /* FMTabView.swift */,
 				77A22F232621A8C900AE2F4F /* ContentView.swift */,
+				775F4B22265FFC360058B068 /* FMPopupView.swift */,
+				775F4B25265FFC980058B068 /* FMHudView.swift */,
+				774B374F26B5227300909AC1 /* FMButton.swift */,
+				774B375226B522B100909AC1 /* FMTextField.swift */,
+				774B375526B522DA00909AC1 /* FMDotLoading.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -196,6 +232,7 @@
 				77A22F262621A8C900AE2F4F /* FMTransactionRowView.swift */,
 				7759FB142622083900F8520B /* FMAddTransactionView.swift */,
 				77C6AF56262C315900321F04 /* FMTransactionDetailView.swift */,
+				7792D8AB26672048006F03C0 /* FMGridView.swift */,
 			);
 			path = Transaction;
 			sourceTree = "<group>";
@@ -295,6 +332,7 @@
 		77AB83C7261CC68C00F44999 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				7725FA122674767A0073CED6 /* Investment */,
 				77342753264F8A3000632949 /* User */,
 				77C3ADFF263E49DE00FAEF88 /* Account */,
 				77A22F222621A8C900AE2F4F /* Common */,
@@ -328,7 +366,7 @@
 				77C3AE3A263F069E00FAEF88 /* FMExtension.swift */,
 				7734275A264FA64C00632949 /* FMConstant.swift */,
 				7734275C264FE01100632949 /* FMHelper.swift */,
-				7717777D2650F0CD00F5F28D /* FMLoadingHelper.swift */,
+				770D6AA3265D6D210086182E /* FMLoadingInfoState.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -616,8 +654,12 @@
 				77342755264F8A4400632949 /* FMSignupView.swift in Sources */,
 				77A22F3A2621A8F200AE2F4F /* FMTransaction.swift in Sources */,
 				77A22F272621A8C900AE2F4F /* ContentView.swift in Sources */,
+				775F4B23265FFC360058B068 /* FMPopupView.swift in Sources */,
+				7725FA14267476950073CED6 /* FMInvestmentPlanView.swift in Sources */,
 				7759FB152622083900F8520B /* FMAddTransactionView.swift in Sources */,
 				77A22F292621A8C900AE2F4F /* FMTransactionListView.swift in Sources */,
+				7792D8AC26672048006F03C0 /* FMGridView.swift in Sources */,
+				775F4B26265FFC980058B068 /* FMHudView.swift in Sources */,
 				77C3AE0C263E49F900FAEF88 /* FMAccountRowView.swift in Sources */,
 				77C3ADC3263E3A7100FAEF88 /* FMAccountRepository.swift in Sources */,
 				77E5C7B62637329B00F64A73 /* FMAuthenticationService.swift in Sources */,
@@ -626,9 +668,13 @@
 				776155B226372500000382B4 /* FMTransactionRepository.swift in Sources */,
 				77C3ADE2263E3BAF00FAEF88 /* FMAccountRowViewModel.swift in Sources */,
 				77A22F2B2621A8C900AE2F4F /* FMTransactionRowView.swift in Sources */,
+				774B375026B5227300909AC1 /* FMButton.swift in Sources */,
+				770D6AA4265D6D210086182E /* FMLoadingInfoState.swift in Sources */,
+				774B375326B522B100909AC1 /* FMTextField.swift in Sources */,
 				77A22F322621A8E400AE2F4F /* FMTabView.swift in Sources */,
-				7717777E2650F0CD00F5F28D /* FMLoadingHelper.swift in Sources */,
 				77C3ADD7263E3B5500FAEF88 /* FMAccountListViewModel.swift in Sources */,
+				774B375626B522DA00909AC1 /* FMDotLoading.swift in Sources */,
+				7725FA16267487890073CED6 /* FMInvestmentPlanRowView.swift in Sources */,
 				77C3ADCB263E3AB200FAEF88 /* FMAccount.swift in Sources */,
 				77C3AE13263E887900FAEF88 /* FMAddAccountView.swift in Sources */,
 				77AB83AB261CC1F600F44999 /* FinManApp.swift in Sources */,
@@ -639,9 +685,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				774B375126B5227300909AC1 /* FMButton.swift in Sources */,
 				77C3AE3C263F069F00FAEF88 /* FMExtension.swift in Sources */,
 				77C3AE02263E49ED00FAEF88 /* FMAccountListView.swift in Sources */,
 				77C6AF58262C315900321F04 /* FMTransactionDetailView.swift in Sources */,
+				775F4B27265FFC980058B068 /* FMHudView.swift in Sources */,
 				776155AC263724D2000382B4 /* FMTransactionRowViewModel.swift in Sources */,
 				77A22F3B2621A8F200AE2F4F /* FMTransaction.swift in Sources */,
 				77A22F282621A8C900AE2F4F /* ContentView.swift in Sources */,
@@ -649,8 +697,11 @@
 				77A22F2A2621A8C900AE2F4F /* FMTransactionListView.swift in Sources */,
 				77C3AE0D263E49F900FAEF88 /* FMAccountRowView.swift in Sources */,
 				77C3ADC4263E3A7100FAEF88 /* FMAccountRepository.swift in Sources */,
+				775F4B24265FFC360058B068 /* FMPopupView.swift in Sources */,
+				774B375426B522B100909AC1 /* FMTextField.swift in Sources */,
 				77E5C7B72637329B00F64A73 /* FMAuthenticationService.swift in Sources */,
 				77A22F4A2621A92000AE2F4F /* FMTransactionListViewModel.swift in Sources */,
+				7792D8AD26672048006F03C0 /* FMGridView.swift in Sources */,
 				776155B326372500000382B4 /* FMTransactionRepository.swift in Sources */,
 				77C3ADE3263E3BAF00FAEF88 /* FMAccountRowViewModel.swift in Sources */,
 				77A22F332621A8E400AE2F4F /* FMTabView.swift in Sources */,
@@ -659,6 +710,7 @@
 				77C3ADCC263E3AB200FAEF88 /* FMAccount.swift in Sources */,
 				77C3AE14263E887900FAEF88 /* FMAddAccountView.swift in Sources */,
 				77AB83AC261CC1F600F44999 /* FinManApp.swift in Sources */,
+				774B375726B522DA00909AC1 /* FMDotLoading.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,18 +8,18 @@
 import SwiftUI
 
 struct FMTabView: View {
+    
     var body: some View {
         TabView {
-            FMAccountListView()
-                .tabItem {
-                    Label("Accounts", systemImage: "person.2.circle.fill")
-                }
-            FMProfileView()
-                .tabItem {
-                    Label("Profile", systemImage: "person.circle.fill")
-                }
+            FMAccountListView().tabItem {
+                Label("Account", systemImage: "building.columns")
+            }
+            FMInvestmentPlanView().tabItem {
+                Label("Budget", systemImage: "bag.circle.fill")
+            }
         }
     }
+    
 }
 
 struct FMTabView_Previews: PreviewProvider {
