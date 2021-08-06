@@ -1,13 +1,13 @@
-# FinMan using SwiftUI #
+# FinMan using SwiftUI and Firebase #
 
 
 Simple income and expense tracking app with Firebase Firestore support.
 
-> ⚠️ Configure Firebase Firestore Database and have GoogleService-Info.plist in project's root directory before running the app
+> ⚠️ Configure Firebase Authentication(Enable Email/Password), Firebase Firestore Database and have GoogleService-Info.plist in project's root directory before running the app
 <img width="363" alt="Screenshot 2021-08-06 at 6 36 41 AM" src="https://user-images.githubusercontent.com/19427160/128440636-03187ab6-64a9-4f94-8dc7-72b1359344cb.png">
 
 ## TechStack
-`SwiftUI`, `Combine`, `Swift`, `Firebase Firestore`
+`SwiftUI`, `Combine`, `Swift`, `Firebase Firestore`, `Firebase Authentication`
 
 ## Few screenshots
 
