@@ -3,6 +3,9 @@
 
 Simple income and expense tracking app with Firebase Firestore support.
 
+> ⚠️ Configure Firebase Firestore Database and have GoogleService-Info.plist in project's root directory before running the app
+<img width="363" alt="Screenshot 2021-08-06 at 6 36 41 AM" src="https://user-images.githubusercontent.com/19427160/128440636-03187ab6-64a9-4f94-8dc7-72b1359344cb.png">
+
 ## TechStack
 `SwiftUI`, `Combine`, `Swift`, `Firebase Firestore`
 
@@ -20,12 +23,12 @@ Simple income and expense tracking app with Firebase Firestore support.
 ### Account: ###
 * Creating unlimited new Accounts
 * Updating existing Account 
-* Deleting a Account 
+* Deleting an Account 
 
 ### Transaction: ###
 * Creating unlimited new Transactions in an Account 
 * Updating existing Transactions
-* Deleting an Transactions
+* Deleting a Transactions
 
 ### Basic: ###
 * Signup
