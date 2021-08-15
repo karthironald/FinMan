@@ -101,8 +101,13 @@ class FMHelper {
             let endDate = now.dateFor(.yesterday).dateFor(.endOfDay)
             
             return (startDate, endDate)
-        default:
-            return (nil, nil)
+            
+        case .all:
+            let startDate = Date(timeIntervalSince1970: 0)
+            let endDate = Date.distantFuture
+            
+            return (startDate, endDate)
+        }
         }
     }
     
