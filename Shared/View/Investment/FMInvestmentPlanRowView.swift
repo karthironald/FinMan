@@ -25,7 +25,7 @@ struct FMInvestmentPlanRowView: View {
                     .font(.caption)
                 Text("\(Int(investment.absoluteValue))")
             }
-            Slider(value: $investment.absoluteValue, in: 0...max(total, investment.absoluteValue), step: 500)
+            Slider(value: $investment.absoluteValue, in: 0...max(total, investment.absoluteValue), step: min(500, total))
         }
         .padding(.vertical, 5)
     }
