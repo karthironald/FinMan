@@ -69,6 +69,7 @@ struct FMTransactionListView: View {
                 .font(.caption)
                 .padding(10)
                 .background(AppSettings.appSecondaryColour.opacity(0.2))
+                .zIndex(2) // Workaround to fix list selection issue
                 
                 List {
                     ForEach(Array(viewModel.groupedTransactionRowViewModel.keys.sorted(by: >)), id: \.self) { (key) in
