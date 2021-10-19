@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -70,6 +70,7 @@
 		77C3AE3C263F069F00FAEF88 /* FMExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C3AE3A263F069E00FAEF88 /* FMExtension.swift */; };
 		77C6AF57262C315900321F04 /* FMTransactionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C6AF56262C315900321F04 /* FMTransactionDetailView.swift */; };
 		77C6AF58262C315900321F04 /* FMTransactionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C6AF56262C315900321F04 /* FMTransactionDetailView.swift */; };
+		77DCECD8271F2F5B0033121D /* KSCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 77DCECD7271F2F5B0033121D /* KSCharts */; };
 		77E5C7B62637329B00F64A73 /* FMAuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E5C7B52637329B00F64A73 /* FMAuthenticationService.swift */; };
 		77E5C7B72637329B00F64A73 /* FMAuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E5C7B52637329B00F64A73 /* FMAuthenticationService.swift */; };
 		77E5C80B2637363800F64A73 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 77E5C80A2637363800F64A73 /* GoogleService-Info.plist */; };
@@ -155,6 +156,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE1AF24C6D6266D03CD8C5D8 /* Pods_FinMan__iOS_.framework in Frameworks */,
+				77DCECD8271F2F5B0033121D /* KSCharts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -436,6 +438,9 @@
 			dependencies = (
 			);
 			name = "FinMan (iOS)";
+			packageProductDependencies = (
+				77DCECD7271F2F5B0033121D /* KSCharts */,
+			);
 			productName = "FinMan (iOS)";
 			productReference = 77AB8389261CC1F600F44999 /* FinMan.app */;
 			productType = "com.apple.product-type.application";
@@ -529,6 +534,9 @@
 				Base,
 			);
 			mainGroup = 77AB837C261CC1F500F44999;
+			packageReferences = (
+				77DCECD6271F2F5B0033121D /* XCRemoteSwiftPackageReference "KSCharts" */,
+			);
 			productRefGroup = 77AB838A261CC1F600F44999 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1092,6 +1100,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		77DCECD6271F2F5B0033121D /* XCRemoteSwiftPackageReference "KSCharts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/karthironald/KSCharts";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		77DCECD7271F2F5B0033121D /* KSCharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 77DCECD6271F2F5B0033121D /* XCRemoteSwiftPackageReference "KSCharts" */;
+			productName = KSCharts;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 77AB837D261CC1F500F44999 /* Project object */;
 }

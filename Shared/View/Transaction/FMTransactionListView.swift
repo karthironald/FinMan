@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import KSCharts
 
 struct FMTransactionListView: View {
     
@@ -21,7 +22,7 @@ struct FMTransactionListView: View {
     @State private var selectedTimePeriod = FMTimePeriod.thisMonth
     @State private var selectedIncomeSourceIndex = kCommonIndex
     @State private var transactionTypeIndex = 1 // Index of 'Expense' transaction type
-    
+    @State private var chartType: ChartType = .pie
     
     // MARK: - View Body
     
@@ -127,8 +128,29 @@ struct FMTransactionListView: View {
         .popup(isPresented: $shouldSourceShowChart, overlayView: {
             BottomPopupView(title: "Chart", shouldDismiss: $shouldSourceShowChart) {
                 let transactionType = (transactionTypeIndex > (FMTransaction.TransactionType.allCases.count - 1)) ? nil : FMTransaction.TransactionType.allCases[transactionTypeIndex]
-                FMChartView(points: viewModel.chartPoints(transactionType: transactionType))
+                VStack {
+                    Picker("Chart Type", selection: $chartType.animation()) {
+                        ForEach(ChartType.allCases, id: \.self) { transType in
+                            Image(systemName: transType.iconName)
+                                .resizable()
+                                .frame(width: 20, height: 20, alignment: .center)
+                        }
+                    }
                     .accentColor(AppSettings.appPrimaryColour)
+                    .pickerStyle(SegmentedPickerStyle())
+                    .padding(.horizontal)
+                    
+                    if chartType == .pie {
+                        KSPieChart(dataPointsWithTitle: viewModel.chartPoints(transactionType: transactionType))
+                            .frame(height: UIScreen.main.bounds.height * 0.8, alignment: .center)
+                            .animation(nil)
+                    } else {
+                        FMChartView(points: viewModel.chartPoints(transactionType: transactionType))
+                            .accentColor(AppSettings.appPrimaryColour)
+                            .animation(nil)
+                    }
+                }
+                
             }
         })
     }
@@ -249,7 +271,7 @@ struct FMChartView: View {
             result + point.1
         }
     }
-    var points: [(String, Double)]
+    var points: [(String, Double, Color)]
     
     
     // MARK: - View Body
@@ -269,11 +291,14 @@ struct FMChartView: View {
                                     .foregroundColor(.secondary.opacity(0.2))
                                     .frame(height: 1, alignment: .center)
                                 RoundedRectangle(cornerRadius: 10)
-                                    .foregroundColor(AppSettings.appPrimaryColour)
+                                    .foregroundColor(points[index].2)
                                     .scaleEffect(CGSize(width: normalizedValue(index: index), height: 1.0), anchor: .leading)
                             }
                             Spacer()
-                            Text("\(FMHelper.percentage(of: points[index].1, in: total), specifier: "%0.2f") %")
+                            Text("\(points[index].1, specifier: "%0.2f")")
+                                .font(.caption2)
+                                .foregroundColor(.secondary)
+                            Text("(\(FMHelper.percentage(of: points[index].1, in: total), specifier: "%0.2f")%)")
                                 .font(.caption2)
                                 .bold()
                         }
@@ -310,4 +335,15 @@ struct FMChartView: View {
         }
     }
     
+}
+
+enum ChartType: CaseIterable {
+    case pie, bar
+    
+    var iconName: String {
+        switch self {
+        case .bar: return "chart.bar.doc.horizontal"
+        case .pie: return "chart.pie"
+        }
+    }
 }

@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 class FMTransactionListViewModel: ObservableObject {
     
@@ -89,23 +90,23 @@ class FMTransactionListViewModel: ObservableObject {
         }
     }
     
-    func chartPoints(transactionType: FMTransaction.TransactionType?) -> [(String, Double)] {
-        let initial: [String: Double] = [:]
+    func chartPoints(transactionType: FMTransaction.TransactionType?) -> [(String, Double, Color)] {
+        let initial: [String: (value: Double, colour: Color)] = [:]
         if transactionType == .income {
             let groupdData = transactionRowViewModel.reduce(into: initial) { result, tran in
-                let exising = result[tran.transaction.source ?? ""] ?? 0
-                result[tran.transaction.source ?? ""] = exising + tran.transaction.value
+                let exising = result[tran.transaction.source ?? ""] ?? (0, FMTransaction.IncomeSource(rawValue: tran.transaction.source ?? "")?.colour)
+                result[tran.transaction.source ?? ""] = ((exising.0 + tran.transaction.value), FMTransaction.IncomeSource(rawValue: tran.transaction.source ?? "")!.colour)
             }
-            var points = groupdData.map({ (String($0.key), $0.value) })
-            points.sort(by: { $0.0 < $1.0 })
+            var points = groupdData.map({ (String($0.key).capitalized, $0.value.value, $0.value.colour) })
+            points.sort(by: { $0.1 > $1.1 })
             return points
         } else {
             let groupdData = transactionRowViewModel.reduce(into: initial) { result, tran in
-                let exising = result[tran.transaction.expenseCategory ?? ""] ?? 0
-                result[tran.transaction.expenseCategory ?? ""] = exising + tran.transaction.value
+                let exising = result[tran.transaction.expenseCategory ?? ""] ?? (0, FMTransaction.ExpenseCategory(rawValue: tran.transaction.expenseCategory ?? "")?.colour)
+                result[tran.transaction.expenseCategory ?? ""] = (exising.0 + tran.transaction.value, FMTransaction.ExpenseCategory(rawValue: tran.transaction.expenseCategory ?? "")!.colour)
             }
-            var points = groupdData.map({ (String($0.key), $0.value) })
-            points.sort(by: { $0.0 < $1.0 })
+            var points = groupdData.map({ (String($0.key).capitalized, $0.value.value, $0.value.colour) })
+            points.sort(by: { $0.1 > $1.1 })
             return points
         }
     }

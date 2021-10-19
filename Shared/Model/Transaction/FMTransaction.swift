@@ -7,6 +7,7 @@
 import Foundation
 import FirebaseFirestoreSwift
 import FirebaseFirestore
+import SwiftUI
 
 struct FMTransaction: Identifiable, Codable {
     @DocumentID var id: String?
@@ -77,6 +78,17 @@ extension FMTransaction {
             case .royalty: return "books.vertical"
             }
         }
+        var colour: Color {
+            switch self {
+            case .earned: return .blue
+            case .profit: return .green
+            case .interest: return .orange
+            case .dividend: return .pink
+            case .rental: return .purple
+            case .capitalGain: return .red
+            case .royalty: return .yellow
+            }
+        }
     }
     
     enum TransactionType: String, CaseIterable {
@@ -85,6 +97,27 @@ extension FMTransaction {
     
     enum ExpenseCategory: String, CaseIterable {
         case housing, transportation, food, utilities, clothing, medical, insurance, household, personal, debt, education, savings, gifts, entertainment, investment, others
+        
+        var colour: Color {
+            switch self {
+            case .housing: return .blue
+            case .transportation: return Color(.systemGray6)
+            case .food: return Color(.systemGray3)
+            case .utilities: return .pink
+            case .clothing: return .purple
+            case .medical: return Color(.magenta)
+            case .insurance: return .yellow
+            case .household: return Color(.brown)
+            case .personal: return Color(.cyan)
+            case .debt: return .red
+            case .education: return Color(.systemGray2)
+            case .savings: return .orange
+            case .gifts: return Color(.systemGray4)
+            case .entertainment: return Color(.systemGray5)
+            case .investment: return .green
+            case .others: return Color(.systemIndigo)
+            }
+        }
     }
     
 }

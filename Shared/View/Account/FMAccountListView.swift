@@ -10,6 +10,7 @@ import SwiftUI
 struct FMAccountListView: View {
     
     @StateObject var viewModel = FMAccountListViewModel()
+    
     @State private var selectedTab = 0
     @State private var shouldPresentAddAccountView = false
     @State private var shouldPresentProfileView = false
