@@ -67,7 +67,7 @@ class FMTransactionListViewModel: ObservableObject {
     }
     
     func fetchTransaction(for timePeriod: FMTimePeriod = .all, incomeSource: FMTransaction.IncomeSource? = nil, transactionType: FMTransaction.TransactionType? = nil) {
-        if timePeriod == .all {
+        if timePeriod == .all && incomeSource == nil && transactionType == nil {
             transactionRepository.getTransactions()
         } else {
             let dates = FMHelper.startDate(type: timePeriod)
