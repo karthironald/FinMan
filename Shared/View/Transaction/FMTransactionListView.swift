@@ -125,32 +125,25 @@ struct FMTransactionListView: View {
                     .accentColor(AppSettings.appPrimaryColour)
             }
         })
-        .popup(isPresented: $shouldSourceShowChart, overlayView: {
-            BottomPopupView(title: "Chart", shouldDismiss: $shouldSourceShowChart) {
-                let transactionType = (transactionTypeIndex > (FMTransaction.TransactionType.allCases.count - 1)) ? nil : FMTransaction.TransactionType.allCases[transactionTypeIndex]
-                VStack {
-                    Picker("Chart Type", selection: $chartType.animation()) {
-                        ForEach(ChartType.allCases, id: \.self) { transType in
-                            Image(systemName: transType.iconName)
-                                .resizable()
-                                .frame(width: 20, height: 20, alignment: .center)
-                        }
-                    }
-                    .accentColor(AppSettings.appPrimaryColour)
-                    .pickerStyle(SegmentedPickerStyle())
-                    .padding(.horizontal)
-                    
-                    if chartType == .pie {
-                        KSPieChart(dataPointsWithTitle: viewModel.chartPoints(transactionType: transactionType))
-                            .frame(height: UIScreen.main.bounds.height * 0.8, alignment: .center)
-                            .animation(nil)
-                    } else {
-                        FMChartView(points: viewModel.chartPoints(transactionType: transactionType))
-                            .accentColor(AppSettings.appPrimaryColour)
-                            .animation(nil)
+        .sheet(isPresented: $shouldSourceShowChart, content: {
+            let transactionType = (transactionTypeIndex > (FMTransaction.TransactionType.allCases.count - 1)) ? nil : FMTransaction.TransactionType.allCases[transactionTypeIndex]
+            VStack {
+                Picker("Chart Type", selection: $chartType.animation()) {
+                    ForEach(ChartType.allCases, id: \.self) { transType in
+                        Image(systemName: transType.iconName)
+                            .resizable()
+                            .frame(width: 20, height: 20, alignment: .center)
                     }
                 }
-                
+                .accentColor(AppSettings.appPrimaryColour)
+                .pickerStyle(SegmentedPickerStyle())
+                .padding([.horizontal, .top])
+
+                if chartType == .pie {
+                    KSPieChart(dataPointsWithTitle: viewModel.chartPoints(transactionType: transactionType))
+                } else {
+                    KSHorizontalBarChartView(dataPointsWithTitle: viewModel.chartPoints(transactionType: transactionType))
+                }
             }
         })
     }
@@ -263,79 +256,6 @@ struct FMTransactionListView_Previews: PreviewProvider {
     
 }
 
-
-struct FMChartView: View {
-    
-    var total: Double {
-        points.reduce(0) { result, point in
-            result + point.1
-        }
-    }
-    var points: [(String, Double, Color)]
-    
-    
-    // MARK: - View Body
-    
-    var body: some View {
-        VStack(spacing: 10) {
-            ForEach(0..<points.count, id: \.self) { index in
-                GeometryReader { proxy in
-                    VStack(alignment: .leading, spacing: 5) {
-                        Text(points[index].0.capitalized)
-                            .font(.caption)
-                        HStack {
-                            ZStack(alignment: .leading) {
-                                Image("dottedLine")
-                                    .resizable()
-                                    .renderingMode(.template)
-                                    .foregroundColor(.secondary.opacity(0.2))
-                                    .frame(height: 1, alignment: .center)
-                                RoundedRectangle(cornerRadius: 10)
-                                    .foregroundColor(points[index].2)
-                                    .scaleEffect(CGSize(width: normalizedValue(index: index), height: 1.0), anchor: .leading)
-                            }
-                            Spacer()
-                            Text("\(points[index].1, specifier: "%0.2f")")
-                                .font(.caption2)
-                                .foregroundColor(.secondary)
-                            Text("(\(FMHelper.percentage(of: points[index].1, in: total), specifier: "%0.2f")%)")
-                                .font(.caption2)
-                                .bold()
-                        }
-                        .frame(width: proxy.size.width, height: 5)
-                    }
-                }
-            }
-        }
-        .onAppear {
-            
-        }
-        .frame(height: CGFloat(40 * points.count), alignment: .center)
-        .padding()
-    }
-    
-    
-    // MARK: - Custom methods
-    
-    func normalizedValue(index: Int) -> Double {
-        var allValues: [Double]    {
-            var values = [Double]()
-            for point in points {
-                values.append(point.1)
-            }
-            return values
-        }
-        guard let max = allValues.max() else {
-            return 1
-        }
-        if max != 0 {
-            return Double(points[index].1)/Double(max)
-        } else {
-            return 1
-        }
-    }
-    
-}
 
 enum ChartType: CaseIterable {
     case pie, bar
