@@ -19,8 +19,7 @@ struct FMAccountListView: View {
     @State private var shouldShowEditAccount = false
     
     
-    // MARK: - View Body
-    
+    // MARK: - View Body property
     var body: some View {
         NavigationView {
             ZStack(alignment: .bottomTrailing) {
