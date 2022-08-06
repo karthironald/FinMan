@@ -22,10 +22,10 @@ struct FMAccountRowView: View {
                 HStack(alignment: .center, spacing: 5) {
                     VStack(alignment: .leading, spacing: 10) {
                         HStack {
-                            Text(accountRowViewModel.account.name)
+                            Text(accountRowViewModel.account.name ?? "-")
                                 .font(.footnote)
                                 .bold()
-                            if let comments = accountRowViewModel.account.comments?.trimmingCharacters(in: .whitespacesAndNewlines), !comments.isEmpty, !shouldShowInfo {
+                            if let comments = accountRowViewModel.account.fmAccountDescription?.trimmingCharacters(in: .whitespacesAndNewlines), !comments.isEmpty, !shouldShowInfo {
                                 Image(systemName: "info.circle")
                                     .resizable()
                                     .frame(width: 15, height: 15, alignment: .center)
@@ -42,7 +42,7 @@ struct FMAccountRowView: View {
                             VStack(alignment: .leading, spacing: 0) {
                                 Text("Income")
                                     .foregroundColor(.secondary)
-                                Text("\(accountRowViewModel.account.income, specifier: "%0.2f")")
+                                Text("\(accountRowViewModel.account.totalIncome ?? 0.0, specifier: "%0.2f")")
                                     .bold()
                                     .foregroundColor(.green)
                             }
@@ -50,7 +50,7 @@ struct FMAccountRowView: View {
                             VStack(alignment: .leading, spacing: 0) {
                                 Text("Expense")
                                     .foregroundColor(.secondary)
-                                Text("\(accountRowViewModel.account.expense, specifier: "%0.2f")")
+                                Text("\(accountRowViewModel.account.totalExpense ?? 0.0, specifier: "%0.2f")")
                                     .bold()
                                     .foregroundColor(.red)
                             }
@@ -69,7 +69,7 @@ struct FMAccountRowView: View {
                 }
                 .opacity(shouldShowInfo ? 0.1 : 1)
                 .padding([.bottom, .top], 10)
-                if let comments = accountRowViewModel.account.comments?.trimmingCharacters(in: .whitespacesAndNewlines), !comments.isEmpty, shouldShowInfo {
+                if let comments = accountRowViewModel.account.fmAccountDescription?.trimmingCharacters(in: .whitespacesAndNewlines), !comments.isEmpty, shouldShowInfo {
                     Text("(\(comments))")
                         .font(.footnote)
                         .foregroundColor(.secondary)

@@ -6,14 +6,15 @@
 //
 
 import SwiftUI
+import Alamofire
 
 struct FMSignupView: View {
     
     @EnvironmentObject private var hud: FMLoadingInfoState
     @StateObject private var authService = FMAuthenticationService.shared
     
-    @State private var email = ""
-    @State private var password = ""
+    @State private var email = "test1"
+    @State private var password = "Password123@"
     
     @State private var emailInfoMessage = ""
     @State private var passwordInfoMessage = ""
@@ -68,7 +69,7 @@ struct FMSignupView: View {
         email = email.trimmingCharacters(in: .whitespacesAndNewlines)
         password = password.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        if email.isEmpty || !FMHelper.isValidEmail(email) {
+        if email.isEmpty {
             setInfo(message: "Please enter a valid email address", for: .email)
             return
         } else {

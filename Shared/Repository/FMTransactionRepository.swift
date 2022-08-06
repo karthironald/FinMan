@@ -17,8 +17,8 @@ class FMTransactionRepository: ObservableObject {
     private let path: String = FMFirestoreCollection.transaction.rawValue
     private let store = Firestore.firestore()
     
-    private var userId: String?
-    private var accountId: String?
+    private var userId: Int?
+    private var accountId: Int?
     private let authenticationService = FMAuthenticationService.shared
     private let accountRepository = FMAccountRepository.shared
     private var cancellables: Set<AnyCancellable> = []
@@ -35,7 +35,7 @@ class FMTransactionRepository: ObservableObject {
     private init() {
         authenticationService.$user
             .map { user in
-                user?.uid
+                user?.id
             }
             .assign(to: \.userId, on: self)
             .store(in: &cancellables)
@@ -47,7 +47,7 @@ class FMTransactionRepository: ObservableObject {
             .debounce(for: 0.25, scheduler: RunLoop.main) // Delay the network request
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                if let accountId = self?.accountId, !accountId.isEmpty  {
+                if let accountId = self?.accountId {
                     #warning("No need to fetch transactions when account is selected")
                     // self?.getTransactions()
                 } else {
@@ -70,29 +70,29 @@ class FMTransactionRepository: ObservableObject {
         - resultBlock: Callback to be triggered as result of save action
      */
     func add(_ transaction: FMTransaction, resultBlock: @escaping (Error?) -> Void) {
-        do {
-            var newTransaction = transaction
-            newTransaction.userId = userId
-            newTransaction.accountId = accountId
-            
-            let batch = store.batch()
-            
-            let accountRef = store.collection(FMFirestoreCollection.account.rawValue).document(accountRepository.selectedAccount?.id ?? "")
-            if newTransaction.transactionType == FMTransaction.TransactionType.income.rawValue {
-                batch.updateData([FMAccount.Keys.income.rawValue: (accountRepository.selectedAccount?.income ?? 0.0) + (transaction.value), FMAccount.Keys.incomeCount.rawValue: (FMAccountRepository.shared.selectedAccount?.incomeCount ?? 0) + 1], forDocument: accountRef)
-            } else {
-                batch.updateData([FMAccount.Keys.expense.rawValue: (accountRepository.selectedAccount?.expense ?? 0.0) + (transaction.value), FMAccount.Keys.expenseCount.rawValue: (FMAccountRepository.shared.selectedAccount?.expenseCount ?? 0) + 1], forDocument: accountRef)
-            }
-            
-            let newTransactionRef = store.collection(path).document()
-            try batch.setData(from: newTransaction, forDocument: newTransactionRef)
-            
-            batch.commit { error in
-                resultBlock(error)
-            }
-        } catch {
-            fatalError("Unable to add card: \(error.localizedDescription).")
-        }
+//        do {
+//            var newTransaction = transaction
+//            newTransaction.userId = userId
+//            newTransaction.accountId = accountId
+//
+//            let batch = store.batch()
+//
+//            let accountRef = store.collection(FMFirestoreCollection.account.rawValue).document(accountRepository.selectedAccount?.id ?? "")
+//            if newTransaction.transactionType == FMTransaction.TransactionType.income.rawValue {
+//                batch.updateData([FMAccount.Keys.income.rawValue: (accountRepository.selectedAccount?.income ?? 0.0) + (transaction.value), FMAccount.Keys.incomeCount.rawValue: (FMAccountRepository.shared.selectedAccount?.incomeCount ?? 0) + 1], forDocument: accountRef)
+//            } else {
+//                batch.updateData([FMAccount.Keys.expense.rawValue: (accountRepository.selectedAccount?.expense ?? 0.0) + (transaction.value), FMAccount.Keys.expenseCount.rawValue: (FMAccountRepository.shared.selectedAccount?.expenseCount ?? 0) + 1], forDocument: accountRef)
+//            }
+//
+//            let newTransactionRef = store.collection(path).document()
+//            try batch.setData(from: newTransaction, forDocument: newTransactionRef)
+//
+//            batch.commit { error in
+//                resultBlock(error)
+//            }
+//        } catch {
+//            fatalError("Unable to add card: \(error.localizedDescription).")
+//        }
     }
     
     func getTransactions() {
@@ -144,68 +144,68 @@ class FMTransactionRepository: ObservableObject {
     }
     
     func update(transaction: FMTransaction, oldTransaction: FMTransaction, resultBlock: @escaping (Error?) -> Void) {
-        guard let id = transaction.id else { return }
-        do {
-            let batch = store.batch()
-            
-            let accountRef = store.collection(FMFirestoreCollection.account.rawValue).document(accountRepository.selectedAccount?.id ?? "")
-            
-            if transaction.transactionType == FMTransaction.TransactionType.income.rawValue {
-                let accountTransaction = accountRepository.selectedAccount?.income ?? 0.0
-                let oldTransactionValue = oldTransaction.value
-                let newTransactionValue = transaction.value
-                
-                let newAccountIncome = (accountTransaction - oldTransactionValue) + newTransactionValue
-                
-                batch.updateData([FMAccount.Keys.income.rawValue: newAccountIncome], forDocument: accountRef)
-            } else {
-                let accountTransaction = accountRepository.selectedAccount?.expense ?? 0.0
-                let oldTransactionValue = oldTransaction.value
-                let newTransactionValue = transaction.value
-                
-                let newAccountExpense = (accountTransaction - oldTransactionValue) + newTransactionValue
-                
-                batch.updateData([FMAccount.Keys.expense.rawValue: newAccountExpense], forDocument: accountRef)
-            }
-            
-            let updateIncomeRef = store.collection(path).document(id)
-            try batch.setData(from: transaction, forDocument: updateIncomeRef)
-            
-            batch.commit { error in
-                resultBlock(error)
-            }
-        } catch {
-            print("Unable to update card")
-        }
+//        guard let id = transaction.id else { return }
+//        do {
+//            let batch = store.batch()
+//
+//            let accountRef = store.collection(FMFirestoreCollection.account.rawValue).document(accountRepository.selectedAccount?.id ?? "")
+//
+//            if transaction.transactionType == FMTransaction.TransactionType.income.rawValue {
+//                let accountTransaction = accountRepository.selectedAccount?.income ?? 0.0
+//                let oldTransactionValue = oldTransaction.value
+//                let newTransactionValue = transaction.value
+//
+//                let newAccountIncome = (accountTransaction - oldTransactionValue) + newTransactionValue
+//
+//                batch.updateData([FMAccount.Keys.income.rawValue: newAccountIncome], forDocument: accountRef)
+//            } else {
+//                let accountTransaction = accountRepository.selectedAccount?.expense ?? 0.0
+//                let oldTransactionValue = oldTransaction.value
+//                let newTransactionValue = transaction.value
+//
+//                let newAccountExpense = (accountTransaction - oldTransactionValue) + newTransactionValue
+//
+//                batch.updateData([FMAccount.Keys.expense.rawValue: newAccountExpense], forDocument: accountRef)
+//            }
+//
+//            let updateIncomeRef = store.collection(path).document(id)
+//            try batch.setData(from: transaction, forDocument: updateIncomeRef)
+//
+//            batch.commit { error in
+//                resultBlock(error)
+//            }
+//        } catch {
+//            print("Unable to update card")
+//        }
     }
     
     func delete(transaction: FMTransaction, resultBlock: @escaping (Error?) -> Void) {
-        guard let id = transaction.id else { return }
-        
-        let batch = store.batch()
-        
-        let accountRef = store.collection(FMFirestoreCollection.account.rawValue).document(accountRepository.selectedAccount?.id ?? "")
-        
-        if transaction.transactionType == FMTransaction.TransactionType.income.rawValue {
-            let accountIncome = accountRepository.selectedAccount?.income ?? 0.0
-            let incomeValue = transaction.value
-            let newAccountIncome = accountIncome - incomeValue
-            
-            batch.updateData([FMAccount.Keys.income.rawValue: newAccountIncome, FMAccount.Keys.incomeCount.rawValue: (FMAccountRepository.shared.selectedAccount?.incomeCount ?? 0) - 1], forDocument: accountRef)
-        } else {
-            let accountExpense = accountRepository.selectedAccount?.expense ?? 0.0
-            let expenseValue = transaction.value
-            let newAccountExpense = accountExpense - expenseValue
-            
-            batch.updateData([FMAccount.Keys.expense.rawValue: newAccountExpense, FMAccount.Keys.expenseCount.rawValue: (FMAccountRepository.shared.selectedAccount?.expenseCount ?? 0) - 1], forDocument: accountRef)
-        }
-        
-        let deleteIncomeDocRef = store.collection(path).document(id)
-        batch.deleteDocument(deleteIncomeDocRef)
-        
-        batch.commit { error in
-            resultBlock(error)
-        }
+//        guard let id = transaction.id else { return }
+//        
+//        let batch = store.batch()
+//        
+//        let accountRef = store.collection(FMFirestoreCollection.account.rawValue).document(accountRepository.selectedAccount?.id ?? "")
+//        
+//        if transaction.transactionType == FMTransaction.TransactionType.income.rawValue {
+//            let accountIncome = accountRepository.selectedAccount?.income ?? 0.0
+//            let incomeValue = transaction.value
+//            let newAccountIncome = accountIncome - incomeValue
+//            
+//            batch.updateData([FMAccount.Keys.income.rawValue: newAccountIncome, FMAccount.Keys.incomeCount.rawValue: (FMAccountRepository.shared.selectedAccount?.incomeCount ?? 0) - 1], forDocument: accountRef)
+//        } else {
+//            let accountExpense = accountRepository.selectedAccount?.expense ?? 0.0
+//            let expenseValue = transaction.value
+//            let newAccountExpense = accountExpense - expenseValue
+//            
+//            batch.updateData([FMAccount.Keys.expense.rawValue: newAccountExpense, FMAccount.Keys.expenseCount.rawValue: (FMAccountRepository.shared.selectedAccount?.expenseCount ?? 0) - 1], forDocument: accountRef)
+//        }
+//        
+//        let deleteIncomeDocRef = store.collection(path).document(id)
+//        batch.deleteDocument(deleteIncomeDocRef)
+//        
+//        batch.commit { error in
+//            resultBlock(error)
+//        }
     }
     
     func filterTransaction(startDate: Date, endDate: Date, incomeSource: FMTransaction.IncomeSource? = nil, transactionType: FMTransaction.TransactionType? = nil) {

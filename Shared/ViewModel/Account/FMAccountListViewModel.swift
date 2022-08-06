@@ -35,8 +35,8 @@ class FMAccountListViewModel: ObservableObject {
     
     // MARK: - Custom methods
     
-    func addNew(account: FMAccount, resultBlock: @escaping (Error?) -> Void) {
-        accountRepository.add(account, resultBlock: resultBlock)
+    func addNew(name: String, comments: String?, resultBlock: @escaping (Error?) -> Void) {
+        accountRepository.add(name: name, comments: comments, resultBlock: resultBlock)
     }
     
 }

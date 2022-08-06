@@ -19,24 +19,24 @@ struct FMProfileView: View {
         HStack {
             VStack(alignment: .leading, spacing: AppSettings.vStackSpacing) {
                 viewFor(title: "Email", and: authService.user?.email ?? "-")
-                viewFor(title: "Email verified", and: (authService.user?.isEmailVerified == true) ? "Yes" : "No")
-                if let createdAt = authService.user?.metadata.creationDate {
-
-                    VStack(alignment: .leading, spacing: 5) {
-                        Text("Account created on")
-                            .font(.footnote)
-                            .foregroundColor(.secondary)
-                        Text("\(createdAt, style: .date) \(createdAt, style: .time)")
-                    }
-                }
-                if let lastSignInDate = authService.user?.metadata.lastSignInDate {
-                    VStack(alignment: .leading, spacing: 5) {
-                        Text("Last signed in")
-                            .font(.footnote)
-                            .foregroundColor(.secondary)
-                        Text("\(lastSignInDate, style: .date) \(lastSignInDate, style: .time)")
-                    }
-                }
+//                viewFor(title: "Email verified", and: (authService.user?.isEmailVerified == true) ? "Yes" : "No")
+//                if let createdAt = authService.user?.metadata.creationDate {
+//
+//                    VStack(alignment: .leading, spacing: 5) {
+//                        Text("Account created on")
+//                            .font(.footnote)
+//                            .foregroundColor(.secondary)
+//                        Text("\(createdAt, style: .date) \(createdAt, style: .time)")
+//                    }
+//                }
+//                if let lastSignInDate = authService.user?.metadata.lastSignInDate {
+//                    VStack(alignment: .leading, spacing: 5) {
+//                        Text("Last signed in")
+//                            .font(.footnote)
+//                            .foregroundColor(.secondary)
+//                        Text("\(lastSignInDate, style: .date) \(lastSignInDate, style: .time)")
+//                    }
+//                }
                 FMButton(title: "Logout", type: .logout, shouldShowLoading: loadingInfoState.shouldShowLoading) {
                     loadingInfoState.startLoading()
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {

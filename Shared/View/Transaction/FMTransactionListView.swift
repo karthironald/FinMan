@@ -117,7 +117,7 @@ struct FMTransactionListView: View {
             FMAccountRepository.shared.selectedAccount = accountViewModel.account
             fetchTransaction()
         })
-        .navigationBarTitle("\(accountViewModel.account.name.capitalized)", displayMode: .inline)
+        .navigationBarTitle("\(accountViewModel.account.name?.capitalized ?? "")", displayMode: .inline)
         .popup(isPresented: $shouldPresentAddTransactionView, overlayView: {
             BottomPopupView(title: "Add Transaction", shouldDismiss: $shouldPresentAddTransactionView) {
                 FMAddTransactionView(viewModel: viewModel, shouldPresentAddTransactionView: $shouldPresentAddTransactionView)

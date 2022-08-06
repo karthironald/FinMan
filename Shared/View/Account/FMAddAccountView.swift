@@ -56,9 +56,8 @@ struct FMAddAccountView: View {
     
     func saveButtonTapped() {
         if accountRowViewModel?.id == nil && viewModel != nil {
-            let account = FMAccount(name: name, comments: comments)
             hud.startLoading()
-            viewModel?.addNew(account: account, resultBlock: { error in
+            viewModel?.addNew(name: name, comments: comments, resultBlock: { error in
                 hud.stopLoading()
                 if let error = error {
                     hud.show(title: error.localizedDescription, type: .error)
@@ -70,7 +69,7 @@ struct FMAddAccountView: View {
             if let account = accountRowViewModel?.account {
                 var updatedAccount = account
                 updatedAccount.name = name
-                updatedAccount.comments = comments
+                updatedAccount.fmAccountDescription = comments
                 hud.startLoading()
                 accountRowViewModel?.update(account: updatedAccount, resultBlock: { error in
                     hud.stopLoading()

@@ -32,7 +32,7 @@ extension FMTransaction {
             case .onetime: return "One time"
             case .weekly: return "Weekly"
             case .monthly: return "Monthly"
-            case .quatarly: return "Quatarly"
+            case .quatarly: return "Quarterly"
             case .halfEarly: return "Halfearly"
             case .yearly: return "Yearly"
             }

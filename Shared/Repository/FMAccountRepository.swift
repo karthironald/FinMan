@@ -8,13 +8,14 @@
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import Combine
+import Alamofire
 
 class FMAccountRepository: ObservableObject {
     
     static let shared = FMAccountRepository()
     private let path: String = FMFirestoreCollection.account.rawValue
     private let store = Firestore.firestore()
-    private var userId: String?
+    private var userId: Int?
     private let authenticationService = FMAuthenticationService.shared
     private var cancellables: Set<AnyCancellable> = []
     
@@ -28,7 +29,7 @@ class FMAccountRepository: ObservableObject {
     private init() {
         authenticationService.$user
             .map { user in
-                user?.uid
+                user?.id
             }
             .assign(to: \.userId, on: self)
             .store(in: &cancellables)
@@ -36,7 +37,7 @@ class FMAccountRepository: ObservableObject {
         authenticationService.$user
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                if let userId = self?.userId, !userId.isEmpty {
+                if let userId = self?.userId {
                     self?.getAccounts()
                 } else {
                     self?.resetAllData()
@@ -48,70 +49,72 @@ class FMAccountRepository: ObservableObject {
     
     // MARK: - Custom methods
     
-    func add(_ account: FMAccount, resultBlock: @escaping (Error?) -> Void) {
-        do {
-            var newAccount = account
-            newAccount.userId = userId
-            _ = try store.collection(path).addDocument(from: newAccount) { error in
-                resultBlock(error)
+    func add(name: String, comments: String?, resultBlock: @escaping (Error?) -> Void) {
+        if let token = UserDefaults.standard.value(forKey: "access_token") as? String {
+            AF.request("\(kBaseUrl)/api/accounts/", method: .post, parameters: ["name": name, "description": comments], encoder: .json, headers: ["Authorization": "Bearer \(token)"]).validate().responseDecodable(of: FMAccount.self) { response in
+                switch response.result {
+                case .success(let account):
+                    self.accounts.append(account)
+                    resultBlock(nil)
+                case .failure(let error):
+                    print(error)
+                    resultBlock(error)
+                }
             }
-        } catch {
-            resultBlock(error)
         }
     }
     
     func getAccounts() {
         isFetching = true
-        store.collection(path)
-            .order(by: FMAccount.Keys.createdAt.rawValue, descending: true)
-            .whereField(FMAccount.Keys.userId.rawValue, isEqualTo: userId ?? "")
-            .addSnapshotListener { [self] (querySnapshot, error) in
-                
-                let updatedAccounts = querySnapshot?.documentChanges ?? []
-
-                if let error = error {
-                    isFetching = false
-                    print(error.localizedDescription)
-                    return
+        
+        if let token = UserDefaults.standard.value(forKey: "access_token") as? String {
+            AF.request("\(kBaseUrl)/api/accounts/", method: .get, headers: ["Authorization": "Bearer \(token)"]).validate().responseDecodable(of: FMAccountsResponse.self) { [weak self] response in
+                switch response.result {
+                case .success(let accountResponse):
+                    self?.accounts = accountResponse.results ?? []
+                case .failure(let error):
+                    print(error)
                 }
-                
-                let shouldSelectFirstAccount = (updatedAccounts.count == 1 && updatedAccounts.first!.type == .added)
-                self.accounts = querySnapshot?.documents.compactMap({ document in
-                    try? document.data(as: FMAccount.self)
-                }) ?? []
-                if selectedAccount == nil || shouldSelectFirstAccount {
-                    self.selectedAccount = self.accounts.first
-                } else {
-                    if let account = self.accounts.filter({ $0.id == selectedAccount?.id }).first {
-                        self.selectedAccount = account
-                    }
-                }
-                isFetching = false
+                self?.isFetching = false
             }
-    }
-    
-    func update(account: FMAccount, resultBlock: @escaping (Error?) -> Void) {
-        guard let id = account.id else { return }
-        do {
-            try store.collection(path).document(id).setData(from: account, completion: { error in
-                resultBlock(error)
-            })
-        } catch {
-            resultBlock(error)
         }
     }
     
-    func delete(account: FMAccount, resultBlock: @escaping (Error?) -> Void) {
-        guard let id = account.id else { return }
-        #warning("We need to delete all the transaction of the accounts")
-        store.collection(path).document(id).delete(completion: { (error) in
-            resultBlock(error)
-        })
+    func update(id: Int?, name: String?, comments: String?, resultBlock: @escaping (Error?) -> Void) {
+        if let token = UserDefaults.standard.value(forKey: "access_token") as? String, let id = id {
+            AF.request("\(kBaseUrl)/api/accounts/\(id)/", method: .patch, parameters: ["name": name, "description": comments ?? ""], encoder: .json, headers: ["Authorization": "Bearer \(token)"]).validate().responseDecodable(of: FMAccount.self) { response in
+                switch response.result {
+                case .success(let account):
+                    if let index = self.accounts.firstIndex(where: { $0.id == id }) {
+                        self.accounts[index] = account
+                    }
+                    resultBlock(nil)
+                case .failure(let error):
+                    print(error)
+                    resultBlock(error)
+                }
+            }
+        }
+    }
+    
+    func delete(id: Int?, resultBlock: @escaping (Error?) -> Void) {
+        if let token = UserDefaults.standard.value(forKey: "access_token") as? String, let id = id {
+            AF.request("\(kBaseUrl)/api/accounts/\(id)/", method: .delete, headers: ["Authorization": "Bearer \(token)"]).validate().response { response in
+                switch response.result {
+                case .success(_):
+                    if let index = self.accounts.firstIndex(where: { $0.id == id }) {
+                        self.accounts.remove(at: index)
+                    }
+                    resultBlock(nil)
+                case .failure(let error):
+                    resultBlock(error)
+                }
+            }
+        }
     }
     
     func totalRecordsCount() -> Int64 {
-        let total = (selectedAccount?.incomeCount ?? 0) + (selectedAccount?.expenseCount ?? 0)
-        return total
+        0
     }
     
     func resetAllData() {
@@ -120,3 +123,5 @@ class FMAccountRepository: ObservableObject {
     }
     
 }
+
+

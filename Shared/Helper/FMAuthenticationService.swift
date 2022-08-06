@@ -6,33 +6,23 @@
 //
 import Foundation
 import Firebase
+import Alamofire
+
 
 class FMAuthenticationService: ObservableObject {
     
     static let shared = FMAuthenticationService()
     private var authStateDidChangeHandler: AuthStateDidChangeListenerHandle?
     
-    @Published var user: User?
+    @Published var user: FMUser?
     
     // MARK: - Init Methods
     
-    private init() {
-        addListener()
-    }
+    private init() { }
     
     
     // MARK: - Custom methods
     
-    func addListener() {
-        if let handler = authStateDidChangeHandler {
-            Auth.auth().removeStateDidChangeListener(handler)
-        }
-        authStateDidChangeHandler = Auth.auth().addStateDidChangeListener({ (_, user) in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self.user = user
-            }
-        })
-    }
     
     func signup(with email: String?, password: String?, successBlock: @escaping (Bool) -> Void, failureBlock: @escaping (Error?) -> Void) {
         guard let email = email, let password = password else {
@@ -53,11 +43,24 @@ class FMAuthenticationService: ObservableObject {
             failureBlock(nil)
             return
         }
-        Auth.auth().signIn(withEmail: email, password: password) { result, error in
-            if let error = error {
+        AF.request("\(kBaseUrl)/api/login", method: .post, parameters: ["username": email, "password": password], encoder: .json, headers: nil, interceptor: nil, requestModifier: nil).responseDecodable(of: Token.self) { response in
+            print(response)
+            switch response.result {
+            case.success(let token):
+                UserDefaults.standard.set(token.access, forKey: "access_token")
+                UserDefaults.standard.set(token.refresh, forKey: "refresh_token")
+                AF.request("\(kBaseUrl)/api/profile", method: .get, headers: ["Authorization": "Bearer \(token.access)"]).responseDecodable(of: FMUser.self) { response in
+                    switch response.result {
+                    case .success(let user):
+                        self.user = user
+                        successBlock(true)
+                    case .failure(let error):
+                        print(error)
+                        failureBlock(error)
+                    }
+                }
+            case .failure(let error):
                 failureBlock(error)
-            } else {
-                successBlock(true)
             }
         }
     }

@@ -67,7 +67,7 @@ struct FMAccountListView: View {
         .popup(isPresented: $shouldShowEditAccount, overlayView: {
             BottomPopupView(title: "Edit Account", shouldDismiss: $shouldShowEditAccount) {
                 if let selectedAccountRowViewModel = viewModel.selectedAccountRowViewModel {
-                    FMAddAccountView(name: selectedAccountRowViewModel.account.name, comments: selectedAccountRowViewModel.account.comments ?? "", shouldPresentAddAccountView: $shouldShowEditAccount, accountRowViewModel: selectedAccountRowViewModel)
+                    FMAddAccountView(name: selectedAccountRowViewModel.account.name ?? "", comments: selectedAccountRowViewModel.account.fmAccountDescription ?? "", shouldPresentAddAccountView: $shouldShowEditAccount, accountRowViewModel: selectedAccountRowViewModel)
                         .accentColor(AppSettings.appPrimaryColour)
                 }
             }
