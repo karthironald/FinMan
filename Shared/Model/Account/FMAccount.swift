@@ -20,7 +20,10 @@ struct FMAccountsResponse: Codable {
 struct FMAccount: Codable {
     let id: Int?
     let totalIncome, totalExpense: Double?
-    var createdAt, updatedAt, name, fmAccountDescription: String?
+    var name, accountDescription: String?
+    let createdAt, updatedAt: String?
+    let isExceedBudget: Bool?
+    let budget: Int?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -29,7 +32,9 @@ struct FMAccount: Codable {
         case createdAt = "created_at"
         case updatedAt = "updated_at"
         case name
-        case fmAccountDescription = "description"
+        case accountDescription = "description"
+        case isExceedBudget = "is_exceed_budget"
+        case budget
     }
 }
 
@@ -48,7 +53,7 @@ struct FMAccount: Codable {
 extension FMAccount {
 
     static var sampleData = [
-        FMAccount(id: 1, totalIncome: 0.0, totalExpense: 0.0, createdAt: Date().toString(), updatedAt: Date().toString(), name: "Account 1", fmAccountDescription: "Sample")
+        FMAccount(id: 1, totalIncome: 0, totalExpense: 0, name: "ABC", accountDescription: "Demo", createdAt: Date().toString(), updatedAt: Date().toString(), isExceedBudget: true, budget: 1000)
     ]
 
 }

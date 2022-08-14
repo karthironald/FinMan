@@ -25,7 +25,7 @@ struct FMAccountRowView: View {
                             Text(accountRowViewModel.account.name ?? "-")
                                 .font(.footnote)
                                 .bold()
-                            if let comments = accountRowViewModel.account.fmAccountDescription?.trimmingCharacters(in: .whitespacesAndNewlines), !comments.isEmpty, !shouldShowInfo {
+                            if let comments = accountRowViewModel.account.accountDescription?.trimmingCharacters(in: .whitespacesAndNewlines), !comments.isEmpty, !shouldShowInfo {
                                 Image(systemName: "info.circle")
                                     .resizable()
                                     .frame(width: 15, height: 15, alignment: .center)
@@ -69,7 +69,7 @@ struct FMAccountRowView: View {
                 }
                 .opacity(shouldShowInfo ? 0.1 : 1)
                 .padding([.bottom, .top], 10)
-                if let comments = accountRowViewModel.account.fmAccountDescription?.trimmingCharacters(in: .whitespacesAndNewlines), !comments.isEmpty, shouldShowInfo {
+                if let comments = accountRowViewModel.account.accountDescription?.trimmingCharacters(in: .whitespacesAndNewlines), !comments.isEmpty, shouldShowInfo {
                     Text("(\(comments))")
                         .font(.footnote)
                         .foregroundColor(.secondary)

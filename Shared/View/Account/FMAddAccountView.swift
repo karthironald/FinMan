@@ -69,7 +69,7 @@ struct FMAddAccountView: View {
             if let account = accountRowViewModel?.account {
                 var updatedAccount = account
                 updatedAccount.name = name
-                updatedAccount.fmAccountDescription = comments
+                updatedAccount.accountDescription = comments
                 hud.startLoading()
                 accountRowViewModel?.update(account: updatedAccount, resultBlock: { error in
                     hud.stopLoading()

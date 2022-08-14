@@ -8,6 +8,68 @@ import Foundation
 import FirebaseFirestoreSwift
 import FirebaseFirestore
 
+// MARK: - FMTransactionResponse
+struct FMDTransactionResponse: Codable {
+    let count: Int?
+    let next: String?
+    let previous: String?
+    let results: [FMDTransaction]?
+}
+
+// MARK: - Result
+struct FMDTransaction: Codable {
+    let id: Int?
+    let incomeSource: FMDIncomeSource?
+    let expenseCategory: FMDExpenseCategory?
+    let event, account: FMAccount?
+    let createdAt, updatedAt, name: String?
+    let value: Double?
+    let transactionAt, transactionType: String?
+    let comments: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case incomeSource = "income_source"
+        case expenseCategory = "expense_category"
+        case event, account
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+        case name, value
+        case transactionAt = "transaction_at"
+        case transactionType = "transaction_type"
+        case comments
+    }
+}
+
+// MARK: - ExpenseCategory
+struct FMDExpenseCategory: Codable {
+    let id: Int?
+    let createdAt, updatedAt, name: String?
+    let monthlyBudget, yearlyBudget: Double?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+        case name
+        case monthlyBudget = "monthly_budget"
+        case yearlyBudget = "yearly_budget"
+    }
+}
+
+// MARK: - IncomeSource
+struct FMDIncomeSource: Codable {
+    let id: Int?
+    let createdAt, updatedAt, name, frequency: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+        case name, frequency
+    }
+}
+
 struct FMTransaction: Identifiable, Codable {
     @DocumentID var id: String?
     var value: Double

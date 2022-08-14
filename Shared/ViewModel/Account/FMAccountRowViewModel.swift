@@ -34,7 +34,7 @@ class FMAccountRowViewModel: ObservableObject {
     
     func update(account: FMAccount, resultBlock: @escaping (Error?) -> Void) {
         self.account = account
-        accountRepository.update(id: account.id, name: account.name, comments: account.fmAccountDescription, resultBlock: resultBlock)
+        accountRepository.update(id: account.id, name: account.name, comments: account.accountDescription, resultBlock: resultBlock)
     }
     
     func delete(resultBlock: @escaping (Error?) -> Void) {

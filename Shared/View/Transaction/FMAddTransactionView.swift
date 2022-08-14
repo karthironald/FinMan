@@ -143,71 +143,72 @@ struct FMAddTransactionView: View {
     
     private func saveButtonTapped() {
         if transactionRowViewModel?.id == nil && viewModel != nil {
-            var transaction = FMTransaction(value: Double(value) ?? 0.0)
-            if transactionType == .income {
-                transaction.frequency = frequency.rawValue
-                transaction.source = source.rawValue
-            } else {
-                transaction.expenseCategory = expenseCategory.rawValue
-            }
-            transaction.transactionType = transactionType.rawValue
-            transaction.comments = comments
-            transaction.transactionDate = Timestamp(date: transactionDate)
-            
-            hud.startLoading()
-            viewModel?.addNew(transaction: transaction, resultBlock: { error in
-                hud.stopLoading()
-                if let error = error {
-                    alertInfoMessage = error.localizedDescription
-                    shouldShowAlert.toggle()
-                } else {
-                    shouldPresentAddTransactionView.toggle()
-                }
-            })
+//            var transaction = FMTransaction(value: Double(value) ?? 0.0)
+//            if transactionType == .income {
+//                transaction.frequency = frequency.rawValue
+//                transaction.source = source.rawValue
+//            } else {
+//                transaction.expenseCategory = expenseCategory.rawValue
+//            }
+//            transaction.transactionType = transactionType.rawValue
+//            transaction.comments = comments
+//            transaction.transactionDate = Timestamp(date: transactionDate)
+//            
+//            hud.startLoading()
+//            viewModel?.addNew(transaction: transaction, resultBlock: { error in
+//                hud.stopLoading()
+//                if let error = error {
+//                    alertInfoMessage = error.localizedDescription
+//                    shouldShowAlert.toggle()
+//                } else {
+//                    shouldPresentAddTransactionView.toggle()
+//                }
+//            })
         } else {
-            if let transaction = transactionRowViewModel?.transaction {
-                var updatedTransaction = transaction
-                updatedTransaction.value = Double(value) ?? 0.0
-                if transactionType == .income {
-                    updatedTransaction.frequency = frequency.rawValue
-                    updatedTransaction.source = source.rawValue
-                } else {
-                    updatedTransaction.expenseCategory = expenseCategory.rawValue
-                }
-                updatedTransaction.transactionType = transactionType.rawValue
-                updatedTransaction.transactionDate = Timestamp(date: transactionDate)
-                updatedTransaction.comments = comments
-                
-                hud.startLoading()
-                transactionRowViewModel?.update(transaction: updatedTransaction, resultBlock: { error in
-                    hud.stopLoading()
-                    if let error = error {
-                        alertInfoMessage = error.localizedDescription
-                        shouldShowAlert.toggle()
-                    } else {
-                        shouldPresentAddTransactionView.toggle()
-                    }
-                })
-            }
+//            if let transaction = transactionRowViewModel?.transaction {
+//                var updatedTransaction = transaction
+//                updatedTransaction.value = Double(value) ?? 0.0
+//                if transactionType == .income {
+//                    updatedTransaction.frequency = frequency.rawValue
+//                    updatedTransaction.source = source.rawValue
+//                } else {
+//                    updatedTransaction.expenseCategory = expenseCategory.rawValue
+//                }
+//                updatedTransaction.transactionType = transactionType.rawValue
+//                updatedTransaction.transactionDate = Timestamp(date: transactionDate)
+//                updatedTransaction.comments = comments
+//
+//                hud.startLoading()
+//                transactionRowViewModel?.update(transaction: updatedTransaction, resultBlock: { error in
+//                    hud.stopLoading()
+//                    if let error = error {
+//                        alertInfoMessage = error.localizedDescription
+//                        shouldShowAlert.toggle()
+//                    } else {
+//                        shouldPresentAddTransactionView.toggle()
+//                    }
+//                })
+//            }
         }
     }
     
     func shouldEnableSaveButton() -> Bool {
-        if transactionRowViewModel?.id == nil && viewModel != nil {
-            return Double(value) ?? 0.0 > 0.0
-        } else {
-            if let originalSource = transactionRowViewModel?.transaction.source, !originalSource.isEmpty, (source.rawValue.lowercased() != originalSource.lowercased()) {
-                return true 
-            }
-            if let originalFreq = transactionRowViewModel?.transaction.frequency, !originalFreq.isEmpty, (frequency.rawValue.lowercased() != originalFreq.lowercased()) {
-                return true
-            }
-            if let originalExpenseCategory = transactionRowViewModel?.transaction.expenseCategory, !originalExpenseCategory.isEmpty, (expenseCategory.rawValue.lowercased() != originalExpenseCategory.lowercased()) {
-                return true
-            }
-            let value = Double(value) ?? 0.0
-            return ((value > 0.0) && value != transactionRowViewModel?.transaction.value) || (transactionType.rawValue.lowercased() != transactionRowViewModel?.transaction.transactionType.lowercased()) || (transactionDate != transactionRowViewModel?.transaction.transactionDate?.dateValue()) || (comments.lowercased() != transactionRowViewModel?.transaction.comments?.lowercased())
-        }
+        return true
+//        if transactionRowViewModel?.id == nil && viewModel != nil {
+//            return Double(value) ?? 0.0 > 0.0
+//        } else {
+//            if let originalSource = transactionRowViewModel?.transaction.source, !originalSource.isEmpty, (source.rawValue.lowercased() != originalSource.lowercased()) {
+//                return true
+//            }
+//            if let originalFreq = transactionRowViewModel?.transaction.frequency, !originalFreq.isEmpty, (frequency.rawValue.lowercased() != originalFreq.lowercased()) {
+//                return true
+//            }
+//            if let originalExpenseCategory = transactionRowViewModel?.transaction.expenseCategory, !originalExpenseCategory.isEmpty, (expenseCategory.rawValue.lowercased() != originalExpenseCategory.lowercased()) {
+//                return true
+//            }
+//            let value = Double(value) ?? 0.0
+//            return ((value > 0.0) && value != transactionRowViewModel?.transaction.value) || (transactionType.rawValue.lowercased() != transactionRowViewModel?.transaction.transactionType.lowercased()) || (transactionDate != transactionRowViewModel?.transaction.transactionDate?.dateValue()) || (comments.lowercased() != transactionRowViewModel?.transaction.comments?.lowercased())
+//        }
     }
     
 }

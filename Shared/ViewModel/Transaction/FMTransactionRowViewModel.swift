@@ -9,18 +9,17 @@ import Foundation
 import Combine
 
 class FMTransactionRowViewModel: ObservableObject, Dated {
-    
-    @Published var transaction: FMTransaction
+    var createdDate: Date {
+        Date()
+    }
+    @Published var transaction: FMDTransaction
     
     private let transactionRepository = FMTransactionRepository.shared
-    var id: String?
+    var id: Int?
     private var cancellables: Set<AnyCancellable> = []
-    var createdDate: Date {
-        transaction.transactionDate?.dateValue() ?? Date()
-    }
     
     // MARK: - Init Methods
-    init(transaction: FMTransaction) {
+    init(transaction: FMDTransaction) {
         self.transaction = transaction
         
         $transaction
@@ -31,19 +30,17 @@ class FMTransactionRowViewModel: ObservableObject, Dated {
     
     // MARK: - Custom methods
     
-    func update(transaction: FMTransaction, resultBlock: @escaping (Error?) -> Void) {
-        transactionRepository.update(transaction: transaction, oldTransaction: self.transaction, resultBlock: resultBlock)
+    func update(transaction: FMDTransaction, resultBlock: @escaping (Error?) -> Void) {
+//        transactionRepository.update(transaction: transaction, oldTransaction: self.transaction, resultBlock: resultBlock)
         self.transaction = transaction
     }
     
     func delete(resultBlock: @escaping (Error?) -> Void) {
-        transactionRepository.delete(transaction: transaction, resultBlock: resultBlock)
+//        transactionRepository.delete(transaction: transaction, resultBlock: resultBlock)
     }
     
     func imageName() -> String {
-        let date = transaction.transactionDate?.dateValue() ?? Date()
-        let components = Calendar.current.dateComponents([.day], from: date)
-        return String(components.day ?? 0)
+        return String(1)
     }
     
 }

@@ -118,19 +118,19 @@ struct FMTransactionListView: View {
             fetchTransaction()
         })
         .navigationBarTitle("\(accountViewModel.account.name?.capitalized ?? "")", displayMode: .inline)
-        .popup(isPresented: $shouldPresentAddTransactionView, overlayView: {
-            BottomPopupView(title: "Add Transaction", shouldDismiss: $shouldPresentAddTransactionView) {
-                FMAddTransactionView(viewModel: viewModel, shouldPresentAddTransactionView: $shouldPresentAddTransactionView)
-                    .accentColor(AppSettings.appPrimaryColour)
-            }
-        })
-        .popup(isPresented: $shouldSourceShowChart, overlayView: {
-            BottomPopupView(title: "Chart", shouldDismiss: $shouldSourceShowChart) {
-                let transactionType = (transactionTypeIndex > (FMTransaction.TransactionType.allCases.count - 1)) ? nil : FMTransaction.TransactionType.allCases[transactionTypeIndex]
-                FMChartView(points: viewModel.chartPoints(transactionType: transactionType))
-                    .accentColor(AppSettings.appPrimaryColour)
-            }
-        })
+//        .popup(isPresented: $shouldPresentAddTransactionView, overlayView: {
+//            BottomPopupView(title: "Add Transaction", shouldDismiss: $shouldPresentAddTransactionView) {
+//                FMAddTransactionView(viewModel: viewModel, shouldPresentAddTransactionView: $shouldPresentAddTransactionView)
+//                    .accentColor(AppSettings.appPrimaryColour)
+//            }
+//        })
+//        .popup(isPresented: $shouldSourceShowChart, overlayView: {
+//            BottomPopupView(title: "Chart", shouldDismiss: $shouldSourceShowChart) {
+//                let transactionType = (transactionTypeIndex > (FMTransaction.TransactionType.allCases.count - 1)) ? nil : FMTransaction.TransactionType.allCases[transactionTypeIndex]
+//                FMChartView(points: viewModel.chartPoints(transactionType: transactionType))
+//                    .accentColor(AppSettings.appPrimaryColour)
+//            }
+//        })
     }
     
     
@@ -232,7 +232,7 @@ struct FMTransactionListView_Previews: PreviewProvider {
     
     static var previews: some View {
         let viewModel = FMTransactionListViewModel()
-        let rowViewModel = FMTransactionRowViewModel(transaction: FMTransaction.sampleData.first!)
+        let rowViewModel = FMTransactionRowViewModel(transaction: FMDTransaction(id: 1, incomeSource: FMDIncomeSource(id: 1, createdAt: Date().toString(), updatedAt: Date().toString(), name: "IC", frequency: "onetime"), expenseCategory: FMDExpenseCategory(id: 1, createdAt: Date().toString(), updatedAt: Date().toString(), name: "EC 1", monthlyBudget: 10, yearlyBudget: 120), event: nil, account: FMAccount.sampleData.first!, createdAt: Date().toString(), updatedAt: Date().toString(), name: "New Transaction", value: 100, transactionAt: Date().toString(), transactionType: "income", comments: "Sample"))
         viewModel.transactionRowViewModel = [rowViewModel]
         return NavigationView {
             FMTransactionListView(viewModel: viewModel, shouldPresentAddTransactionView: false, accountViewModel: FMAccountRowViewModel(account: FMAccount.sampleData.first!))
