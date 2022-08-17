@@ -14,17 +14,23 @@ struct FMAddTransactionView: View {
     @EnvironmentObject private var hud: FMLoadingInfoState
     @Namespace private var animation
     
+    @State var name: String = ""
     @State var value: String = ""
-    @State var frequency: FMTransaction.IncomeFrequency = .onetime
-    @State var source: FMTransaction.IncomeSource = .earned
+    @State var incomeSourceId: Int = 1
+    @State var expenseCategoryId: Int = 1
+    @State var accountId: Int = 1
+    @State var eventId: Int = 1
+    
+//    @State var frequency: FMTransaction.IncomeFrequency = .onetime
+//    @State var source: FMTransaction.IncomeSource = .earned
     @State var comments: String = ""
     @State var transactionType: FMTransaction.TransactionType = .income
-    @State var expenseCategory: FMTransaction.ExpenseCategory = .housing
+//    @State var expenseCategory: FMTransaction.ExpenseCategory = .housing
     @State var transactionDate: Date = Date()
     
-    @State var shouldShowIncomeFrequency = false
-    @State var shouldShowIncomeSource = false
-    @State var shouldShowExpenseCategory = false
+//    @State var shouldShowIncomeFrequency = false
+//    @State var shouldShowIncomeSource = false
+//    @State var shouldShowExpenseCategory = false
     
     @State private var alertInfoMessage = ""
     @State private var shouldShowAlert = false
@@ -44,6 +50,12 @@ struct FMAddTransactionView: View {
         ZStack {
             VStack(spacing: AppSettings.vStackSpacing) {
                 HStack {
+                    Text("Name").foregroundColor(.secondary)
+                    Spacer()
+                    FMTextField(title: "Enter name", keyboardType: .default, height: 40, value: $name, infoMessage: .constant(""))
+                        .frame(width: 200, alignment: .center)
+                }
+                HStack {
                     Text("Amount").foregroundColor(.secondary)
                     Spacer()
                     FMTextField(title: "Enter amount", keyboardType: .decimalPad, height: 40, value: $value, infoMessage: .constant(""))
@@ -62,40 +74,40 @@ struct FMAddTransactionView: View {
                     .frame(width: 200, alignment: .center)
                 }
                 if transactionType == .income {
-                    HStack {
-                        Text("Frequency").foregroundColor(.secondary)
-                        Spacer()
-                        Button("\(frequency.rawValue.capitalized)") {
-                            withAnimation {
-                                shouldShowIncomeFrequency.toggle()
-                            }
-                        }
-                        .modifier(TagStyledButton())
-                        .matchedGeometryEffect(id: "incomeFreq", in: animation, properties: .position)
-                    }
-                    HStack {
-                        Text("Source").foregroundColor(.secondary)
-                        Spacer()
-                        Button("\(source.rawValue.capitalized)") {
-                            withAnimation {
-                                shouldShowIncomeSource.toggle()
-                            }
-                        }
-                        .modifier(TagStyledButton())
-                        .matchedGeometryEffect(id: "incomeSource", in: animation, properties: .position)
-                    }
+//                    HStack {
+//                        Text("Frequency").foregroundColor(.secondary)
+//                        Spacer()
+//                        Button("\(frequency.rawValue.capitalized)") {
+//                            withAnimation {
+//                                shouldShowIncomeFrequency.toggle()
+//                            }
+//                        }
+//                        .modifier(TagStyledButton())
+//                        .matchedGeometryEffect(id: "incomeFreq", in: animation, properties: .position)
+//                    }
+//                    HStack {
+//                        Text("Source").foregroundColor(.secondary)
+//                        Spacer()
+//                        Button("\(source.rawValue.capitalized)") {
+//                            withAnimation {
+//                                shouldShowIncomeSource.toggle()
+//                            }
+//                        }
+//                        .modifier(TagStyledButton())
+//                        .matchedGeometryEffect(id: "incomeSource", in: animation, properties: .position)
+//                    }
                 } else {
-                    HStack {
-                        Text("Category").foregroundColor(.secondary)
-                        Spacer()
-                        Button("\(expenseCategory.rawValue.capitalized)") {
-                            withAnimation(Animation.spring()) {
-                                shouldShowExpenseCategory.toggle()
-                            }
-                        }
-                        .modifier(TagStyledButton())
-                        .matchedGeometryEffect(id: "expenseCategory", in: animation, properties: .position)
-                    }
+//                    HStack {
+//                        Text("Category").foregroundColor(.secondary)
+//                        Spacer()
+//                        Button("\(expenseCategory.rawValue.capitalized)") {
+//                            withAnimation(Animation.spring()) {
+//                                shouldShowExpenseCategory.toggle()
+//                            }
+//                        }
+//                        .modifier(TagStyledButton())
+//                        .matchedGeometryEffect(id: "expenseCategory", in: animation, properties: .position)
+//                    }
                 }
                 HStack {
                     Text("Date").foregroundColor(.secondary)
@@ -114,17 +126,17 @@ struct FMAddTransactionView: View {
                 .disabled(!shouldEnableSaveButton())
                 .padding(.top)
             }
-            .overlay((shouldShowIncomeFrequency || shouldShowIncomeSource || shouldShowExpenseCategory) ? Color.white : nil)
-            if shouldShowIncomeFrequency {
-                FMGridView<FMTransaction.IncomeFrequency>(items: FMTransaction.IncomeFrequency.allCases, selectedItem: $frequency, shouldDismiss: $shouldShowIncomeFrequency)
-                    .matchedGeometryEffect(id: "incomeFreq", in: animation, properties: .position)
-            } else if shouldShowIncomeSource {
-                FMGridView<FMTransaction.IncomeSource>(items: FMTransaction.IncomeSource.allCases, selectedItem: $source, shouldDismiss: $shouldShowIncomeSource)
-                    .matchedGeometryEffect(id: "incomeSource", in: animation, properties: .position)
-            } else if shouldShowExpenseCategory {
-                FMGridView<FMTransaction.ExpenseCategory>(items: FMTransaction.ExpenseCategory.allCases, selectedItem: $expenseCategory, shouldDismiss: $shouldShowExpenseCategory)
-                    .matchedGeometryEffect(id: "expenseCategory", in: animation, properties: .position)
-            }
+//            .overlay((shouldShowIncomeFrequency || shouldShowIncomeSource || shouldShowExpenseCategory) ? Color.white : nil)
+//            if shouldShowIncomeFrequency {
+//                FMGridView<FMTransaction.IncomeFrequency>(items: FMTransaction.IncomeFrequency.allCases, selectedItem: $frequency, shouldDismiss: $shouldShowIncomeFrequency)
+//                    .matchedGeometryEffect(id: "incomeFreq", in: animation, properties: .position)
+//            } else if shouldShowIncomeSource {
+//                FMGridView<FMTransaction.IncomeSource>(items: FMTransaction.IncomeSource.allCases, selectedItem: $source, shouldDismiss: $shouldShowIncomeSource)
+//                    .matchedGeometryEffect(id: "incomeSource", in: animation, properties: .position)
+//            } else if shouldShowExpenseCategory {
+//                FMGridView<FMTransaction.ExpenseCategory>(items: FMTransaction.ExpenseCategory.allCases, selectedItem: $expenseCategory, shouldDismiss: $shouldShowExpenseCategory)
+//                    .matchedGeometryEffect(id: "expenseCategory", in: animation, properties: .position)
+//            }
         }
         .onReceive(keyboardWillShow) { _ in
             bottomPadding = 80
@@ -143,6 +155,17 @@ struct FMAddTransactionView: View {
     
     private func saveButtonTapped() {
         if transactionRowViewModel?.id == nil && viewModel != nil {
+            let transaction = FMAddTransactionRequest(name: name, value: Double(value) ?? 0.0, transactionType: transactionType.rawValue, accountID: accountId, expenseCategoryID: expenseCategoryId, eventID: eventId, incomeSourceID: incomeSourceId, transactionAt: transactionDate.toString(format: .isoDateTimeMilliSec, timeZone: .local, locale: .current), comments: comments)
+            hud.startLoading()
+            viewModel?.addNew(transaction: transaction, resultBlock: { error in
+                hud.stopLoading()
+                if let error = error {
+                    alertInfoMessage = error.localizedDescription
+                    shouldShowAlert.toggle()
+                } else {
+                    shouldPresentAddTransactionView.toggle()
+                }
+            })
 //            var transaction = FMTransaction(value: Double(value) ?? 0.0)
 //            if transactionType == .income {
 //                transaction.frequency = frequency.rawValue
@@ -155,15 +178,15 @@ struct FMAddTransactionView: View {
 //            transaction.transactionDate = Timestamp(date: transactionDate)
 //            
 //            hud.startLoading()
-//            viewModel?.addNew(transaction: transaction, resultBlock: { error in
-//                hud.stopLoading()
-//                if let error = error {
-//                    alertInfoMessage = error.localizedDescription
-//                    shouldShowAlert.toggle()
-//                } else {
-//                    shouldPresentAddTransactionView.toggle()
-//                }
-//            })
+            viewModel?.addNew(transaction: transaction, resultBlock: { error in
+                hud.stopLoading()
+                if let error = error {
+                    alertInfoMessage = error.localizedDescription
+                    shouldShowAlert.toggle()
+                } else {
+                    shouldPresentAddTransactionView.toggle()
+                }
+            })
         } else {
 //            if let transaction = transactionRowViewModel?.transaction {
 //                var updatedTransaction = transaction

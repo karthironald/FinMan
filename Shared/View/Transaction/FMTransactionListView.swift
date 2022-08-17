@@ -31,40 +31,6 @@ struct FMTransactionListView: View {
                 VStack(spacing: 10) {
                     Text("\(selectedTimePeriod.title()) (\(FMHelper.selectedTimePeriodDisplayString(timePeriod: selectedTimePeriod) ?? "-"))")
                         .foregroundColor(.secondary)
-                    HStack {
-                        Spacer()
-                        Text("\(viewModel.totalIncome, specifier: "%0.2f")")
-                            .foregroundColor(.green)
-                            .padding(.vertical, 5)
-                            .padding(.horizontal, 10)
-                            .background(Color.green.opacity(0.1))
-                            .clipShape(Capsule())
-                        Spacer()
-                        Image(systemName: "minus")
-                            .font(.caption2)
-                            .foregroundColor(.secondary)
-                        Spacer()
-                        Text("\(viewModel.totalExpense, specifier: "%0.2f")")
-                            .foregroundColor(.red)
-                            .padding(.vertical, 5)
-                            .padding(.horizontal, 10)
-                            .background(Color.red.opacity(0.1))
-                            .clipShape(Capsule())
-                        Group {
-                            Spacer()
-                            Image(systemName: "equal")
-                                .font(.caption2)
-                                .foregroundColor(.secondary)
-                            Spacer()
-                        }
-                        Text("\(viewModel.totalIncome - viewModel.totalExpense, specifier: "%0.2f")")
-                            .foregroundColor(.blue)
-                            .padding(.vertical, 5)
-                            .padding(.horizontal, 10)
-                            .background(Color.blue.opacity(0.1))
-                            .clipShape(Capsule())
-                        Spacer()
-                    }
                 }
                 .font(.caption)
                 .padding(10)
@@ -118,12 +84,12 @@ struct FMTransactionListView: View {
             fetchTransaction()
         })
         .navigationBarTitle("\(accountViewModel.account.name?.capitalized ?? "")", displayMode: .inline)
-//        .popup(isPresented: $shouldPresentAddTransactionView, overlayView: {
-//            BottomPopupView(title: "Add Transaction", shouldDismiss: $shouldPresentAddTransactionView) {
-//                FMAddTransactionView(viewModel: viewModel, shouldPresentAddTransactionView: $shouldPresentAddTransactionView)
-//                    .accentColor(AppSettings.appPrimaryColour)
-//            }
-//        })
+        .popup(isPresented: $shouldPresentAddTransactionView, overlayView: {
+            BottomPopupView(title: "Add Transaction", shouldDismiss: $shouldPresentAddTransactionView) {
+                FMAddTransactionView(viewModel: viewModel, shouldPresentAddTransactionView: $shouldPresentAddTransactionView)
+                    .accentColor(AppSettings.appPrimaryColour)
+            }
+        })
 //        .popup(isPresented: $shouldSourceShowChart, overlayView: {
 //            BottomPopupView(title: "Chart", shouldDismiss: $shouldSourceShowChart) {
 //                let transactionType = (transactionTypeIndex > (FMTransaction.TransactionType.allCases.count - 1)) ? nil : FMTransaction.TransactionType.allCases[transactionTypeIndex]
@@ -232,7 +198,7 @@ struct FMTransactionListView_Previews: PreviewProvider {
     
     static var previews: some View {
         let viewModel = FMTransactionListViewModel()
-        let rowViewModel = FMTransactionRowViewModel(transaction: FMDTransaction(id: 1, incomeSource: FMDIncomeSource(id: 1, createdAt: Date().toString(), updatedAt: Date().toString(), name: "IC", frequency: "onetime"), expenseCategory: FMDExpenseCategory(id: 1, createdAt: Date().toString(), updatedAt: Date().toString(), name: "EC 1", monthlyBudget: 10, yearlyBudget: 120), event: nil, account: FMAccount.sampleData.first!, createdAt: Date().toString(), updatedAt: Date().toString(), name: "New Transaction", value: 100, transactionAt: Date().toString(), transactionType: "income", comments: "Sample"))
+        let rowViewModel = FMTransactionRowViewModel(transaction: FMDTransaction(id: 1, incomeSource: FMDIncomeSource(id: 1, createdAt: Date(), updatedAt: Date(), name: "IC", frequency: "onetime"), expenseCategory: FMDExpenseCategory(id: 1, createdAt: Date(), updatedAt: Date(), name: "EC 1", monthlyBudget: 10, yearlyBudget: 120), event: nil, account: FMAccount.sampleData.first!, createdAt: Date(), updatedAt: Date(), name: "New Transaction", value: 100, transactionAt: Date(), transactionType: "income", comments: "Sample"))
         viewModel.transactionRowViewModel = [rowViewModel]
         return NavigationView {
             FMTransactionListView(viewModel: viewModel, shouldPresentAddTransactionView: false, accountViewModel: FMAccountRowViewModel(account: FMAccount.sampleData.first!))

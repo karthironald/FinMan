@@ -27,51 +27,51 @@ struct FMTransactionDetailView: View {
                 Text("Value")
                     .font(.footnote)
                     .foregroundColor(.secondary)
-                Text("\(transactionRowViewModel.transaction.value, specifier: "%0.02f")")
+                Text("\(transactionRowViewModel.transaction.value ?? 0.0, specifier: "%0.02f")")
             }
             VStack(alignment: .leading) {
                 Text("Transaction Date")
                     .font(.footnote)
                     .foregroundColor(.secondary)
-                Text("\(transactionRowViewModel.transaction.transac?.dateValue() ?? Date(), formatter: dateFormatter) \(transactionRowViewModel.transaction.transactionDate?.dateValue() ?? Date(), style: .time)")
+                Text("Yet to fill")
             }
-            if transactionRowViewModel.transaction.transactionType == FMTransaction.TransactionType.income.rawValue {
-                VStack(alignment: .leading) {
-                    Text("Frequency")
-                        .font(.footnote)
-                        .foregroundColor(.secondary)
-                    if let frequency = transactionRowViewModel.transaction.frequency {
-                        Text(FMTransaction.IncomeFrequency(rawValue: frequency)?.title ?? "")
-                    }
-                }
-                VStack(alignment: .leading) {
-                    Text("Source")
-                        .font(.footnote)
-                        .foregroundColor(.secondary)
-                    if let source = transactionRowViewModel.transaction.source {
-                        Text(FMTransaction.IncomeSource(rawValue: source)?.title ?? "")
-                    }
-                }
-            } else {
-                VStack(alignment: .leading) {
-                    Text("Category")
-                        .font(.footnote)
-                        .foregroundColor(.secondary)
-                    if let category = transactionRowViewModel.transaction.expenseCategory {
-                        Text(category.capitalized)
-                    }
-                }
-            }
-            VStack(alignment: .leading) {
-                Text("Additional Comments")
-                    .font(.footnote)
-                    .foregroundColor(.secondary)
-                if let comments = transactionRowViewModel.transaction.comments, !comments.isEmpty {
-                    Text(comments)
-                } else {
-                    Text("-")
-                }
-            }
+//            if transactionRowViewModel.transaction.transactionType == FMTransaction.TransactionType.income.rawValue {
+//                VStack(alignment: .leading) {
+//                    Text("Frequency")
+//                        .font(.footnote)
+//                        .foregroundColor(.secondary)
+//                    if let frequency = transactionRowViewModel.transaction.frequency {
+//                        Text(FMTransaction.IncomeFrequency(rawValue: frequency)?.title ?? "")
+//                    }
+//                }
+//                VStack(alignment: .leading) {
+//                    Text("Source")
+//                        .font(.footnote)
+//                        .foregroundColor(.secondary)
+//                    if let source = transactionRowViewModel.transaction.source {
+//                        Text(FMTransaction.IncomeSource(rawValue: source)?.title ?? "")
+//                    }
+//                }
+//            } else {
+//                VStack(alignment: .leading) {
+//                    Text("Category")
+//                        .font(.footnote)
+//                        .foregroundColor(.secondary)
+//                    if let category = transactionRowViewModel.transaction.expenseCategory {
+//                        Text(category.capitalized)
+//                    }
+//                }
+//            }
+//            VStack(alignment: .leading) {
+//                Text("Additional Comments")
+//                    .font(.footnote)
+//                    .foregroundColor(.secondary)
+//                if let comments = transactionRowViewModel.transaction.comments, !comments.isEmpty {
+//                    Text(comments)
+//                } else {
+//                    Text("-")
+//                }
+//            }
         }
         .listStyle(InsetGroupedListStyle())
         .navigationBarTitle("Transaction Details", displayMode: .inline)
@@ -95,7 +95,7 @@ struct FMTransactionDetailView: View {
 struct FMTransactionDetailView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            FMTransactionDetailView(transactionRowViewModel: FMTransactionRowViewModel(transaction: FMTransaction.sampleData.first!))
+            FMTransactionDetailView(transactionRowViewModel: FMTransactionRowViewModel(transaction: FMDTransaction.sampleData.first!))
         }
     }
 }

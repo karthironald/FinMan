@@ -8,6 +8,26 @@ import Foundation
 import FirebaseFirestoreSwift
 import FirebaseFirestore
 
+// MARK: - FMAddTransactionRequest
+struct FMAddTransactionRequest: Codable {
+    let name: String?
+    let value: Double?
+    let transactionType: String?
+    let accountID, expenseCategoryID, eventID, incomeSourceID: Int?
+    let transactionAt, comments: String?
+
+    enum CodingKeys: String, CodingKey {
+        case name, value
+        case transactionType = "transaction_type"
+        case accountID = "account_id"
+        case expenseCategoryID = "expense_category_id"
+        case eventID = "event_id"
+        case incomeSourceID = "income_source_id"
+        case transactionAt = "transaction_at"
+        case comments
+    }
+}
+
 // MARK: - FMTransactionResponse
 struct FMDTransactionResponse: Codable {
     let count: Int?
@@ -21,10 +41,13 @@ struct FMDTransaction: Codable {
     let id: Int?
     let incomeSource: FMDIncomeSource?
     let expenseCategory: FMDExpenseCategory?
-    let event, account: FMAccount?
-    let createdAt, updatedAt, name: String?
+    let event: FMEvent?
+    let account: FMAccount?
+    let createdAt, updatedAt: Date
+    let name: String?
     let value: Double?
-    let transactionAt, transactionType: String?
+    let transactionAt: Date?
+    let transactionType: String?
     let comments: String?
 
     enum CodingKeys: String, CodingKey {
@@ -41,10 +64,32 @@ struct FMDTransaction: Codable {
     }
 }
 
+struct FMEvent: Codable {
+    let id: Int?
+    let isExceedBudget: Bool?
+    let totalIncome, totalExpense: Double?
+    let createdAt, updatedAt: Date
+    let name, fmEventDescription: String?
+    let budget: Double?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case isExceedBudget = "is_exceed_budget"
+        case totalIncome = "total_income"
+        case totalExpense = "total_expense"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+        case name
+        case fmEventDescription = "description"
+        case budget
+    }
+}
+
 // MARK: - ExpenseCategory
 struct FMDExpenseCategory: Codable {
     let id: Int?
-    let createdAt, updatedAt, name: String?
+    let createdAt, updatedAt: Date?
+    let name: String?
     let monthlyBudget, yearlyBudget: Double?
 
     enum CodingKeys: String, CodingKey {
@@ -60,7 +105,8 @@ struct FMDExpenseCategory: Codable {
 // MARK: - IncomeSource
 struct FMDIncomeSource: Codable {
     let id: Int?
-    let createdAt, updatedAt, name, frequency: String?
+    let createdAt, updatedAt: Date?
+    let name, frequency: String?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -158,6 +204,14 @@ extension FMTransaction {
         FMTransaction(id: UUID().uuidString, value: 1000, frequency: IncomeFrequency.weekly.rawValue, source: IncomeSource.dividend.rawValue, comments: nil, userId: nil),
         FMTransaction(id: UUID().uuidString, value: 1000, frequency: IncomeFrequency.monthly.rawValue, source: IncomeSource.capitalGain.rawValue, comments: nil, userId: nil),
         FMTransaction(id: UUID().uuidString, value: 1000, frequency: IncomeFrequency.yearly.rawValue, source: IncomeSource.interest.rawValue, comments: nil, userId: nil),
+    ]
+    
+}
+
+extension FMDTransaction {
+    
+    static var sampleData = [
+        FMDTransaction(id: 1, incomeSource: FMDIncomeSource(id: 1, createdAt: Date(), updatedAt: Date(), name: "IC", frequency: "onetime"), expenseCategory: FMDExpenseCategory(id: 1, createdAt: Date(), updatedAt: Date(), name: "EC 1", monthlyBudget: 10, yearlyBudget: 120), event: nil, account: FMAccount.sampleData.first!, createdAt: Date(), updatedAt: Date(), name: "New Transaction", value: 100, transactionAt: Date(), transactionType: "income", comments: "Sample")
     ]
     
 }

@@ -70,7 +70,7 @@ class FMTransactionRepository: ObservableObject {
         - transaction: Transaction to add
         - resultBlock: Callback to be triggered as result of save action
      */
-    func add(_ transaction: FMTransaction, resultBlock: @escaping (Error?) -> Void) {
+    func add(_ transaction: FMAddTransactionRequest, resultBlock: @escaping (Error?) -> Void) {
 //        do {
 //            var newTransaction = transaction
 //            newTransaction.userId = userId
@@ -306,40 +306,44 @@ class FMDTransactionRepository: ObservableObject {
         - transaction: Transaction to add
         - resultBlock: Callback to be triggered as result of save action
      */
-    func add(_ transaction: FMTransaction, resultBlock: @escaping (Error?) -> Void) {
-//        do {
-//            var newTransaction = transaction
-//            newTransaction.userId = userId
-//            newTransaction.accountId = accountId
-//
-//            let batch = store.batch()
-//
-//            let accountRef = store.collection(FMFirestoreCollection.account.rawValue).document(accountRepository.selectedAccount?.id ?? "")
-//            if newTransaction.transactionType == FMTransaction.TransactionType.income.rawValue {
-//                batch.updateData([FMAccount.Keys.income.rawValue: (accountRepository.selectedAccount?.income ?? 0.0) + (transaction.value), FMAccount.Keys.incomeCount.rawValue: (FMAccountRepository.shared.selectedAccount?.incomeCount ?? 0) + 1], forDocument: accountRef)
-//            } else {
-//                batch.updateData([FMAccount.Keys.expense.rawValue: (accountRepository.selectedAccount?.expense ?? 0.0) + (transaction.value), FMAccount.Keys.expenseCount.rawValue: (FMAccountRepository.shared.selectedAccount?.expenseCount ?? 0) + 1], forDocument: accountRef)
-//            }
-//
-//            let newTransactionRef = store.collection(path).document()
-//            try batch.setData(from: newTransaction, forDocument: newTransactionRef)
-//
-//            batch.commit { error in
-//                resultBlock(error)
-//            }
-//        } catch {
-//            fatalError("Unable to add card: \(error.localizedDescription).")
-//        }
+    func add(_ transaction: FMAddTransactionRequest, resultBlock: @escaping (Error?) -> Void) {
+        let decoder = JSONDecoder()
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        
+        decoder.dateDecodingStrategy = .formatted(formatter)
+        
+        if let token = UserDefaults.standard.value(forKey: "access_token") as? String {
+            AF.request("\(kBaseUrl)/api/transactions/", method: .post, parameters: transaction, headers: ["Authorization": "Bearer \(token)"]).validate().responseDecodable(of: FMDTransaction.self, decoder: decoder) { [weak self] response in
+                switch response.result {
+                case .success(let transactionResponse):
+                    print(transactionResponse)
+                    resultBlock(nil)
+                case .failure(let error):
+                    print(error)
+                    resultBlock(error)
+                }
+            }
+        }
     }
     
     func getTransactions() {
         isFetching = true
         
+        let decoder = JSONDecoder()
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        
+        decoder.dateDecodingStrategy = .formatted(formatter)
+        
         if let token = UserDefaults.standard.value(forKey: "access_token") as? String {
-            AF.request("\(kBaseUrl)/api/transactions/", method: .get, headers: ["Authorization": "Bearer \(token)"]).validate().responseDecodable(of: FMDTransactionResponse.self) { [weak self] response in
+            AF.request("\(kBaseUrl)/api/transactions/", method: .get, headers: ["Authorization": "Bearer \(token)"]).validate().responseDecodable(of: FMDTransactionResponse.self, decoder: decoder) { [weak self] response in
                 switch response.result {
                 case .success(let transactionResponse):
                     self?.transactions = transactionResponse.results ?? []
+                    self?.nextPageUrl = transactionResponse.next
                 case .failure(let error):
                     print(error)
                 }
@@ -352,10 +356,18 @@ class FMDTransactionRepository: ObservableObject {
         if let nextPageUrl = nextPageUrl {
             isPaginating = true
             if let token = UserDefaults.standard.value(forKey: "access_token") as? String {
-                AF.request(nextPageUrl, method: .get, headers: ["Authorization": "Bearer \(token)"]).validate().responseDecodable(of: FMDTransactionResponse.self) { [weak self] response in
+                let decoder = JSONDecoder()
+                
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+                
+                decoder.dateDecodingStrategy = .formatted(formatter)
+                
+                AF.request(nextPageUrl, method: .get, headers: ["Authorization": "Bearer \(token)"]).validate().responseDecodable(of: FMDTransactionResponse.self, decoder: decoder) { [weak self] response in
                     switch response.result {
                     case .success(let transactionResponse):
                         self?.transactions.append(contentsOf: transactionResponse.results ?? [])
+                        self?.nextPageUrl = transactionResponse.next
                     case .failure(let error):
                         print(error)
                     }
@@ -468,6 +480,9 @@ class FMDTransactionRepository: ObservableObject {
     func resetAllData() {
         transactions = []
     }
-    
+ 
+    func shouldLoadMore() -> Bool {
+        (nextPageUrl != nil)
+    }
 }
 

@@ -9,6 +9,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import Combine
 import Alamofire
+import Foundation
 
 class FMAccountRepository: ObservableObject {
     
@@ -67,8 +68,15 @@ class FMAccountRepository: ObservableObject {
     func getAccounts() {
         isFetching = true
         
+        let decoder = JSONDecoder()
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        
+        decoder.dateDecodingStrategy = .formatted(formatter)
+        
         if let token = UserDefaults.standard.value(forKey: "access_token") as? String {
-            AF.request("\(kBaseUrl)/api/accounts/", method: .get, headers: ["Authorization": "Bearer \(token)"]).validate().responseDecodable(of: FMAccountsResponse.self) { [weak self] response in
+            AF.request("\(kBaseUrl)/api/accounts/", method: .get, headers: ["Authorization": "Bearer \(token)"]).validate().responseDecodable(of: FMAccountsResponse.self, decoder: decoder) { [weak self] response in
                 switch response.result {
                 case .success(let accountResponse):
                     self?.accounts = accountResponse.results ?? []
@@ -123,5 +131,3 @@ class FMAccountRepository: ObservableObject {
     }
     
 }
-
-

@@ -26,7 +26,7 @@ struct FMTransactionRowView: View {
                     .font(.body)
                     .bold()
                     .foregroundColor((transactionRowViewModel.transaction.transactionType == FMTransaction.TransactionType.income.rawValue) ? .green : .red)
-                Text(transactionRowViewModel.transaction.transactionAt ?? "--")
+                Text(transactionRowViewModel.transaction.transactionAt?.toString(dateStyle: .full, timeStyle: .full, isRelative: true, timeZone: .current, locale: .current) ?? "--")
                     .font(.footnote)
                     .foregroundColor(.secondary)
             }

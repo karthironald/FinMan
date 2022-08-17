@@ -21,9 +21,9 @@ struct FMAccount: Codable {
     let id: Int?
     let totalIncome, totalExpense: Double?
     var name, accountDescription: String?
-    let createdAt, updatedAt: String?
+    let createdAt, updatedAt: Date?
     let isExceedBudget: Bool?
-    let budget: Int?
+    let budget: Double?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -53,7 +53,7 @@ struct FMAccount: Codable {
 extension FMAccount {
 
     static var sampleData = [
-        FMAccount(id: 1, totalIncome: 0, totalExpense: 0, name: "ABC", accountDescription: "Demo", createdAt: Date().toString(), updatedAt: Date().toString(), isExceedBudget: true, budget: 1000)
+        FMAccount(id: 1, totalIncome: 0, totalExpense: 0, name: "ABC", accountDescription: "Demo", createdAt: Date(), updatedAt: Date(), isExceedBudget: true, budget: 1000)
     ]
 
 }

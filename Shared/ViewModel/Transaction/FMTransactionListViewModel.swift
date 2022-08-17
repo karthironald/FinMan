@@ -53,7 +53,7 @@ class FMTransactionListViewModel: ObservableObject {
     
     // MARK: - Custom methods
     
-    func addNew(transaction: FMTransaction, resultBlock: @escaping (Error?) -> Void) {
+    func addNew(transaction: FMAddTransactionRequest, resultBlock: @escaping (Error?) -> Void) {
         transactionRepository.add(transaction, resultBlock: resultBlock)
     }
     
@@ -62,18 +62,19 @@ class FMTransactionListViewModel: ObservableObject {
     }
     
     func shouldEnableLoadMore() -> Bool {
-        transactionRowViewModel.count < FMAccountRepository.shared.totalRecordsCount()
+        FMDTransactionRepository.shared.shouldLoadMore()
     }
     
     func fetchTransaction(for timePeriod: FMTimePeriod = .all, incomeSource: FMTransaction.IncomeSource? = nil, transactionType: FMTransaction.TransactionType? = nil) {
-        if timePeriod == .all {
-            transactionRepository.getTransactions()
-        } else {
-            let dates = FMHelper.startDate(type: timePeriod)
-            if let sDate = dates.startDate, let eDate = dates.endDate {
-                transactionRepository.filterTransaction(startDate: sDate, endDate: eDate, incomeSource: incomeSource, transactionType: transactionType)
-            }
-        }
+        transactionRepository.getTransactions()
+//        if timePeriod == .all {
+//            transactionRepository.getTransactions()
+//        } else {
+//            let dates = FMHelper.startDate(type: timePeriod)
+//            if let sDate = dates.startDate, let eDate = dates.endDate {
+//                transactionRepository.filterTransaction(startDate: sDate, endDate: eDate, incomeSource: incomeSource, transactionType: transactionType)
+//            }
+//        }
     }
     
 }
