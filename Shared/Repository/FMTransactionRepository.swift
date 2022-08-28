@@ -21,7 +21,7 @@ class FMTransactionRepository: ObservableObject {
     private var userId: Int?
     private var accountId: Int?
     private let authenticationService = FMAuthenticationService.shared
-    private let accountRepository = FMAccountRepository.shared
+    private let accountRepository = FMAccountRepository()
     private var cancellables: Set<AnyCancellable> = []
     private var lastDocument: DocumentSnapshot?
     private var transactionQuery: Query?
@@ -29,35 +29,7 @@ class FMTransactionRepository: ObservableObject {
     @Published var transactions: [FMTransaction] = []
     @Published var isFetching: Bool = false
     @Published var isPaginating: Bool = false
-    
-    
-    // MARK: - Init Methods
-    
-    private init() {
-        authenticationService.$user
-            .map { user in
-                user?.id
-            }
-            .assign(to: \.userId, on: self)
-            .store(in: &cancellables)
-        accountRepository.$selectedAccount
-            .map { $0?.id }
-            .assign(to: \.accountId, on: self)
-            .store(in: &cancellables)
-        accountRepository.$selectedAccount
-            .debounce(for: 0.25, scheduler: RunLoop.main) // Delay the network request
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                if let accountId = self?.accountId {
-                    #warning("No need to fetch transactions when account is selected")
-                    // self?.getTransactions()
-                } else {
-                    self?.resetAllData()
-                }
-            }
-            .store(in: &cancellables)
-    }
-    
+
     
     // MARK: - Custom methods
     
@@ -120,7 +92,7 @@ class FMTransactionRepository: ObservableObject {
     }
     
     func fetchNextPage() {
-        if let query = transactionQuery, let lastDoc = lastDocument, transactions.count < FMAccountRepository.shared.totalRecordsCount() {
+        if let query = transactionQuery, let lastDoc = lastDocument {
             isPaginating = true
             query
                 .start(afterDocument: lastDoc)
@@ -258,41 +230,13 @@ class FMDTransactionRepository: ObservableObject {
     private var userId: Int?
     private var accountId: Int?
     private let authenticationService = FMAuthenticationService.shared
-    private let accountRepository = FMAccountRepository.shared
+    private let accountRepository = FMAccountRepository()
     private var cancellables: Set<AnyCancellable> = []
     
     @Published var transactions: [FMDTransaction] = []
     @Published var isFetching: Bool = false
     @Published var isPaginating: Bool = false
     @Published var nextPageUrl: String? = nil
-    
-    
-    // MARK: - Init Methods
-    
-    private init() {
-        authenticationService.$user
-            .map { user in
-                user?.id
-            }
-            .assign(to: \.userId, on: self)
-            .store(in: &cancellables)
-        accountRepository.$selectedAccount
-            .map { $0?.id }
-            .assign(to: \.accountId, on: self)
-            .store(in: &cancellables)
-        accountRepository.$selectedAccount
-            .debounce(for: 0.25, scheduler: RunLoop.main) // Delay the network request
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                if let accountId = self?.accountId {
-                    #warning("No need to fetch transactions when account is selected")
-                    // self?.getTransactions()
-                } else {
-                    self?.resetAllData()
-                }
-            }
-            .store(in: &cancellables)
-    }
     
     
     // MARK: - Custom methods

@@ -16,8 +16,8 @@ struct FMAddTransactionView: View {
     
     @State var name: String = ""
     @State var value: String = ""
-    @State var accountId: Int = 1
-    @State var eventId: Int = 1
+    @State var account = FMAccount.default
+    @State var event = FMEvent.default
     
     @State var comments: String = ""
     @State var source: FMDIncomeSource = FMDIncomeSource.default
@@ -38,6 +38,8 @@ struct FMAddTransactionView: View {
     
     @StateObject var isRepo = FMIncomeSourceRepository()
     @StateObject var ecRepo = FMExpenseCategoryRepository()
+    @StateObject var eventRepo = FMEventRepository()
+    @StateObject var accountRepo = FMAccountRepository()
     
     var viewModel: FMTransactionListViewModel? = nil
     var transactionRowViewModel: FMTransactionRowViewModel? = nil
@@ -82,11 +84,7 @@ struct FMAddTransactionView: View {
                                 Text("\((ic.name ?? "").capitalized)")
                             }
                         }
-                    }
-                    .onAppear {
-                        if isRepo.sources.isEmpty {
-                            isRepo.getIncomeSources()
-                        }
+                        .id(isRepo.sources) // Added to force rerender picker view as soon as income sources fetched from server
                     }
                 } else {
                     HStack {
@@ -97,17 +95,33 @@ struct FMAddTransactionView: View {
                                 Text("\((ec.name ?? "").capitalized)")
                             }
                         }
-                    }
-                    .onAppear {
-                        if ecRepo.category.isEmpty {
-                            ecRepo.getExpenseCategory()
-                        }
+                        .id(ecRepo.category) // Added to force rerender picker view as soon as expense category fetched from server
                     }
                 }
                 HStack {
                     Text("Date").foregroundColor(.secondary)
                     Spacer()
                     DatePicker("", selection: $transactionDate)
+                }
+                HStack {
+                    Text("Account").foregroundColor(.secondary)
+                    Spacer()
+                    Picker("Account", selection: $account) {
+                        ForEach(accountRepo.accounts, id: \.self) { acc in
+                            Text("\((acc.name ?? "").capitalized)")
+                        }
+                    }
+                    .id(accountRepo.accounts) // Added to force rerender picker view as soon as accounts fetched from server
+                }
+                HStack {
+                    Text("Event").foregroundColor(.secondary)
+                    Spacer()
+                    Picker("Event", selection: $event) {
+                        ForEach(eventRepo.events, id: \.self) { eve in
+                            Text("\((eve.name ?? "").capitalized)")
+                        }
+                    }
+                    .id(eventRepo.events) // Added to force rerender picker view as soon as events fetched from server
                 }
                 HStack {
                     Text("Comments").foregroundColor(.secondary)
@@ -120,6 +134,20 @@ struct FMAddTransactionView: View {
                 }
                 .disabled(!shouldEnableSaveButton())
                 .padding(.top)
+            }
+        }
+        .onAppear {
+            if isRepo.sources.isEmpty {
+                isRepo.getIncomeSources()
+            }
+            if ecRepo.category.isEmpty {
+                ecRepo.getExpenseCategory()
+            }
+            if accountRepo.accounts.isEmpty {
+                accountRepo.getAccounts()
+            }
+            if eventRepo.events.isEmpty {
+                eventRepo.getEvents()
             }
         }
         .onReceive(keyboardWillShow) { _ in
@@ -139,7 +167,7 @@ struct FMAddTransactionView: View {
     
     private func saveButtonTapped() {
         if transactionRowViewModel?.id == nil && viewModel != nil {
-            let transaction = FMAddTransactionRequest(name: name, value: Double(value) ?? 0.0, transactionType: transactionType.rawValue, accountID: accountId, expenseCategoryID: expenseCategory.id, eventID: eventId, incomeSourceID: source.id, transactionAt: transactionDate.toString(format: .isoDateTimeMilliSec, timeZone: .local, locale: .current), comments: comments)
+            let transaction = FMAddTransactionRequest(name: name, value: Double(value) ?? 0.0, transactionType: transactionType.rawValue, accountID: account.id, expenseCategoryID: expenseCategory.id, eventID: event.id, incomeSourceID: source.id, transactionAt: transactionDate.toString(format: .isoDateTimeMilliSec, timeZone: .local, locale: .current), comments: comments)
             hud.startLoading()
             viewModel?.addNew(transaction: transaction, resultBlock: { error in
                 hud.stopLoading()

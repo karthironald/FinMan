@@ -12,41 +12,10 @@ import Alamofire
 import Foundation
 
 class FMAccountRepository: ObservableObject {
-    
-    static let shared = FMAccountRepository()
-    private let path: String = FMFirestoreCollection.account.rawValue
-    private let store = Firestore.firestore()
-    private var userId: Int?
-    private let authenticationService = FMAuthenticationService.shared
-    private var cancellables: Set<AnyCancellable> = []
-    
-    @Published var accounts: [FMAccount] = []
-    @Published var selectedAccount: FMAccount?
-    @Published var isFetching: Bool = false
-    
-    
-    // MARK: - Init Methods
-    
-    private init() {
-        authenticationService.$user
-            .map { user in
-                user?.id
-            }
-            .assign(to: \.userId, on: self)
-            .store(in: &cancellables)
         
-        authenticationService.$user
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                if let userId = self?.userId {
-                    self?.getAccounts()
-                } else {
-                    self?.resetAllData()
-                }
-            }
-            .store(in: &cancellables)
-    }
-    
+    @Published var accounts: [FMAccount] = []
+    @Published var isFetching: Bool = false
+
     
     // MARK: - Custom methods
     
@@ -127,7 +96,6 @@ class FMAccountRepository: ObservableObject {
     
     func resetAllData() {
         accounts = []
-        selectedAccount = nil
     }
     
 }

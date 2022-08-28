@@ -17,7 +17,7 @@ struct FMAccountsResponse: Codable {
     let results: [FMAccount]?
 }
 
-struct FMAccount: Codable {
+struct FMAccount: Codable, Identifiable, Hashable {
     let id: Int?
     let totalIncome, totalExpense: Double?
     var name, accountDescription: String?
@@ -36,6 +36,10 @@ struct FMAccount: Codable {
         case isExceedBudget = "is_exceed_budget"
         case budget
     }
+}
+
+extension FMAccount {
+    static let `default` = FMAccount(id: nil, totalIncome: nil, totalExpense: nil, name: "None", accountDescription: nil, createdAt: nil, updatedAt: nil, isExceedBudget: nil, budget: nil)
 }
 
 //struct FMAccount: Identifiable, Codable {

@@ -17,7 +17,6 @@ struct FMTransactionListView: View {
     @State var shouldSourceShowChart: Bool = false
     @State private var alertInfoMessage = ""
     @State private var shouldShowAlert = false
-    @ObservedObject var accountViewModel: FMAccountRowViewModel
     @State private var selectedTimePeriod = FMTimePeriod.thisMonth
     @State private var selectedIncomeSourceIndex = kCommonIndex
     @State private var transactionTypeIndex = 1 // Index of 'Expense' transaction type
@@ -26,64 +25,65 @@ struct FMTransactionListView: View {
     // MARK: - View Body
     
     var body: some View {
-        ZStack(alignment: .bottomTrailing) {
-            VStack(spacing: 0) {
-                VStack(spacing: 10) {
-                    Text("\(selectedTimePeriod.title()) (\(FMHelper.selectedTimePeriodDisplayString(timePeriod: selectedTimePeriod) ?? "-"))")
-                        .foregroundColor(.secondary)
-                }
-                .font(.caption)
-                .padding(10)
-                .background(AppSettings.appSecondaryColour.opacity(0.2))
-                .zIndex(2) // Workaround to fix list selection issue
-                
-                List {
-                    ForEach(Array(viewModel.groupedTransactionRowViewModel.keys.sorted(by: >)), id: \.self) { (key) in
-                        Section(header: Text("\(key) (\(viewModel.groupedTransactionRowViewModel[key]!.count))")) {
-                            ForEach(viewModel.groupedTransactionRowViewModel[key]!, id: \.id) { transactionRowViewModel in
-                                NavigationLink(
-                                    destination: FMTransactionDetailView(transactionRowViewModel: transactionRowViewModel),
-                                    label: {
-                                        FMTransactionRowView(transactionRowViewModel: transactionRowViewModel)
-                                    }
-                                )
-                            }
-                            .onDelete { (indexSet) in
-                                if let index = indexSet.first {
-                                    viewModel.transactionRowViewModel[index].delete(resultBlock: { error in
-                                        if let error = error {
-                                            alertInfoMessage = error.localizedDescription
-                                            shouldShowAlert = true
+        NavigationView {
+            ZStack(alignment: .bottomTrailing) {
+                VStack(spacing: 0) {
+                    VStack(spacing: 10) {
+                        Text("\(selectedTimePeriod.title()) (\(FMHelper.selectedTimePeriodDisplayString(timePeriod: selectedTimePeriod) ?? "-"))")
+                            .foregroundColor(.secondary)
+                    }
+                    .font(.caption)
+                    .padding(10)
+                    .background(AppSettings.appSecondaryColour.opacity(0.2))
+                    .zIndex(2) // Workaround to fix list selection issue
+                    
+                    List {
+                        ForEach(Array(viewModel.groupedTransactionRowViewModel.keys.sorted(by: >)), id: \.self) { (key) in
+                            Section(header: Text("\(key) (\(viewModel.groupedTransactionRowViewModel[key]!.count))")) {
+                                ForEach(viewModel.groupedTransactionRowViewModel[key]!, id: \.id) { transactionRowViewModel in
+                                    NavigationLink(
+                                        destination: FMTransactionDetailView(transactionRowViewModel: transactionRowViewModel),
+                                        label: {
+                                            FMTransactionRowView(transactionRowViewModel: transactionRowViewModel)
                                         }
-                                    })
+                                    )
+                                }
+                                .onDelete { (indexSet) in
+                                    if let index = indexSet.first {
+                                        viewModel.transactionRowViewModel[index].delete(resultBlock: { error in
+                                            if let error = error {
+                                                alertInfoMessage = error.localizedDescription
+                                                shouldShowAlert = true
+                                            }
+                                        })
+                                    }
                                 }
                             }
                         }
-                    }
-                    Section {
-                        Button(viewModel.isFetching ? "Loading..." : "Load More...") {
-                            viewModel.fetchNextBadge()
+                        Section {
+                            Button(viewModel.isFetching ? "Loading..." : "Load More...") {
+                                viewModel.fetchNextBadge()
+                            }
+                            .disabled(!viewModel.shouldEnableLoadMore())
                         }
-                        .disabled(!viewModel.shouldEnableLoadMore())
                     }
+                    .alert(isPresented: $shouldShowAlert, content: {
+                        Alert(title: Text(alertInfoMessage), message: nil, dismissButton: Alert.Button.default(Text(kOkay), action: {
+                            // Do nothing
+                        }))
+                    })
+                    .padding(0)
+                    .frame(minWidth: 250)
+                    .listStyle(InsetGroupedListStyle())
                 }
-                .alert(isPresented: $shouldShowAlert, content: {
-                    Alert(title: Text(alertInfoMessage), message: nil, dismissButton: Alert.Button.default(Text(kOkay), action: {
-                        // Do nothing
-                    }))
-                })
-                .padding(0)
-                .frame(minWidth: 250)
-                .listStyle(InsetGroupedListStyle())
+                addTransactionView()
             }
-            addTransactionView()
+            .navigationBarItems(trailing: trainingViews())
+            .onAppear(perform: {
+                fetchTransaction()
+            })
+            .navigationBarTitle("Transactions")
         }
-        .navigationBarItems(trailing: trainingViews())
-        .onAppear(perform: {
-            FMAccountRepository.shared.selectedAccount = accountViewModel.account
-            fetchTransaction()
-        })
-        .navigationBarTitle("\(accountViewModel.account.name?.capitalized ?? "")", displayMode: .inline)
         .popup(isPresented: $shouldPresentAddTransactionView, overlayView: {
             BottomPopupView(title: "Add Transaction", shouldDismiss: $shouldPresentAddTransactionView) {
                 FMAddTransactionView(viewModel: viewModel, shouldPresentAddTransactionView: $shouldPresentAddTransactionView)
@@ -201,7 +201,7 @@ struct FMTransactionListView_Previews: PreviewProvider {
         let rowViewModel = FMTransactionRowViewModel(transaction: FMDTransaction(id: 1, incomeSource: FMDIncomeSource(id: 1, createdAt: Date(), updatedAt: Date(), name: "IC", frequency: "onetime"), expenseCategory: FMDExpenseCategory(id: 1, createdAt: Date(), updatedAt: Date(), name: "EC 1", monthlyBudget: 10, yearlyBudget: 120), event: nil, account: FMAccount.sampleData.first!, createdAt: Date(), updatedAt: Date(), name: "New Transaction", value: 100, transactionAt: Date(), transactionType: "income", comments: "Sample"))
         viewModel.transactionRowViewModel = [rowViewModel]
         return NavigationView {
-            FMTransactionListView(viewModel: viewModel, shouldPresentAddTransactionView: false, accountViewModel: FMAccountRowViewModel(account: FMAccount.sampleData.first!))
+            FMTransactionListView(viewModel: viewModel, shouldPresentAddTransactionView: false)
         }
     }
     

@@ -26,7 +26,7 @@ struct FMAccountListView: View {
                 List {
                     ForEach(viewModel.accountRowViewModel, id: \.id) { accountViewModel in
                         NavigationLink(
-                            destination: FMTransactionListView(accountViewModel: accountViewModel)) {
+                            destination: FMTransactionListView()) {
                             FMAccountRowView(accountRowViewModel: accountViewModel)
                                 .contextMenu {
                                     Button(action: {
@@ -58,9 +58,6 @@ struct FMAccountListView: View {
                 .listStyle(InsetGroupedListStyle())
                 addAccountView()
             }
-            .onAppear(perform: {
-                FMAccountRepository.shared.selectedAccount = nil
-            })
             .navigationTitle("Accounts")
             .navigationBarItems(leading: profileButtonview())
         }

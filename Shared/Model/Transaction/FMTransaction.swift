@@ -64,27 +64,6 @@ struct FMDTransaction: Codable {
     }
 }
 
-struct FMEvent: Codable {
-    let id: Int?
-    let isExceedBudget: Bool?
-    let totalIncome, totalExpense: Double?
-    let createdAt, updatedAt: Date
-    let name, fmEventDescription: String?
-    let budget: Double?
-
-    enum CodingKeys: String, CodingKey {
-        case id
-        case isExceedBudget = "is_exceed_budget"
-        case totalIncome = "total_income"
-        case totalExpense = "total_expense"
-        case createdAt = "created_at"
-        case updatedAt = "updated_at"
-        case name
-        case fmEventDescription = "description"
-        case budget
-    }
-}
-
 struct FMTransaction: Identifiable, Codable {
     @DocumentID var id: String?
     var value: Double

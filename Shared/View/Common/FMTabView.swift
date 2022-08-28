@@ -11,8 +11,8 @@ struct FMTabView: View {
     
     var body: some View {
         TabView {
-            FMAccountListView().tabItem {
-                Label("Account", systemImage: "building.columns")
+            FMTransactionListView().tabItem {
+                Label("Transaction", systemImage: "building.columns")
             }
             FMInvestmentPlanView().tabItem {
                 Label("Budget", systemImage: "bag.circle.fill")
