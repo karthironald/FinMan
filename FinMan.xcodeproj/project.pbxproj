@@ -32,6 +32,9 @@
 		776155AC263724D2000382B4 /* FMTransactionRowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776155AA263724D2000382B4 /* FMTransactionRowViewModel.swift */; };
 		776155B226372500000382B4 /* FMTransactionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776155B126372500000382B4 /* FMTransactionRepository.swift */; };
 		776155B326372500000382B4 /* FMTransactionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776155B126372500000382B4 /* FMTransactionRepository.swift */; };
+		778615C628B68FB8003B9CE2 /* FMNetworkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778615C528B68FB8003B9CE2 /* FMNetworkHelper.swift */; };
+		778615C828B69162003B9CE2 /* FMIncomeSourceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778615C728B69162003B9CE2 /* FMIncomeSourceRepository.swift */; };
+		778615CA28B69287003B9CE2 /* FMIncomeSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778615C928B69287003B9CE2 /* FMIncomeSource.swift */; };
 		7792D8AC26672048006F03C0 /* FMGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7792D8AB26672048006F03C0 /* FMGridView.swift */; };
 		7792D8AD26672048006F03C0 /* FMGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7792D8AB26672048006F03C0 /* FMGridView.swift */; };
 		77A22F272621A8C900AE2F4F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A22F232621A8C900AE2F4F /* ContentView.swift */; };
@@ -113,6 +116,9 @@
 		775F4B25265FFC980058B068 /* FMHudView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMHudView.swift; sourceTree = "<group>"; };
 		776155AA263724D2000382B4 /* FMTransactionRowViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMTransactionRowViewModel.swift; sourceTree = "<group>"; };
 		776155B126372500000382B4 /* FMTransactionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMTransactionRepository.swift; sourceTree = "<group>"; };
+		778615C528B68FB8003B9CE2 /* FMNetworkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMNetworkHelper.swift; sourceTree = "<group>"; };
+		778615C728B69162003B9CE2 /* FMIncomeSourceRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMIncomeSourceRepository.swift; sourceTree = "<group>"; };
+		778615C928B69287003B9CE2 /* FMIncomeSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMIncomeSource.swift; sourceTree = "<group>"; };
 		7792D8AB26672048006F03C0 /* FMGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMGridView.swift; sourceTree = "<group>"; };
 		77A22F232621A8C900AE2F4F /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		77A22F252621A8C900AE2F4F /* FMTransactionListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMTransactionListView.swift; sourceTree = "<group>"; };
@@ -209,6 +215,7 @@
 			children = (
 				776155B126372500000382B4 /* FMTransactionRepository.swift */,
 				77C3ADC2263E3A7100FAEF88 /* FMAccountRepository.swift */,
+				778615C728B69162003B9CE2 /* FMIncomeSourceRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -358,6 +365,7 @@
 				77C3ADC9263E3AAA00FAEF88 /* Account */,
 				77A22F382621A8F200AE2F4F /* Transaction */,
 				77D2C88A2896E3A5001BAAF2 /* FMUser.swift */,
+				778615C928B69287003B9CE2 /* FMIncomeSource.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -370,6 +378,7 @@
 				7734275A264FA64C00632949 /* FMConstant.swift */,
 				7734275C264FE01100632949 /* FMHelper.swift */,
 				770D6AA3265D6D210086182E /* FMLoadingInfoState.swift */,
+				778615C528B68FB8003B9CE2 /* FMNetworkHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -664,8 +673,10 @@
 				7792D8AC26672048006F03C0 /* FMGridView.swift in Sources */,
 				775F4B26265FFC980058B068 /* FMHudView.swift in Sources */,
 				77C3AE0C263E49F900FAEF88 /* FMAccountRowView.swift in Sources */,
+				778615C628B68FB8003B9CE2 /* FMNetworkHelper.swift in Sources */,
 				77C3ADC3263E3A7100FAEF88 /* FMAccountRepository.swift in Sources */,
 				77E5C7B62637329B00F64A73 /* FMAuthenticationService.swift in Sources */,
+				778615C828B69162003B9CE2 /* FMIncomeSourceRepository.swift in Sources */,
 				77A22F492621A92000AE2F4F /* FMTransactionListViewModel.swift in Sources */,
 				77342757264F8A6100632949 /* FMProfileView.swift in Sources */,
 				77D2C88B2896E3A6001BAAF2 /* FMUser.swift in Sources */,
@@ -678,6 +689,7 @@
 				77A22F322621A8E400AE2F4F /* FMTabView.swift in Sources */,
 				77C3ADD7263E3B5500FAEF88 /* FMAccountListViewModel.swift in Sources */,
 				774B375626B522DA00909AC1 /* FMDotLoading.swift in Sources */,
+				778615CA28B69287003B9CE2 /* FMIncomeSource.swift in Sources */,
 				7725FA16267487890073CED6 /* FMInvestmentPlanRowView.swift in Sources */,
 				77C3ADCB263E3AB200FAEF88 /* FMAccount.swift in Sources */,
 				77C3AE13263E887900FAEF88 /* FMAddAccountView.swift in Sources */,

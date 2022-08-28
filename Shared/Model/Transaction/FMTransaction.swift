@@ -85,37 +85,6 @@ struct FMEvent: Codable {
     }
 }
 
-// MARK: - ExpenseCategory
-struct FMDExpenseCategory: Codable {
-    let id: Int?
-    let createdAt, updatedAt: Date?
-    let name: String?
-    let monthlyBudget, yearlyBudget: Double?
-
-    enum CodingKeys: String, CodingKey {
-        case id
-        case createdAt = "created_at"
-        case updatedAt = "updated_at"
-        case name
-        case monthlyBudget = "monthly_budget"
-        case yearlyBudget = "yearly_budget"
-    }
-}
-
-// MARK: - IncomeSource
-struct FMDIncomeSource: Codable {
-    let id: Int?
-    let createdAt, updatedAt: Date?
-    let name, frequency: String?
-
-    enum CodingKeys: String, CodingKey {
-        case id
-        case createdAt = "created_at"
-        case updatedAt = "updated_at"
-        case name, frequency
-    }
-}
-
 struct FMTransaction: Identifiable, Codable {
     @DocumentID var id: String?
     var value: Double

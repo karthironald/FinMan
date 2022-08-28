@@ -311,7 +311,7 @@ class FMDTransactionRepository: ObservableObject {
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-        
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
         decoder.dateDecodingStrategy = .formatted(formatter)
         
         if let token = UserDefaults.standard.value(forKey: "access_token") as? String {
@@ -335,7 +335,7 @@ class FMDTransactionRepository: ObservableObject {
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-        
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
         decoder.dateDecodingStrategy = .formatted(formatter)
         
         if let token = UserDefaults.standard.value(forKey: "access_token") as? String {
@@ -360,7 +360,7 @@ class FMDTransactionRepository: ObservableObject {
                 
                 let formatter = DateFormatter()
                 formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-                
+                formatter.timeZone = TimeZone(abbreviation: "UTC")
                 decoder.dateDecodingStrategy = .formatted(formatter)
                 
                 AF.request(nextPageUrl, method: .get, headers: ["Authorization": "Bearer \(token)"]).validate().responseDecodable(of: FMDTransactionResponse.self, decoder: decoder) { [weak self] response in

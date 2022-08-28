@@ -40,9 +40,16 @@ class FMTransactionRowViewModel: ObservableObject, Dated {
     }
     
     func imageName() -> String {
-        return String(1)
+        if let date = transaction.transactionAt {
+            let day = Calendar.current.component(.day, from: date)
+            return day.description
+        }
+        return "0"
     }
     
+    func transactionAt() -> String {
+        transaction.transactionAt?.toString() ?? "--"
+    }
 }
 
 extension FMTransactionRowViewModel: Equatable {
