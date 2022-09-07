@@ -79,23 +79,35 @@ struct FMAddTransactionView: View {
                     HStack {
                         Text("Source").foregroundColor(.secondary)
                         Spacer()
-                        Picker("Source", selection: $source) {
-                            ForEach(isRepo.sources, id: \.self) { ic in
-                                Text("\((ic.name ?? "").capitalized)")
+                        if isRepo.isFetching {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle())
+                        } else {
+                            Picker("Source", selection: $source) {
+                                ForEach(isRepo.sources, id: \.self) { ic in
+                                    Text("\((ic.name ?? "").capitalized)")
+                                }
                             }
+                            .pickerStyle(MenuPickerStyle())
+                            .id(isRepo.sources) // Added to force rerender picker view as soon as income sources fetched from server
                         }
-                        .id(isRepo.sources) // Added to force rerender picker view as soon as income sources fetched from server
                     }
                 } else {
                     HStack {
                         Text("Category").foregroundColor(.secondary)
                         Spacer()
-                        Picker("Expense Category", selection: $expenseCategory) {
-                            ForEach(ecRepo.category, id: \.self) { ec in
-                                Text("\((ec.name ?? "").capitalized)")
+                        if ecRepo.isFetching {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle())
+                        } else {
+                            Picker("Expense Category", selection: $expenseCategory) {
+                                ForEach(ecRepo.category, id: \.self) { ec in
+                                    Text("\((ec.name ?? "").capitalized)")
+                                }
                             }
+                            .pickerStyle(MenuPickerStyle())
+                            .id(ecRepo.category) // Added to force rerender picker view as soon as expense category fetched from server
                         }
-                        .id(ecRepo.category) // Added to force rerender picker view as soon as expense category fetched from server
                     }
                 }
                 HStack {
@@ -106,22 +118,34 @@ struct FMAddTransactionView: View {
                 HStack {
                     Text("Account").foregroundColor(.secondary)
                     Spacer()
-                    Picker("Account", selection: $account) {
-                        ForEach(accountRepo.accounts, id: \.self) { acc in
-                            Text("\((acc.name ?? "").capitalized)")
+                    if accountRepo.isFetching {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle())
+                    } else {
+                        Picker("Account", selection: $account) {
+                            ForEach(accountRepo.accounts, id: \.self) { acc in
+                                Text("\((acc.name ?? "").capitalized)")
+                            }
                         }
+                        .pickerStyle(MenuPickerStyle())
+                        .id(accountRepo.accounts) // Added to force rerender picker view as soon as accounts fetched from server
                     }
-                    .id(accountRepo.accounts) // Added to force rerender picker view as soon as accounts fetched from server
                 }
                 HStack {
                     Text("Event").foregroundColor(.secondary)
                     Spacer()
-                    Picker("Event", selection: $event) {
-                        ForEach(eventRepo.events, id: \.self) { eve in
-                            Text("\((eve.name ?? "").capitalized)")
+                    if eventRepo.isFetching {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle())
+                    } else {
+                        Picker("Event", selection: $event) {
+                            ForEach(eventRepo.events, id: \.self) { eve in
+                                Text("\((eve.name ?? "").capitalized)")
+                            }
                         }
+                        .pickerStyle(MenuPickerStyle())
+                        .id(eventRepo.events) // Added to force rerender picker view as soon as events fetched from server
                     }
-                    .id(eventRepo.events) // Added to force rerender picker view as soon as events fetched from server
                 }
                 HStack {
                     Text("Comments").foregroundColor(.secondary)
@@ -156,6 +180,26 @@ struct FMAddTransactionView: View {
         .onReceive(keyboardWillHide) { _ in
             bottomPadding = 20
         }
+        .onChange(of: eventRepo.events, perform: { newValue in
+            if let event = eventRepo.events.first {
+                self.event = event
+            }
+        })
+        .onChange(of: accountRepo.accounts, perform: { newValue in
+            if let acc = accountRepo.accounts.first {
+                account = acc
+            }
+        })
+        .onChange(of: isRepo.sources, perform: { newValue in
+            if let incomeSource = isRepo.sources.first {
+                source = incomeSource
+            }
+        })
+        .onChange(of: ecRepo.category, perform: { newValue in
+            if let expenseCategory = ecRepo.category.first {
+                self.expenseCategory = expenseCategory
+            }
+        })
         .accentColor(AppSettings.appPrimaryColour)
         .padding(.horizontal) // We are not setting `top` padding as we have padding in the BottomPopup title's bottom.
         .padding(.bottom)
