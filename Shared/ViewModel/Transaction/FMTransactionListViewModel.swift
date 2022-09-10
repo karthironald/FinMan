@@ -66,15 +66,14 @@ class FMTransactionListViewModel: ObservableObject {
     }
     
     func fetchTransaction(for timePeriod: FMTimePeriod = .all, incomeSource: FMTransaction.IncomeSource? = nil, transactionType: FMTransaction.TransactionType? = nil) {
-        transactionRepository.getTransactions()
-//        if timePeriod == .all {
-//            transactionRepository.getTransactions()
-//        } else {
-//            let dates = FMHelper.startDate(type: timePeriod)
-//            if let sDate = dates.startDate, let eDate = dates.endDate {
-//                transactionRepository.filterTransaction(startDate: sDate, endDate: eDate, incomeSource: incomeSource, transactionType: transactionType)
-//            }
-//        }
+        if timePeriod == .all {
+            transactionRepository.getTransactions()
+        } else {
+            let dates = FMHelper.startDate(type: timePeriod)
+            if let sDate = dates.startDate, let eDate = dates.endDate {
+                transactionRepository.filterTransaction(startDate: sDate, endDate: eDate)
+            }
+        }
     }
     
 }

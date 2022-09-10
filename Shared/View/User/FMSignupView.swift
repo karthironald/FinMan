@@ -13,8 +13,13 @@ struct FMSignupView: View {
     @EnvironmentObject private var hud: FMLoadingInfoState
     @StateObject private var authService = FMAuthenticationService.shared
     
+#if DEBUG
     @State private var email = "test1"
     @State private var password = "Password123@"
+#else
+    @State private var email = ""
+    @State private var password = ""
+#endif
     
     @State private var emailInfoMessage = ""
     @State private var passwordInfoMessage = ""

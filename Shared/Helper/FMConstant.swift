@@ -21,10 +21,11 @@ let kCommonErrorMessage = "Something went wrong"
 let kOkay = "Okay"
 let kTimePeriodAllOptionValue = 999
 let kCommonIndex = 99999
+#if DEBUG
+let kBaseUrl = "http://127.0.0.1:8000"
+#else
 let kBaseUrl = "https://pure-bastion-95056.herokuapp.com"
-//let kBaseUrl = "http://127.0.0.1:8000"
-//let kBaseUrl = "http://0.0.0.0:5000"
-
+#endif
 
 enum FMTimePeriod: String, CaseIterable {
     case today

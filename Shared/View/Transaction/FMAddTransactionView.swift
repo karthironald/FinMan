@@ -21,7 +21,7 @@ struct FMAddTransactionView: View {
     
     @State var comments: String = ""
     @State var source: FMDIncomeSource = FMDIncomeSource.default
-    @State var transactionType: FMTransaction.TransactionType = .income
+    @State var transactionType: FMTransaction.TransactionType = .expense
     
     @State var expenseCategory = FMDExpenseCategory.default
     @State var transactionDate: Date = Date()

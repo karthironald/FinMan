@@ -272,7 +272,7 @@ class FMDTransactionRepository: ObservableObject {
         }
     }
     
-    func getTransactions() {
+    func getTransactions(startDate: Date? = nil, endDate: Date? = nil) {
         isFetching = true
         
         let decoder = JSONDecoder()
@@ -283,7 +283,15 @@ class FMDTransactionRepository: ObservableObject {
         decoder.dateDecodingStrategy = .formatted(formatter)
         
         if let token = UserDefaults.standard.value(forKey: "access_token") as? String {
-            AF.request("\(kBaseUrl)/api/transactions/", method: .get, headers: ["Authorization": "Bearer \(token)"]).validate().responseDecodable(of: FMDTransactionResponse.self, decoder: decoder) { [weak self] response in
+            var urlString = "\(kBaseUrl)/api/transactions/"
+            
+            if let startDate = startDate, let endDate = endDate {
+                let start = formatter.string(from: startDate)
+                let end = formatter.string(from: endDate)
+                urlString.append(contentsOf: "?start_date=\(start)&end_date=\(end)")
+            }
+            
+            AF.request(urlString, method: .get, headers: ["Authorization": "Bearer \(token)"]).validate().responseDecodable(of: FMDTransactionResponse.self, decoder: decoder) { [weak self] response in
                 switch response.result {
                 case .success(let transactionResponse):
                     self?.transactions = transactionResponse.results ?? []
@@ -386,7 +394,8 @@ class FMDTransactionRepository: ObservableObject {
 //        }
     }
     
-    func filterTransaction(startDate: Date, endDate: Date, incomeSource: FMTransaction.IncomeSource? = nil, transactionType: FMTransaction.TransactionType? = nil) {
+    func filterTransaction(startDate: Date, endDate: Date) {
+        getTransactions(startDate: startDate, endDate: endDate)
 //        isFetching = true
 //        transactionQuery = store.collection(path)
 //            .order(by: FMTransaction.Keys.transactionDate.rawValue, descending: true)

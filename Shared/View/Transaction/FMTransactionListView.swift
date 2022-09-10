@@ -17,7 +17,7 @@ struct FMTransactionListView: View {
     @State var shouldSourceShowChart: Bool = false
     @State private var alertInfoMessage = ""
     @State private var shouldShowAlert = false
-    @State private var selectedTimePeriod = FMTimePeriod.thisMonth
+    @State private var selectedTimePeriod = FMTimePeriod.today
     @State private var selectedIncomeSourceIndex = kCommonIndex
     @State private var transactionTypeIndex = 1 // Index of 'Expense' transaction type
     
@@ -135,19 +135,20 @@ struct FMTransactionListView: View {
     }
     
     func trainingViews() -> some View {
-        HStack(spacing: 20) {
-            chartButtonView()
-            Menu {
-                transactionTypeFilter()
-                filterMenu()
-                filterSourceView()
-            } label: {
-                Image(systemName: "magnifyingglass.circle")
-                    .resizable()
-                    .font(.title2)
-            }
-        }
-        .frame(height: 25, alignment: .center)
+        filterMenu()
+//        HStack(spacing: 20) {
+//            chartButtonView()
+//            Menu {
+////                transactionTypeFilter()
+//                filterMenu()
+////                filterSourceView()
+//            } label: {
+//                Image(systemName: "magnifyingglass.circle")
+//                    .resizable()
+//                    .font(.title2)
+//            }
+//        }
+//        .frame(height: 25, alignment: .center)
     }
     
     func transactionTypeFilter() -> some View {
@@ -173,8 +174,9 @@ struct FMTransactionListView: View {
                 }
             }
         } label: {
-            Text("Period:  \(selectedTimePeriod.title())")
-                .frame(width: 100, height: 30, alignment: .trailing)
+            Image(systemName: "magnifyingglass.circle")
+                .resizable()
+                .font(.title2)
         }
     }
     
