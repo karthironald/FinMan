@@ -262,7 +262,11 @@ class FMDTransactionRepository: ObservableObject {
             AF.request("\(kBaseUrl)/api/transactions/", method: .post, parameters: transaction, headers: ["Authorization": "Bearer \(token)"]).validate().responseDecodable(of: FMDTransaction.self, decoder: decoder) { [weak self] response in
                 switch response.result {
                 case .success(let transactionResponse):
-                    print(transactionResponse)
+                    if self?.transactions == nil {
+                        self?.transactions = []
+                    }
+                    self?.transactions.append(transactionResponse)
+                    self?.transactions.sort{ $0.transactionAt > $1.transactionAt }
                     resultBlock(nil)
                 case .failure(let error):
                     print(error)

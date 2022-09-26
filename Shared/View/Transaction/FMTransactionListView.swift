@@ -26,59 +26,44 @@ struct FMTransactionListView: View {
     
     var body: some View {
         NavigationView {
-            ZStack(alignment: .bottomTrailing) {
-                VStack(spacing: 0) {
-                    VStack(spacing: 10) {
-                        Text("\(selectedTimePeriod.title()) (\(FMHelper.selectedTimePeriodDisplayString(timePeriod: selectedTimePeriod) ?? "-"))")
-                            .foregroundColor(.secondary)
-                    }
-                    .font(.caption)
-                    .padding(10)
-                    .background(AppSettings.appSecondaryColour.opacity(0.2))
-                    .zIndex(2) // Workaround to fix list selection issue
-                    
-                    List {
-                        ForEach(Array(viewModel.groupedTransactionRowViewModel.keys.sorted(by: >)), id: \.self) { (key) in
-                            Section(header: Text("\(key) (\(viewModel.groupedTransactionRowViewModel[key]!.count))")) {
-                                ForEach(viewModel.groupedTransactionRowViewModel[key]!, id: \.id) { transactionRowViewModel in
-                                    NavigationLink(
-                                        destination: FMTransactionDetailView(transactionRowViewModel: transactionRowViewModel),
-                                        label: {
-                                            FMTransactionRowView(transactionRowViewModel: transactionRowViewModel)
-                                        }
-                                    )
+            List {
+                ForEach(Array(viewModel.groupedTransactionRowViewModel.keys.sorted(by: >)), id: \.self) { (key) in
+                    Section(header: Text("\(key) (\(viewModel.groupedTransactionRowViewModel[key]!.count))")) {
+                        ForEach(viewModel.groupedTransactionRowViewModel[key]!, id: \.id) { transactionRowViewModel in
+                            NavigationLink(
+                                destination: FMTransactionDetailView(transactionRowViewModel: transactionRowViewModel),
+                                label: {
+                                    FMTransactionRowView(transactionRowViewModel: transactionRowViewModel)
                                 }
-                                .onDelete { (indexSet) in
-                                    if let index = indexSet.first {
-                                        viewModel.transactionRowViewModel[index].delete(resultBlock: { error in
-                                            if let error = error {
-                                                alertInfoMessage = error.localizedDescription
-                                                shouldShowAlert = true
-                                            }
-                                        })
+                            )
+                        }
+                        .onDelete { (indexSet) in
+                            if let index = indexSet.first {
+                                viewModel.transactionRowViewModel[index].delete(resultBlock: { error in
+                                    if let error = error {
+                                        alertInfoMessage = error.localizedDescription
+                                        shouldShowAlert = true
                                     }
-                                }
+                                })
                             }
-                        }
-                        Section {
-                            Button(viewModel.isFetching ? "Loading..." : "Load More...") {
-                                viewModel.fetchNextBadge()
-                            }
-                            .disabled(!viewModel.shouldEnableLoadMore())
                         }
                     }
-                    .alert(isPresented: $shouldShowAlert, content: {
-                        Alert(title: Text(alertInfoMessage), message: nil, dismissButton: Alert.Button.default(Text(kOkay), action: {
-                            // Do nothing
-                        }))
-                    })
-                    .padding(0)
-                    .frame(minWidth: 250)
-                    .listStyle(InsetGroupedListStyle())
                 }
-                addTransactionView()
+                Section {
+                    Button(viewModel.isFetching ? "Loading..." : "Load More...") {
+                        viewModel.fetchNextBadge()
+                    }
+                    .disabled(!viewModel.shouldEnableLoadMore())
+                }
             }
-            .navigationBarItems(trailing: trainingViews())
+            .alert(isPresented: $shouldShowAlert, content: {
+                Alert(title: Text(alertInfoMessage), message: nil, dismissButton: Alert.Button.default(Text(kOkay), action: {
+                    // Do nothing
+                }))
+            })
+            .frame(minWidth: 250)
+            .listStyle(InsetGroupedListStyle())
+            .navigationBarItems(leading: trainingViews(), trailing: addTransactionView())
             .onAppear(perform: {
                 fetchTransaction()
             })
@@ -115,11 +100,11 @@ struct FMTransactionListView: View {
             Image(systemName: "plus.circle.fill")
                 .resizable()
         })
-        .foregroundColor(AppSettings.appPrimaryColour)
-        .frame(width: 44, height: 44)
-        .background(Color.white)
-        .clipShape(Circle())
-        .padding()
+//        .foregroundColor(AppSettings.appPrimaryColour)
+//        .frame(width: 44, height: 44)
+//        .background(Color.white)
+//        .clipShape(Circle())
+//        .padding()
     }
     
     func chartButtonView() -> some View {
@@ -166,18 +151,20 @@ struct FMTransactionListView: View {
     }
     
     func filterMenu() -> some View {
-        Menu {
-            ForEach(0..<FMTimePeriod.allCases.count, id: \.self) { index in
-                Button("\(FMTimePeriod.allCases[index].title())") {
-                    selectedTimePeriod = FMTimePeriod.allCases[index]
-                    fetchTransaction()
-                }
+        Picker("Time Period", selection: $selectedTimePeriod) {
+            ForEach(FMTimePeriod.allCases, id: \.self) { tp in
+                Text(tp.title())
             }
-        } label: {
-            Image(systemName: "magnifyingglass.circle")
-                .resizable()
-                .font(.title2)
+        }.onChange(of: selectedTimePeriod) { newValue in
+            fetchTransaction()
         }
+//        Menu {
+//
+//        } label: {
+//            Image(systemName: "magnifyingglass.circle")
+//                .resizable()
+//                .font(.title2)
+//        }
     }
     
     func filterSourceView() -> some View {

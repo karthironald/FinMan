@@ -10,7 +10,7 @@ import Combine
 
 class FMTransactionRowViewModel: ObservableObject, Dated {
     var createdDate: Date {
-        Date()
+        transaction.transactionAt
     }
     @Published var transaction: FMDTransaction
     
@@ -40,15 +40,13 @@ class FMTransactionRowViewModel: ObservableObject, Dated {
     }
     
     func imageName() -> String {
-        if let date = transaction.transactionAt {
-            let day = Calendar.current.component(.day, from: date)
-            return day.description
-        }
-        return "0"
+        let date = transaction.transactionAt
+        let day = Calendar.current.component(.day, from: date)
+        return day.description
     }
     
     func transactionAt() -> String {
-        transaction.transactionAt?.toString() ?? "--"
+        transaction.transactionAt.toString()
     }
 }
 

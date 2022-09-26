@@ -22,7 +22,7 @@ let kOkay = "Okay"
 let kTimePeriodAllOptionValue = 999
 let kCommonIndex = 99999
 #if DEBUG
-let kBaseUrl = "http://127.0.0.1:8000"
+let kBaseUrl = "https://pure-bastion-95056.herokuapp.com"
 #else
 let kBaseUrl = "https://pure-bastion-95056.herokuapp.com"
 #endif
@@ -59,6 +59,8 @@ enum FMTimePeriod: String, CaseIterable {
         case .all: return "All Time"
         }
     }
+    
+    
 }
 
 enum FMFirestoreCollection: String {

@@ -46,7 +46,7 @@ struct FMDTransaction: Codable {
     let createdAt, updatedAt: Date
     let name: String?
     let value: Double?
-    let transactionAt: Date?
+    let transactionAt: Date
     let transactionType: String?
     let comments: String?
 
