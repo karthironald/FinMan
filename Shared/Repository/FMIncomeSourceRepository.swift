@@ -24,7 +24,7 @@ class FMIncomeSourceRepository: ObservableObject {
         formatter.timeZone = TimeZone(abbreviation: "UTC")
         decoder.dateDecodingStrategy = .formatted(formatter)
         
-        if let token = UserDefaults.standard.value(forKey: "access_token") as? String {
+        if let token = MTKeychainManager.sharedInstance.value(for: .accessToken) {
             AF.request("\(kBaseUrl)/api/income_source/", method: .get, headers: ["Authorization": "Bearer \(token)"]).validate().responseDecodable(of: FMIncomeSourceResponse.self, decoder: decoder) { [weak self] response in
                 switch response.result {
                 case .success(let transactionResponse):
@@ -36,5 +36,6 @@ class FMIncomeSourceRepository: ObservableObject {
             }
         }
     }
+    
 }
 

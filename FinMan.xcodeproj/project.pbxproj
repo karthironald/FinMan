@@ -16,6 +16,10 @@
 		77342759264FA18F00632949 /* FMLandingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77342758264FA18F00632949 /* FMLandingView.swift */; };
 		7734275B264FA64C00632949 /* FMConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7734275A264FA64C00632949 /* FMConstant.swift */; };
 		7734275D264FE01200632949 /* FMHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7734275C264FE01100632949 /* FMHelper.swift */; };
+		77422C9F28EBD08000F4CAFE /* KeychainPasswordItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77422C9D28EBD08000F4CAFE /* KeychainPasswordItem.swift */; };
+		77422CA028EBD08000F4CAFE /* KeychainPasswordItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77422C9D28EBD08000F4CAFE /* KeychainPasswordItem.swift */; };
+		77422CA128EBD08000F4CAFE /* MTKeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77422C9E28EBD08000F4CAFE /* MTKeychainManager.swift */; };
+		77422CA228EBD08000F4CAFE /* MTKeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77422C9E28EBD08000F4CAFE /* MTKeychainManager.swift */; };
 		774B375026B5227300909AC1 /* FMButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B374F26B5227300909AC1 /* FMButton.swift */; };
 		774B375126B5227300909AC1 /* FMButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B374F26B5227300909AC1 /* FMButton.swift */; };
 		774B375326B522B100909AC1 /* FMTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774B375226B522B100909AC1 /* FMTextField.swift */; };
@@ -111,6 +115,8 @@
 		77342758264FA18F00632949 /* FMLandingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMLandingView.swift; sourceTree = "<group>"; };
 		7734275A264FA64C00632949 /* FMConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMConstant.swift; sourceTree = "<group>"; };
 		7734275C264FE01100632949 /* FMHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMHelper.swift; sourceTree = "<group>"; };
+		77422C9D28EBD08000F4CAFE /* KeychainPasswordItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainPasswordItem.swift; sourceTree = "<group>"; };
+		77422C9E28EBD08000F4CAFE /* MTKeychainManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MTKeychainManager.swift; sourceTree = "<group>"; };
 		774B374F26B5227300909AC1 /* FMButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMButton.swift; sourceTree = "<group>"; };
 		774B375226B522B100909AC1 /* FMTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMTextField.swift; sourceTree = "<group>"; };
 		774B375526B522DA00909AC1 /* FMDotLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMDotLoading.swift; sourceTree = "<group>"; };
@@ -216,6 +222,23 @@
 			path = User;
 			sourceTree = "<group>";
 		};
+		77422C9B28EBD08000F4CAFE /* Submodules */ = {
+			isa = PBXGroup;
+			children = (
+				77422C9C28EBD08000F4CAFE /* MTKeychainManager */,
+			);
+			path = Submodules;
+			sourceTree = "<group>";
+		};
+		77422C9C28EBD08000F4CAFE /* MTKeychainManager */ = {
+			isa = PBXGroup;
+			children = (
+				77422C9D28EBD08000F4CAFE /* KeychainPasswordItem.swift */,
+				77422C9E28EBD08000F4CAFE /* MTKeychainManager.swift */,
+			);
+			path = MTKeychainManager;
+			sourceTree = "<group>";
+		};
 		776155A126372479000382B4 /* Repository */ = {
 			isa = PBXGroup;
 			children = (
@@ -288,6 +311,7 @@
 		77AB8381261CC1F500F44999 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				77422C9B28EBD08000F4CAFE /* Submodules */,
 				776155A126372479000382B4 /* Repository */,
 				77BE7198262C2A6C0017CDCE /* Helper */,
 				77AB83CA261CC68C00F44999 /* Model */,
@@ -682,6 +706,8 @@
 				7792D8AC26672048006F03C0 /* FMGridView.swift in Sources */,
 				775F4B26265FFC980058B068 /* FMHudView.swift in Sources */,
 				77C3AE0C263E49F900FAEF88 /* FMAccountRowView.swift in Sources */,
+				77422C9F28EBD08000F4CAFE /* KeychainPasswordItem.swift in Sources */,
+				77422CA128EBD08000F4CAFE /* MTKeychainManager.swift in Sources */,
 				778615C628B68FB8003B9CE2 /* FMNetworkHelper.swift in Sources */,
 				77C3ADC3263E3A7100FAEF88 /* FMAccountRepository.swift in Sources */,
 				778E282B28BB71290071894F /* FMExpenseCategory.swift in Sources */,
@@ -736,8 +762,10 @@
 				77A22F2C2621A8C900AE2F4F /* FMTransactionRowView.swift in Sources */,
 				77C3ADD8263E3B5500FAEF88 /* FMAccountListViewModel.swift in Sources */,
 				77C3ADCC263E3AB200FAEF88 /* FMAccount.swift in Sources */,
+				77422CA028EBD08000F4CAFE /* KeychainPasswordItem.swift in Sources */,
 				77C3AE14263E887900FAEF88 /* FMAddAccountView.swift in Sources */,
 				77AB83AC261CC1F600F44999 /* FinManApp.swift in Sources */,
+				77422CA228EBD08000F4CAFE /* MTKeychainManager.swift in Sources */,
 				774B375726B522DA00909AC1 /* FMDotLoading.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

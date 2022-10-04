@@ -20,7 +20,7 @@ class FMAccountRepository: ObservableObject {
     // MARK: - Custom methods
     
     func add(name: String, comments: String?, resultBlock: @escaping (Error?) -> Void) {
-        if let token = UserDefaults.standard.value(forKey: "access_token") as? String {
+        if let token = MTKeychainManager.sharedInstance.value(for: .accessToken) {
             AF.request("\(kBaseUrl)/api/accounts/", method: .post, parameters: ["name": name, "description": comments], encoder: .json, headers: ["Authorization": "Bearer \(token)"]).validate().responseDecodable(of: FMAccount.self) { response in
                 switch response.result {
                 case .success(let account):
@@ -44,7 +44,7 @@ class FMAccountRepository: ObservableObject {
         
         decoder.dateDecodingStrategy = .formatted(formatter)
         
-        if let token = UserDefaults.standard.value(forKey: "access_token") as? String {
+        if let token = MTKeychainManager.sharedInstance.value(for: .accessToken) {
             AF.request("\(kBaseUrl)/api/accounts/", method: .get, headers: ["Authorization": "Bearer \(token)"]).validate().responseDecodable(of: FMAccountsResponse.self, decoder: decoder) { [weak self] response in
                 switch response.result {
                 case .success(let accountResponse):
@@ -58,7 +58,7 @@ class FMAccountRepository: ObservableObject {
     }
     
     func update(id: Int?, name: String?, comments: String?, resultBlock: @escaping (Error?) -> Void) {
-        if let token = UserDefaults.standard.value(forKey: "access_token") as? String, let id = id {
+        if let token = MTKeychainManager.sharedInstance.value(for: .accessToken), let id = id {
             AF.request("\(kBaseUrl)/api/accounts/\(id)/", method: .patch, parameters: ["name": name, "description": comments ?? ""], encoder: .json, headers: ["Authorization": "Bearer \(token)"]).validate().responseDecodable(of: FMAccount.self) { response in
                 switch response.result {
                 case .success(let account):
@@ -75,7 +75,7 @@ class FMAccountRepository: ObservableObject {
     }
     
     func delete(id: Int?, resultBlock: @escaping (Error?) -> Void) {
-        if let token = UserDefaults.standard.value(forKey: "access_token") as? String, let id = id {
+        if let token = MTKeychainManager.sharedInstance.value(for: .accessToken), let id = id {
             AF.request("\(kBaseUrl)/api/accounts/\(id)/", method: .delete, headers: ["Authorization": "Bearer \(token)"]).validate().response { response in
                 switch response.result {
                 case .success(_):

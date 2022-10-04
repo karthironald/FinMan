@@ -23,6 +23,7 @@ let kTimePeriodAllOptionValue = 999
 let kCommonIndex = 99999
 #if DEBUG
 let kBaseUrl = "https://pure-bastion-95056.herokuapp.com"
+//let kBaseUrl = "http://0.0.0.0:5000"
 #else
 let kBaseUrl = "https://pure-bastion-95056.herokuapp.com"
 #endif

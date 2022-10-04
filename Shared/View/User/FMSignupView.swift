@@ -14,7 +14,7 @@ struct FMSignupView: View {
     @StateObject private var authService = FMAuthenticationService.shared
     
 #if DEBUG
-    @State private var email = "test1"
+    @State private var email = "test2"
     @State private var password = "Password123@"
 #else
     @State private var email = ""

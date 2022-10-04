@@ -251,29 +251,44 @@ class FMDTransactionRepository: ObservableObject {
         - resultBlock: Callback to be triggered as result of save action
      */
     func add(_ transaction: FMAddTransactionRequest, resultBlock: @escaping (Error?) -> Void) {
-        let decoder = JSONDecoder()
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-        formatter.timeZone = TimeZone(abbreviation: "UTC")
-        decoder.dateDecodingStrategy = .formatted(formatter)
-        
-        if let token = UserDefaults.standard.value(forKey: "access_token") as? String {
-            AF.request("\(kBaseUrl)/api/transactions/", method: .post, parameters: transaction, headers: ["Authorization": "Bearer \(token)"]).validate().responseDecodable(of: FMDTransaction.self, decoder: decoder) { [weak self] response in
-                switch response.result {
-                case .success(let transactionResponse):
-                    if self?.transactions == nil {
-                        self?.transactions = []
-                    }
-                    self?.transactions.append(transactionResponse)
-                    self?.transactions.sort{ $0.transactionAt > $1.transactionAt }
-                    resultBlock(nil)
-                case .failure(let error):
-                    print(error)
-                    resultBlock(error)
+        guard let url = URL(string: "\(kBaseUrl)/api/transactions/") else { return }
+        FMNetworkHelper.shared.post(url: url, paramater: transaction, headers: [:], decodable: FMDTransaction.self) { [weak self] response in
+            switch response {
+            case .success(let transactionResponse):
+                if self?.transactions == nil {
+                    self?.transactions = []
                 }
+                self?.transactions.append(transactionResponse as! FMDTransaction)
+                self?.transactions.sort{ $0.transactionAt > $1.transactionAt }
+                resultBlock(nil)
+            case .failure(let error):
+                print(error)
+                resultBlock(error)
             }
         }
+        //        let decoder = JSONDecoder()
+        //
+        //        let formatter = DateFormatter()
+        //        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        //        formatter.timeZone = TimeZone(abbreviation: "UTC")
+        //        decoder.dateDecodingStrategy = .formatted(formatter)
+        //
+        //        if let token = MTKeychainManager.sharedInstance.value(for: .accessToken) {
+        //            AF.request("\(kBaseUrl)/api/transactions/", method: .post, parameters: transaction, headers: ["Authorization": "Bearer \(token)"]).validate().responseDecodable(of: FMDTransaction.self, decoder: decoder) { [weak self] response in
+        //                switch response.result {
+        //                case .success(let transactionResponse):
+        //                    if self?.transactions == nil {
+        //                        self?.transactions = []
+        //                    }
+        //                    self?.transactions.append(transactionResponse)
+        //                    self?.transactions.sort{ $0.transactionAt > $1.transactionAt }
+        //                    resultBlock(nil)
+        //                case .failure(let error):
+        //                    print(error)
+        //                    resultBlock(error)
+        //                }
+        //            }
+        //        }
     }
     
     func getTransactions(startDate: Date? = nil, endDate: Date? = nil) {
@@ -286,7 +301,7 @@ class FMDTransactionRepository: ObservableObject {
         formatter.timeZone = TimeZone(abbreviation: "UTC")
         decoder.dateDecodingStrategy = .formatted(formatter)
         
-        if let token = UserDefaults.standard.value(forKey: "access_token") as? String {
+        if let token = MTKeychainManager.sharedInstance.value(for: .accessToken) {
             var urlString = "\(kBaseUrl)/api/transactions/"
             
             if let startDate = startDate, let endDate = endDate {
@@ -311,7 +326,7 @@ class FMDTransactionRepository: ObservableObject {
     func fetchNextPage() {
         if let nextPageUrl = nextPageUrl {
             isPaginating = true
-            if let token = UserDefaults.standard.value(forKey: "access_token") as? String {
+            if let token = MTKeychainManager.sharedInstance.value(for: .accessToken) {
                 let decoder = JSONDecoder()
                 
                 let formatter = DateFormatter()

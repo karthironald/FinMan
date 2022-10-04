@@ -24,7 +24,6 @@ struct FMTransactionRowView: View {
             VStack(alignment: .leading) {
                 Text(transactionRowViewModel.transaction.name ?? "-")
                     .font(.body)
-                    .bold()
                     .foregroundColor((transactionRowViewModel.transaction.transactionType == FMTransaction.TransactionType.income.rawValue) ? .green : .red)
                 Text(transactionRowViewModel.transactionAt())
                     .font(.footnote)

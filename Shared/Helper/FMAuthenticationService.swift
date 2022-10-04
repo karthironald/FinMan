@@ -47,8 +47,8 @@ class FMAuthenticationService: ObservableObject {
             print(response)
             switch response.result {
             case.success(let token):
-                UserDefaults.standard.set(token.access, forKey: "access_token")
-                UserDefaults.standard.set(token.refresh, forKey: "refresh_token")
+                _ = MTKeychainManager.sharedInstance.save(value: token.access, for: .accessToken)
+                _ = MTKeychainManager.sharedInstance.save(value: token.refresh, for: .refreshToken)
                 AF.request("\(kBaseUrl)/api/profile", method: .get, headers: ["Authorization": "Bearer \(token.access)"]).responseDecodable(of: FMUser.self) { response in
                     switch response.result {
                     case .success(let user):

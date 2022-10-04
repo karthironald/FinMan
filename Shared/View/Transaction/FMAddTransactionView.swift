@@ -211,7 +211,7 @@ struct FMAddTransactionView: View {
     
     private func saveButtonTapped() {
         if transactionRowViewModel?.id == nil && viewModel != nil {
-            let transaction = FMAddTransactionRequest(name: name, value: Double(value) ?? 0.0, transactionType: transactionType.rawValue, accountID: account.id, expenseCategoryID: expenseCategory.id, eventID: event.id, incomeSourceID: source.id, transactionAt: transactionDate.toString(format: .isoDateTimeMilliSec, timeZone: .local, locale: .current), comments: comments)
+            let transaction = FMAddTransactionRequest(name: name, value: Double(value) ?? 0.0, transactionType: transactionType.rawValue, accountID: account.id, expenseCategoryID: expenseCategory.id, eventID: event.id, incomeSourceID: source.id, transactionAt: transactionDateString(), comments: comments)
             hud.startLoading()
             viewModel?.addNew(transaction: transaction, resultBlock: { error in
                 hud.stopLoading()
@@ -261,6 +261,13 @@ struct FMAddTransactionView: View {
 //                })
 //            }
         }
+    }
+    
+    func transactionDateString() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
+        return formatter.string(from: transactionDate)
     }
     
     func shouldEnableSaveButton() -> Bool {

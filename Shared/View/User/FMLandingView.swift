@@ -20,7 +20,7 @@ struct FMLandingView: View {
     // MARK: - View Body
     
     var body: some View {
-        if authenticationService.user != nil {
+        if MTKeychainManager.sharedInstance.value(for: .accessToken) != nil {
             FMTabView()
                 .accentColor(AppSettings.appPrimaryColour)
         } else {

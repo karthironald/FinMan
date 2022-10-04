@@ -23,7 +23,7 @@ class FMExpenseCategoryRepository: ObservableObject {
         formatter.timeZone = TimeZone(abbreviation: "UTC")
         decoder.dateDecodingStrategy = .formatted(formatter)
         
-        if let token = UserDefaults.standard.value(forKey: "access_token") as? String {
+        if let token = MTKeychainManager.sharedInstance.value(for: .accessToken) {
             AF.request("\(kBaseUrl)/api/expense_category/", method: .get, headers: ["Authorization": "Bearer \(token)"]).validate().responseDecodable(of: FMExpenseCategoryResponse.self, decoder: decoder) { [weak self] response in
                 switch response.result {
                 case .success(let transactionResponse):
@@ -52,7 +52,7 @@ class FMEventRepository: ObservableObject {
         formatter.timeZone = TimeZone(abbreviation: "UTC")
         decoder.dateDecodingStrategy = .formatted(formatter)
         
-        if let token = UserDefaults.standard.value(forKey: "access_token") as? String {
+        if let token = MTKeychainManager.sharedInstance.value(for: .accessToken) {
             AF.request("\(kBaseUrl)/api/events/", method: .get, headers: ["Authorization": "Bearer \(token)"]).validate().responseDecodable(of: FMEventsResponse.self, decoder: decoder) { [weak self] response in
                 switch response.result {
                 case .success(let transactionResponse):
@@ -61,6 +61,21 @@ class FMEventRepository: ObservableObject {
                     print(error)
                 }
                 self?.isFetching = false
+            }
+        }
+    }
+    
+    func add(name: String, comments: String?, resultBlock: @escaping (Error?) -> Void) {
+        if let token = MTKeychainManager.sharedInstance.value(for: .accessToken) {
+            AF.request("\(kBaseUrl)/api/events/", method: .post, parameters: ["name": name, "description": comments], encoder: .json, headers: ["Authorization": "Bearer \(token)"]).validate().responseDecodable(of: FMEvent.self) { response in
+                switch response.result {
+                case .success(let account):
+                    self.events.append(account)
+                    resultBlock(nil)
+                case .failure(let error):
+                    print(error)
+                    resultBlock(error)
+                }
             }
         }
     }
