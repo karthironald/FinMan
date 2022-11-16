@@ -10,6 +10,7 @@ import SwiftUI
 struct FMProfileView: View {
     
     @EnvironmentObject var loadingInfoState: FMLoadingInfoState
+    
     @StateObject private var authService = FMAuthenticationService.shared
     
     
@@ -38,7 +39,6 @@ struct FMProfileView: View {
 //                    }
 //                }
                 FMButton(title: "Logout", type: .logout, shouldShowLoading: loadingInfoState.shouldShowLoading) {
-                    loadingInfoState.startLoading()
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                         authService.signOut()
                         loadingInfoState.stopLoading()

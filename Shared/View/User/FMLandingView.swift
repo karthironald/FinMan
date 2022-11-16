@@ -10,6 +10,7 @@ import SwiftUI
 struct FMLandingView: View {
     
     @EnvironmentObject private var hud: FMLoadingInfoState
+    @EnvironmentObject private var currentUser: FMCurrentUser
 
     @StateObject private var authenticationService = FMAuthenticationService.shared
     @State private var shouldPresentSignupForm = false
@@ -20,7 +21,7 @@ struct FMLandingView: View {
     // MARK: - View Body
     
     var body: some View {
-        if MTKeychainManager.sharedInstance.value(for: .accessToken) != nil {
+        if currentUser.isUserLoggedIn {
             FMTabView()
                 .accentColor(AppSettings.appPrimaryColour)
         } else {

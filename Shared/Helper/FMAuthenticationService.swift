@@ -66,11 +66,8 @@ class FMAuthenticationService: ObservableObject {
     }
     
     func signOut() {
-        do {
-            try Auth.auth().signOut()
-        } catch {
-            print(error)
-        }
+        MTKeychainManager.sharedInstance.deleteValue(for: .accessToken)
+        MTKeychainManager.sharedInstance.deleteValue(for: .refreshToken)
     }
     
     func initiateRestPassword(for email: String?, successBlock: @escaping (Bool) -> Void, failureBlock: @escaping (Error?) -> Void) {

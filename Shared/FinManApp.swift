@@ -12,11 +12,13 @@ import Firebase
 struct FinManApp: App {
     
     @StateObject var hudState = FMLoadingInfoState()
+    @StateObject var currentUser = FMCurrentUser()
     
     // MARK: - Init Methods
     
     init() {
         FirebaseApp.configure()
+        
     }
     
     // MARK: - View Body
@@ -25,10 +27,20 @@ struct FinManApp: App {
         WindowGroup {
             FMLandingView()
                 .environmentObject(hudState)
+                .environmentObject(currentUser)
                 .hud(isPresented: $hudState.isPresented, type: hudState.hudType) {
                     Label(hudState.title, systemImage: hudState.systemImage)
                         .labelStyle(CustomLabelStyle())
                 }
         }
     }
+}
+
+final class FMCurrentUser: ObservableObject {
+    @Published var isUserLoggedIn = false
+    
+    init() {
+        isUserLoggedIn = (MTKeychainManager.sharedInstance.value(for: .accessToken) != nil)
+    }
+    
 }

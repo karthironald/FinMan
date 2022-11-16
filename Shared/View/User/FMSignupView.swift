@@ -11,6 +11,8 @@ import Alamofire
 struct FMSignupView: View {
     
     @EnvironmentObject private var hud: FMLoadingInfoState
+    @EnvironmentObject private var currentUser: FMCurrentUser
+
     @StateObject private var authService = FMAuthenticationService.shared
     
 #if DEBUG
@@ -95,6 +97,7 @@ struct FMSignupView: View {
             startLoadingIndicator()
             authService.signin(with: email, password: password) { _ in
                 stopLoadingIndicator()
+                currentUser.isUserLoggedIn = true
                 shouldPresentSignupForm.toggle()
             } failureBlock: { error in
                 stopLoadingIndicator()

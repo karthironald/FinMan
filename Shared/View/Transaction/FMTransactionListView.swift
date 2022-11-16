@@ -10,6 +10,8 @@ import SwiftUI
 
 struct FMTransactionListView: View {
     
+    @EnvironmentObject private var currentUser: FMCurrentUser
+    
     @StateObject var viewModel = FMTransactionListViewModel()
     
     @State var shouldPresentAddTransactionView: Bool = false
@@ -120,7 +122,17 @@ struct FMTransactionListView: View {
     }
     
     func trainingViews() -> some View {
-        filterMenu()
+        HStack{
+            Button {
+                currentUser.isUserLoggedIn = false
+            } label: {
+                Image(systemName: "rectangle.portrait.and.arrow.right")
+                    .resizable()
+            }
+
+            filterMenu()
+        }
+        
 //        HStack(spacing: 20) {
 //            chartButtonView()
 //            Menu {
