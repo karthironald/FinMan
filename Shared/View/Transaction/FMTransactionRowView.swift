@@ -31,7 +31,7 @@ struct FMTransactionRowView: View {
             }
             .padding([.top, .bottom], 5)
             Spacer()
-            Text("\(transactionRowViewModel.transaction.value ?? 0.0, specifier: "%0.2f")")
+            Text(transactionRowViewModel.transaction.value?.localCurrencyString() ?? "-")
                 .font(.body)
                 .bold()
                 .foregroundColor((transactionRowViewModel.transaction.transactionType == FMTransaction.TransactionType.income.rawValue) ? .green : .red)

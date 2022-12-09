@@ -32,10 +32,10 @@ struct FMInvestmentPlanView: View {
                     HStack {
                         Text("Balance")
                         Spacer()
-                        Text("(\(FMHelper.percentage(of: balance, in: Double(total) ?? 0.0), specifier: "%0.2f")%)")
+                        Text("(\(FMHelper.percentage(of: balance, in: Double(total) ?? 0.0).localCurrencyString() ?? "-")%")
                             .foregroundColor(.secondary)
                             .font(.caption)
-                        Text("\(balance, specifier: "%0.2f")")
+                        Text(balance.localCurrencyString() ?? "-")
                     }
                     .foregroundColor(.secondary)
                 }

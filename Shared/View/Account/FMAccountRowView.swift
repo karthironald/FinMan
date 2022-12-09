@@ -42,7 +42,7 @@ struct FMAccountRowView: View {
                             VStack(alignment: .leading, spacing: 0) {
                                 Text("Income")
                                     .foregroundColor(.secondary)
-                                Text("\(accountRowViewModel.account.totalIncome ?? 0.0, specifier: "%0.2f")")
+                                Text(accountRowViewModel.account.totalIncome?.localCurrencyString() ?? "-")
                                     .bold()
                                     .foregroundColor(.green)
                             }
@@ -50,7 +50,7 @@ struct FMAccountRowView: View {
                             VStack(alignment: .leading, spacing: 0) {
                                 Text("Expense")
                                     .foregroundColor(.secondary)
-                                Text("\(accountRowViewModel.account.totalExpense ?? 0.0, specifier: "%0.2f")")
+                                Text(accountRowViewModel.account.totalExpense?.localCurrencyString() ?? "-")
                                     .bold()
                                     .foregroundColor(.red)
                             }
@@ -58,7 +58,7 @@ struct FMAccountRowView: View {
                             VStack(alignment: .leading, spacing: 0) {
                                 Text("Total")
                                     .foregroundColor(.secondary)
-                                Text("\(accountRowViewModel.total(), specifier: "%0.2f")")
+                                Text(accountRowViewModel.total().localCurrencyString() ?? "-")
                                     .bold()
                                     .foregroundColor(.blue)
                             }

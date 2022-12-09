@@ -22,10 +22,10 @@ let kOkay = "Okay"
 let kTimePeriodAllOptionValue = 999
 let kCommonIndex = 99999
 #if DEBUG
-let kBaseUrl = "https://pure-bastion-95056.herokuapp.com"
-//let kBaseUrl = "http://0.0.0.0:5000"
+let kBaseUrl = "http://finman-backend-dev.ap-south-1.elasticbeanstalk.com"
+//let kBaseUrl = "http://127.0.0.1:8000"
 #else
-let kBaseUrl = "https://pure-bastion-95056.herokuapp.com"
+let kBaseUrl = "http://finman-backend-dev.ap-south-1.elasticbeanstalk.com"
 #endif
 
 enum FMTimePeriod: String, CaseIterable {

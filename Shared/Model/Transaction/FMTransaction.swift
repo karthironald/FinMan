@@ -36,6 +36,32 @@ struct FMDTransactionResponse: Codable {
     let results: [FMDTransaction]?
 }
 
+// MARK: - FMSummary
+struct FMSummary: Codable {
+    let totalExpense, totalIncome: Double?
+    let incomes: [Income]?
+    let expenses: [Expense]?
+
+    enum CodingKeys: String, CodingKey {
+        case totalExpense = "total_expense"
+        case totalIncome = "total_income"
+        case incomes, expenses
+    }
+}
+
+extension FMSummary {
+    struct Expense: Codable {
+        let category: String?
+        let value: Double?
+    }
+
+    struct Income: Codable {
+        let source: String?
+        let value: Double?
+    }
+}
+
+
 // MARK: - Result
 struct FMDTransaction: Codable {
     let id: Int?

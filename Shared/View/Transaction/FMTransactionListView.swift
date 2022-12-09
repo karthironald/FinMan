@@ -65,7 +65,7 @@ struct FMTransactionListView: View {
             })
             .frame(minWidth: 250)
             .listStyle(InsetGroupedListStyle())
-            .navigationBarItems(leading: trainingViews(), trailing: addTransactionView())
+            .navigationBarItems(leading: trainingViews(), trailing: trailingViews())
             .onAppear(perform: {
                 fetchTransaction()
             })
@@ -95,6 +95,13 @@ struct FMTransactionListView: View {
         viewModel.fetchTransaction(for: selectedTimePeriod, incomeSource: source, transactionType: transactionType)
     }
     
+    func trailingViews() -> some View {
+        HStack {
+            addTransactionView()
+            chartButtonView()
+        }
+    }
+    
     func addTransactionView() -> some View {
         Button(action: {
             shouldPresentAddTransactionView.toggle()
@@ -110,26 +117,31 @@ struct FMTransactionListView: View {
     }
     
     func chartButtonView() -> some View {
-        Button(action: {
-            shouldSourceShowChart.toggle()
-        }, label: {
+        NavigationLink {
+            FMSummaryView()
+        } label: {
             Image(systemName: "chart.bar.doc.horizontal")
                 .resizable()
                 .font(.title2)
-        })
-        .foregroundColor((transactionTypeIndex > (FMTransaction.TransactionType.allCases.count - 1)) ? .secondary.opacity(0.5) : AppSettings.appPrimaryColour)
-        .disabled((transactionTypeIndex > (FMTransaction.TransactionType.allCases.count - 1))) // Disable buttonw when 'Both' transaction type is selected
+        }
+
+//        Button(action: {
+//            shouldSourceShowChart.toggle()
+//        }, label: {
+//            Image(systemName: "chart.bar.doc.horizontal")
+//                .resizable()
+//                .font(.title2)
+//        })
     }
     
     func trainingViews() -> some View {
-        HStack{
+        HStack(spacing: 10) {
             Button {
                 currentUser.isUserLoggedIn = false
             } label: {
                 Image(systemName: "rectangle.portrait.and.arrow.right")
                     .resizable()
             }
-
             filterMenu()
         }
         
@@ -170,13 +182,6 @@ struct FMTransactionListView: View {
         }.onChange(of: selectedTimePeriod) { newValue in
             fetchTransaction()
         }
-//        Menu {
-//
-//        } label: {
-//            Image(systemName: "magnifyingglass.circle")
-//                .resizable()
-//                .font(.title2)
-//        }
     }
     
     func filterSourceView() -> some View {
@@ -240,7 +245,7 @@ struct FMChartView: View {
                                     .scaleEffect(CGSize(width: normalizedValue(index: index), height: 1.0), anchor: .leading)
                             }
                             Spacer()
-                            Text("\(FMHelper.percentage(of: points[index].1, in: total), specifier: "%0.2f") %")
+                            Text("\(FMHelper.percentage(of: points[index].1, in: total).localCurrencyString() ?? "-") %")
                                 .font(.caption2)
                                 .bold()
                         }

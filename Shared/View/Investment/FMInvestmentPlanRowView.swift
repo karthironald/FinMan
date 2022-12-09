@@ -20,7 +20,7 @@ struct FMInvestmentPlanRowView: View {
             HStack {
                 TextField("Name", text: $investment.name)
                 Spacer()
-                Text("(\(FMHelper.percentage(of: investment.absoluteValue, in: total), specifier: "%0.2f")%)")
+                Text("(\(FMHelper.percentage(of: investment.absoluteValue, in: total).localCurrencyString() ?? "-")%)")
                     .foregroundColor(.secondary)
                     .font(.caption)
                 Text("\(Int(investment.absoluteValue))")

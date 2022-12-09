@@ -234,6 +234,7 @@ class FMDTransactionRepository: ObservableObject {
     private var cancellables: Set<AnyCancellable> = []
     
     @Published var transactions: [FMDTransaction] = []
+    @Published var summary: FMSummary?
     @Published var isFetching: Bool = false
     @Published var isPaginating: Bool = false
     @Published var nextPageUrl: String? = nil
@@ -291,6 +292,34 @@ class FMDTransactionRepository: ObservableObject {
         //        }
     }
     
+    func summary(startDate: Date? = nil, endDate: Date? = nil) {
+        let decoder = JSONDecoder()
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
+        decoder.dateDecodingStrategy = .formatted(formatter)
+        
+        if let token = MTKeychainManager.sharedInstance.value(for: .accessToken) {
+            var urlString = "\(kBaseUrl)/api/summary"
+            
+            if let startDate = startDate, let endDate = endDate {
+                let start = formatter.string(from: startDate)
+                let end = formatter.string(from: endDate)
+                urlString.append(contentsOf: "?start_date=\(start)&end_date=\(end)")
+            }
+            
+            AF.request(urlString, method: .get, headers: ["Authorization": "Bearer \(token)"]).validate().responseDecodable(of: FMSummary.self, decoder: decoder) { [weak self] response in
+                switch response.result {
+                case .success(let summaryResponse):
+                    self?.summary = summaryResponse
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
+    }
+    
     func getTransactions(startDate: Date? = nil, endDate: Date? = nil) {
         isFetching = true
         
@@ -300,7 +329,6 @@ class FMDTransactionRepository: ObservableObject {
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
         formatter.timeZone = TimeZone(abbreviation: "UTC")
         decoder.dateDecodingStrategy = .formatted(formatter)
-        
         if let token = MTKeychainManager.sharedInstance.value(for: .accessToken) {
             var urlString = "\(kBaseUrl)/api/transactions/"
             
@@ -308,6 +336,9 @@ class FMDTransactionRepository: ObservableObject {
                 let start = formatter.string(from: startDate)
                 let end = formatter.string(from: endDate)
                 urlString.append(contentsOf: "?start_date=\(start)&end_date=\(end)")
+                print("Dates for Testing")
+                print(start)
+                print(end)
             }
             
             AF.request(urlString, method: .get, headers: ["Authorization": "Bearer \(token)"]).validate().responseDecodable(of: FMDTransactionResponse.self, decoder: decoder) { [weak self] response in
