@@ -13,9 +13,11 @@ struct FMSummaryView: View {
     
     @StateObject var transactionRepository = FMDTransactionRepository.shared
     @State private var selectedTimePeriod = FMTimePeriod.thisMonth
+    @State private var shouldExplainIncome = false
+    @State private var shouldExplainExpense = false
     
     var body: some View {
-        ScrollView(.vertical, showsIndicators: false) {
+        ScrollView {
             VStack {
                 LabeledContent {
                     Text(transactionRepository.summary?.totalIncome?.localCurrencyString() ?? "-")
@@ -37,12 +39,19 @@ struct FMSummaryView: View {
                 .chartXAxis(.hidden)
                 .chartYAxis(.hidden)
                 .frame(height: 100)
+                .onTapGesture {
+                    withAnimation {
+                        shouldExplainIncome.toggle()
+                    }
+                }
                 
-                ForEach(transactionRepository.summary?.incomes ?? [], id: \.source) { income in
-                    LabeledContent {
-                        Text(income.value?.localCurrencyString() ?? "-")
-                    } label: {
-                        Text(income.source ?? "-")
+                if shouldExplainIncome {
+                    ForEach(transactionRepository.summary?.incomes ?? [], id: \.source) { income in
+                        LabeledContent {
+                            Text(income.value?.localCurrencyString() ?? "-")
+                        } label: {
+                            Text(income.source ?? "-")
+                        }
                     }
                 }
                 
@@ -64,16 +73,22 @@ struct FMSummaryView: View {
                         .foregroundStyle(by: .value("Category", expense.category ?? "-"))
                     }
                 }
-                
                 .chartXAxis(.hidden)
                 .chartYAxis(.hidden)
                 .frame(height: 100)
+                .onTapGesture {
+                    withAnimation {
+                        shouldExplainExpense.toggle()
+                    }
+                }
                 
-                ForEach(transactionRepository.summary?.expenses ?? [], id: \.category) { expense in
-                    LabeledContent {
-                        Text(expense.value?.localCurrencyString() ?? "-")
-                    } label: {
-                        Text(expense.category ?? "-")
+                if shouldExplainExpense {
+                    ForEach(transactionRepository.summary?.expenses ?? [], id: \.category) { expense in
+                        LabeledContent {
+                            Text(expense.value?.localCurrencyString() ?? "-")
+                        } label: {
+                            Text(expense.category ?? "-")
+                        }
                     }
                 }
                 
@@ -89,12 +104,13 @@ struct FMSummaryView: View {
 
                 Spacer()
             }
-            .padding(15)
             .navigationBarItems(trailing: filterMenu())
             .onAppear {
                 fetchSummary()
             }
         }
+        .navigationBarTitleDisplayMode(.inline)
+        .padding(15)
     }
     
     func balance() -> Double {
