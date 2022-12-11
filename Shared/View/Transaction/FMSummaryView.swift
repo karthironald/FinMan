@@ -101,9 +101,28 @@ struct FMSummaryView: View {
                 .font(.title3)
                 .bold()
                 .padding(.top)
-
+                
+                VStack {
+                    Text("Budget vs Actual")
+                    Chart {
+                        ForEach(budgetActualData(), id: \.name) { series in
+                            ForEach(series.expenseData) { element in
+                                BarMark(
+                                    x: .value("Value", element.value ?? 0.0),
+                                    y: .value("Category", element.name ?? "-")
+                                )
+                            }
+                            .foregroundStyle(by: .value("Category", series.name))
+                            .position(by: .value("Category", series.name))
+                        }
+                    }
+                }
+                .chartPlotStyle { plotContent in
+                    plotContent.frame(height: 44 * CGFloat(transactionRepository.summary?.expenses?.count ?? 0))
+                }
                 Spacer()
             }
+            .frame(width: UIScreen.main.bounds.width - 30)
             .navigationBarItems(trailing: filterMenu())
             .onAppear {
                 fetchSummary()
@@ -111,6 +130,13 @@ struct FMSummaryView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .padding(15)
+    }
+    
+    func budgetActualData() -> [(name: String, expenseData: [FMSummary.ChartComparison])] {
+        let budgetData = transactionRepository.summary?.expenses?.map { FMSummary.ChartComparison(name: $0.category, value: $0.monthlyBudget) } ?? []
+        let actualData = transactionRepository.summary?.expenses?.map{ FMSummary.ChartComparison(name: $0.category, value: $0.value) } ?? []
+                                                                                
+        return [("budget", budgetData), ("actual", actualData)]
     }
     
     func balance() -> Double {
@@ -138,10 +164,20 @@ struct FMSummaryView: View {
 
 struct FMSummaryView_Previews: PreviewProvider {
     static var previews: some View {
-        let summary = FMSummary(totalExpense: 23000, totalIncome: 57000, incomes: [FMSummary.Income(source: "Salary", value: 57000)], expenses: [FMSummary.Expense(category: "Fuel", value: 100), FMSummary.Expense(category: "Lunch", value: 500), FMSummary.Expense(category: "Service", value: 10000), FMSummary.Expense(category: "Others", value: 14400)])
+        let summary = FMSummary(totalExpense: 23000, totalIncome: 57000, incomes: [FMSummary.Income(source: "Salary", value: 57000)], expenses: [FMSummary.Expense(category: "Fuel", value: 100, monthlyBudget: 1000), FMSummary.Expense(category: "Lunch", value: 500, monthlyBudget: 1000), FMSummary.Expense(category: "Service", value: 10000, monthlyBudget: 5000), FMSummary.Expense(category: "Others", value: 14400, monthlyBudget: 20000)])
         FMDTransactionRepository.shared.summary = summary
         return FMSummaryView(transactionRepository: FMDTransactionRepository.shared)
     }
 }
 
 
+extension FMSummary {
+    
+    struct ChartComparison: Identifiable {
+        let name: String?
+        let value: Double?
+        
+        var id: String { name ?? "-" }
+    }
+    
+}

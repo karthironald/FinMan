@@ -53,6 +53,12 @@ extension FMSummary {
     struct Expense: Codable {
         let category: String?
         let value: Double?
+        let monthlyBudget: Double?
+        
+        enum CodingKeys: String, CodingKey {
+            case category, value
+            case monthlyBudget = "m_budget"
+        }
     }
 
     struct Income: Codable {
